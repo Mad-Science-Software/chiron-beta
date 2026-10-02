@@ -1,6 +1,6 @@
 {
   "name": "chiron",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Persistent memory: connects the local Chiron server and recalls related memories on every prompt.",
   "mcpServers": {
     "chiron": {

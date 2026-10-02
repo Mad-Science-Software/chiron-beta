@@ -11,6 +11,10 @@ that need reinstalling. Don't rely on it as the only place you keep anything imp
 machine, reachable only from that machine. Mad Science Software doesn't receive,
 collect or see them, and Chiron sends no usage data anywhere.
 
+**It checks for updates.** Once a day, Chiron asks this beta's GitHub page which
+version is newest, so Claude can tell you when an update is out. That request carries
+nothing about you or your memories, and Claude asks before updating.
+
 **Claude still sees what Claude sees.** Memories are written and read by your Claude
 assistant, so the parts it works with pass through Anthropic, as everything you share
 with Claude does. Chiron doesn't change that, and doesn't send anything anywhere else.
