@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "name": "chiron-recall",
+            "type": "command",
+            "command": "curl -s --max-time 4 -X POST -H 'Content-Type: application/json' --data-binary @- 'http://localhost:8090/hooks/prompt?tool=gemini'",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "chiron",
+  "version": "0.3.0",
+  "description": "Persistent memory: connects the local Chiron server and recalls related memories on every prompt.",
+  "mcpServers": {
+    "chiron": {
+      "httpUrl": "http://localhost:8090/mcp"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "chiron",
+  "version": "0.3.0",
+  "description": "Persistent memory for Claude: connects the local Chiron server and recalls related memories on every prompt.",
+  "author": {
+    "name": "Mad Science Software"
+  }
+}

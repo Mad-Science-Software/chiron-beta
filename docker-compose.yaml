@@ -1,0 +1,78 @@
+# Chiron 0.3.0, from prebuilt images: `docker compose --profile app up -d`.
+# Only the memory server is published, on 127.0.0.1, so memory is never reachable
+# from the network.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: chiron
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "chiron"]
+      interval: 2s
+      retries: 30
+  ollama:
+    image: ollama/ollama
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 2s
+      retries: 30
+
+  migrate:
+    profiles: [app]
+    image: ghcr.io/mad-science-software/chiron-migrate:0.3.0
+    command: ["-path", "/migrations", "-database", "postgres://postgres:postgres@db:5432/chiron?sslmode=disable", "up"]
+    depends_on:
+      db:
+        condition: service_healthy
+  embedding-model:
+    profiles: [app]
+    image: ollama/ollama
+    entrypoint: ["ollama", "pull", "nomic-embed-text"]
+    environment:
+      OLLAMA_HOST: ollama:11434
+    depends_on:
+      ollama:
+        condition: service_healthy
+  api:
+    profiles: [app]
+    image: ghcr.io/mad-science-software/chiron-api:0.3.0
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/chiron?sslmode=disable
+      OLLAMA_URL: http://ollama:11434
+      EMBEDDING_MODEL: nomic-embed-text
+      ENV: prod
+      # Inside the container the API must listen on every interface for Docker's port
+      # mapping to reach it; the published port above is what stays on 127.0.0.1.
+      HTTP_ADDR: ":8090"
+    ports:
+      - "127.0.0.1:8090:8090"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      embedding-model:
+        condition: service_completed_successfully
+  # Run one importer at a time with `docker compose run --rm ingest <command> ...`;
+  # docs/ingestion.md has the mounts each source needs.
+  ingest:
+    profiles: [ingest]
+    image: ghcr.io/mad-science-software/chiron-ingest:0.3.0
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/chiron?sslmode=disable
+      OLLAMA_URL: http://ollama:11434
+      EMBEDDING_MODEL: nomic-embed-text
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata: {}
+  ollama: {}
