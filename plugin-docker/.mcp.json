@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "chiron": { "type": "http", "url": "http://localhost:8090/mcp" }
+  }
+}

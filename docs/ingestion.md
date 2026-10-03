@@ -30,7 +30,17 @@ source, tell them:
 
 ## 1. Run the importer
 
-The importers run in Docker, from `~/chiron`. Mount every folder **at the same path it has
+**With the Chiron app** (Mac, Linux), run the importer directly, with the same options
+as the Docker commands below and no `docker compose … ingest` part or `-v` mounts:
+
+```sh
+~/.chiron/bin/chiron ingest claude-code --projects "$HOME/.claude/projects" --owner "Full Name" --out "$OUT"
+~/.chiron/bin/chiron ingest git --repo "$REPO" --out "$OUT"
+~/.chiron/bin/chiron ingest mbox --mbox "$MBOX_FOLDER/All mail.mbox" --mailbox work --out "$OUT"
+~/.chiron/bin/chiron ingest documents --in "$IN" --out "$OUT"
+```
+
+**With the Docker install**, the importers run in Docker, from `~/chiron`. Mount every folder **at the same path it has
 on the host** (`-v "$X:$X"`): batch lists then contain paths that work outside the
 container, and commit ids match any earlier import. Don't add `:ro`; Docker Desktop
 silently drops read-only mounts written this way. The importers only read the sources.

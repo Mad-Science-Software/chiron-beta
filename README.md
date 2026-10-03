@@ -13,11 +13,12 @@ You don't need to do this by hand. Open Claude Code and say:
 
 > Install Chiron by following https://github.com/Mad-Science-Software/chiron-beta/blob/main/docs/setup.md
 
-It takes about 15 minutes. You'll need:
+On a Mac or Linux it takes about 5 minutes and installs the Chiron app: no admin
+password, no Docker. You'll need [Claude Code](https://claude.com/claude-code) and about
+1 GB of free disk space.
 
-- a Mac with about 3 GB of free disk space (Windows support is being tested),
-- [Claude Code](https://claude.com/claude-code),
-- Docker Desktop (Claude will help you install it if you don't have it).
+On Windows it uses Docker Desktop for now (about 20–30 minutes, and an admin password);
+a Windows app is coming.
 
 Before installing, read [BETA.md](BETA.md): it's short, and it explains what taking part
 means.

@@ -1,0 +1,8 @@
+{
+  "name": "chiron",
+  "version": "0.4.0",
+  "description": "Persistent memory for Claude, for the Docker install of Chiron (Windows, or Macs not yet on the app): connects to localhost:8090 and recalls related memories on every prompt.",
+  "author": {
+    "name": "Mad Science Software"
+  }
+}

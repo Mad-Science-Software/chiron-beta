@@ -3,7 +3,7 @@
     "UserPromptSubmit": [
       {
         "hooks": [
-          { "type": "http", "url": "http://localhost:8090/hooks/prompt?tool=claude", "timeout": 5 }
+          { "type": "command", "command": "\"$HOME/.chiron/bin/chiron\" hook --tool claude", "timeout": 5 }
         ]
       }
     ]

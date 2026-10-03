@@ -61,7 +61,9 @@ Make the text readable: mentions as `@Name`, channel links as `#name`, links as
    the user the two rendered documents it writes. Check names are resolved, timestamps
    are right, and the list of conversations it read contains only what was agreed
    (print it).
-4. Run it on the agreed scope, then import, from `~/chiron`:
+4. Run it on the agreed scope, then import. With the Chiron app:
+   `~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/<source>/conversations.jsonl" --out "$HOME/chiron-ingest/<source>/out"`.
+   With the Docker install, from `~/chiron`:
 
    ```sh
    cd ~/chiron

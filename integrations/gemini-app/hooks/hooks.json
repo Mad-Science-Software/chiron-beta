@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "name": "chiron-recall",
+            "type": "command",
+            "command": "\"$HOME/.chiron/bin/chiron\" hook --tool gemini",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}

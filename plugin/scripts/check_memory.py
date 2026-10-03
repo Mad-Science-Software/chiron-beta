@@ -6,12 +6,12 @@ break, this fails loudly: exit code 1 and the reason.
 """
 import sys
 
-from chiron_mcp import CHIRON_MCP_URL, call_tool
+from chiron_mcp import call_tool, where
 
 try:
     result = call_tool("recall", {"query": "hello", "limit": 1}, timeout_seconds=10)
 except Exception as error:
-    print(f"Chiron memory is NOT working: {CHIRON_MCP_URL} gave {error}")
+    print(f"Chiron memory is NOT working: {where()} gave {error}")
     sys.exit(1)
 if result.get("isError"):
     print("Chiron memory is NOT working: recall returned an error:", result["content"][0]["text"])

@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "http", "url": "http://localhost:8090/hooks/prompt?tool=claude", "timeout": 5 }
+        ]
+      }
+    ]
+  }
+}
