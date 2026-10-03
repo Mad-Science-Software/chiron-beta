@@ -1,6 +1,6 @@
 {
   "name": "chiron-docker",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Persistent memory, for the Docker install of Chiron: connects to localhost:8090 and recalls related memories on every prompt.",
   "mcpServers": {
     "associative-memory": {

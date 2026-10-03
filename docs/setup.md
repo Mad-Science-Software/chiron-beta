@@ -200,7 +200,8 @@ session. Then explain, briefly and in plain language:
 - **What it does**: Claude can save things to memory and recall them in later sessions,
   in any project. Related memories also come to mind automatically as they type.
 - **How to use it**: "remember that …", "what do you remember about …?", or "save what
-  we decided today".
+  we decided today". Claude can also import their history (past sessions, git, email)
+  whenever they ask.
 - **Privacy**: memories stay on this computer.
 - **Memories are who said what, and when**: each one records that someone said or did
   something on a given day, not that it's true. A mistake or a change of mind is simply
