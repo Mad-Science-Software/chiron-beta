@@ -7,13 +7,13 @@
   "plugins": [
     {
       "name": "chiron",
-      "source": "./plugin-docker",
-      "description": "Persistent memory for Claude, for the Docker install of Chiron (Windows, or Macs not yet moved to the app)."
+      "source": "./plugin",
+      "description": "Chiron: associative memory for Claude, from the Chiron app on this computer (Mac and Linux). Recalls related memories on every prompt."
     },
     {
-      "name": "chiron-app",
-      "source": "./plugin",
-      "description": "Persistent memory for Claude, from the Chiron app on this computer (Mac and Linux): recalls related memories on every prompt."
+      "name": "chiron-docker",
+      "source": "./plugin-docker",
+      "description": "Chiron for the Docker install (Windows for now): associative memory for Claude, recalling related memories on every prompt."
     }
   ]
 }

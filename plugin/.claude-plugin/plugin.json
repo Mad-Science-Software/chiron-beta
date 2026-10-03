@@ -1,6 +1,6 @@
 {
-  "name": "chiron-app",
-  "version": "0.4.1",
+  "name": "chiron",
+  "version": "0.4.2",
   "description": "Persistent memory for Claude: connects to the Chiron app on this computer and recalls related memories on every prompt.",
   "author": {
     "name": "Mad Science Software"

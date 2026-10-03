@@ -63,25 +63,25 @@ user what went wrong in plain language, and stop rather than improvising.
 
 ### A2. Install the Claude Code plugin
 
-The `chiron-app` plugin connects Claude Code to the app and adds a hook that recalls
+The `chiron` plugin connects Claude Code to the app and adds a hook that recalls
 related memories for every message the user sends. It installs for the user, so it
 applies in every project; that's intended, and these commands are the only settings
 change setup makes.
 
 ```sh
 claude plugin marketplace add ~/chiron
-claude plugin install chiron-app@mad-science
+claude plugin install chiron@mad-science
 ```
 
-If `claude plugin list` also shows `chiron@mad-science` (the Docker plugin), uninstall it
-(`claude plugin uninstall chiron@mad-science`); if `claude mcp list` shows a `chiron`
+If `claude plugin list` also shows `chiron-docker@mad-science` or `chiron-app@mad-science`
+(older names), uninstall them (`claude plugin uninstall <name>@mad-science`); if `claude mcp list` shows a `chiron`
 server registered by hand, remove it (`claude mcp remove chiron`), so the tools don't
 appear twice.
 
 Verify:
 
 ```sh
-claude plugin list                                  # chiron-app@mad-science, enabled
+claude plugin list                                  # chiron@mad-science, enabled
 python3 ~/chiron/plugin/scripts/check_memory.py     # Chiron memory is working (empty so far).
 ```
 
@@ -94,14 +94,14 @@ prompts never break; that's why it isn't the check.)
 Only for tools the user actually uses (ask). Both read Chiron's MCP instructions, so
 they need no instruction file. If Chiron is down, their hook stays quiet.
 
-**Gemini CLI**: `gemini extensions link ~/chiron/integrations/gemini-app`, then restart it.
+**Gemini CLI**: `gemini extensions link ~/chiron/integrations/gemini`, then restart it.
 
 **Codex CLI**: add to `~/.codex/config.toml` and `~/.codex/hooks.json` (read both first
 and merge; keep everything already there). If Codex asks to review the hook, the user
 approves it.
 
 ```toml
-[mcp_servers.chiron]
+[mcp_servers.associative-memory]
 command = "sh"
 args = ["-c", "exec \"$HOME/.chiron/bin/chiron\" mcp"]
 ```
@@ -153,14 +153,14 @@ taken, tell the user what holds it rather than changing the port.
 
 ```sh
 claude plugin marketplace add ~/chiron
-claude plugin install chiron@mad-science
+claude plugin install chiron-docker@mad-science
 ```
 
-Verify: `claude plugin list` shows `chiron@mad-science` enabled, and
+Verify: `claude plugin list` shows `chiron-docker@mad-science` enabled, and
 `python3 ~/chiron/plugin/scripts/check_memory.py` says memory is working (use `python` or
 `py` if that's this computer's Python).
 
-**Gemini CLI**: `gemini extensions link ~/chiron/integrations/gemini`. **Codex CLI**:
+**Gemini CLI**: `gemini extensions link ~/chiron/integrations/gemini-docker`. **Codex CLI**:
 `[mcp_servers.chiron]` with `url = "http://localhost:8090/mcp"`, and a `UserPromptSubmit`
 command hook running
 `curl -s --max-time 4 -X POST -H 'Content-Type: application/json' --data-binary @- 'http://localhost:8090/hooks/prompt?tool=codex'`.
@@ -180,8 +180,9 @@ running for the copy.
    record and cue, checks they all arrived and that sample searches give the same
    results in both, and restarts the app. If any check fails it stops and leaves Docker
    as it was; show the user its output.
-5. **Switch the plugin**:
-   `claude plugin marketplace update mad-science && claude plugin uninstall chiron@mad-science && claude plugin install chiron-app@mad-science`,
+5. **Switch the plugin**: `claude plugin marketplace update mad-science && claude plugin update chiron@mad-science`
+   (the `chiron` plugin now belongs to the app; if `claude plugin list` doesn't then
+   show version 0.4.2 or later, run `claude plugin uninstall chiron@mad-science && claude plugin install chiron@mad-science`),
    then check with `python3 ~/chiron/plugin/scripts/check_memory.py` and the user's
    memory count in `~/.chiron/bin/chiron status`. Gemini or Codex users: switch them to
    section A3's settings.
@@ -222,7 +223,7 @@ the user explicitly asks. If they do, follow [`docs/ingestion.md`](ingestion.md)
 **The app** (`chiron` is `~/.chiron/bin/chiron`):
 
 - **Update**: `chiron update`, then
-  `cd ~/chiron && git pull && claude plugin marketplace update mad-science && claude plugin update chiron-app@mad-science`.
+  `cd ~/chiron && git pull && claude plugin marketplace update mad-science && claude plugin update chiron@mad-science`.
   The update keeps the previous version and goes back to it if the new one doesn't start.
 - **Is it working?** `chiron status`, and `python3 ~/chiron/plugin/scripts/check_memory.py`.
   Logs are in `~/.chiron/logs`. If it's stopped, `chiron install` starts it again.
@@ -232,7 +233,7 @@ the user explicitly asks. If they do, follow [`docs/ingestion.md`](ingestion.md)
 
 **The Docker install**, all from `~/chiron`:
 
-- **Update**: `git pull && docker compose --profile app pull && docker compose --profile app up -d && claude plugin marketplace update mad-science && claude plugin update chiron@mad-science`
+- **Update**: `git pull && docker compose --profile app pull && docker compose --profile app up -d && claude plugin marketplace update mad-science && claude plugin update chiron-docker@mad-science`
   (from a source checkout, `up -d --build` replaces the `pull`). Gemini CLI's linked
   extension follows `git pull` on its own.
 - **If memory stops working**: run the memory check; if it fails, make sure Docker
