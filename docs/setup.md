@@ -53,7 +53,10 @@ systemd user service on Linux). The first start also downloads the embedding mod
 (about 430 MB) and can take a few minutes; it prints its progress and finishes with
 "Chiron … is running". Everything lives in `~/.chiron`.
 
-Verify: `~/.chiron/bin/chiron status` says it's running with embeddings ready.
+Verify: `~/.chiron/bin/chiron status` says it's running with embeddings ready. On a Mac
+a flask icon appears in the menu bar: it shows the memory count, offers updates, opens
+the logs, and can stop memory until the next login. (`"menu_bar": false` in
+`~/.chiron/config.json` hides it.)
 
 If it fails, read `~/.chiron/logs/chiron.log` and `~/.chiron/logs/ollama.log`, tell the
 user what went wrong in plain language, and stop rather than improvising.
