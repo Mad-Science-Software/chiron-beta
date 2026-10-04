@@ -20,6 +20,8 @@ a README mentions one: it's for developing Chiron.
   an admin password and may need a restart. A Windows app is coming.
 - **Already running the Docker install on a Mac or Linux?** Section C moves the memories
   into the app.
+- **Also using the Claude Desktop app** (chat or Cowork)? After installing, section D
+  connects it to the same memory.
 
 **First, for any of them:**
 
@@ -116,7 +118,7 @@ args = ["-c", "exec \"$HOME/.chiron/bin/chiron\" mcp"]
 }
 ```
 
-Then go to **Finish**.
+Then go to section D if they use Claude Desktop, otherwise **Finish**.
 
 ## B. The Docker install (Windows)
 
@@ -165,7 +167,7 @@ Verify: `claude plugin list` shows `chiron-docker@mad-science` enabled, and
 command hook running
 `curl -s --max-time 4 -X POST -H 'Content-Type: application/json' --data-binary @- 'http://localhost:8090/hooks/prompt?tool=codex'`.
 
-Then go to **Finish**.
+Then go to section D if they use Claude Desktop, otherwise **Finish**.
 
 ## C. Moving from the Docker install to the app (Mac and Linux)
 
@@ -191,6 +193,25 @@ running for the copy.
    (`docker compose --profile app down -v`, which removes the old copy for good); the
    backup from step 1 is a second safety net. Docker Desktop itself can stay or go.
 7. Tell the user to start a new Claude Code session.
+
+## D. Claude Desktop and Cowork (optional)
+
+Only if the user also uses the Claude Desktop app's chat or Cowork (ask). Chiron must be
+installed and running first (section A or B). This adds the Chiron extension to Claude
+Desktop, which connects to the same memory; it works with the app and the Docker install.
+
+1. Download it: `curl -fsSL -o ~/Downloads/chiron.mcpb https://github.com/Mad-Science-Software/chiron-beta/releases/latest/download/chiron.mcpb`
+2. Ask the user to double-click `chiron.mcpb` in their Downloads folder (or drag it onto
+   Claude Desktop's Settings → Extensions) and click **Install**. Desktop notes the
+   extension isn't verified: it isn't signed yet, which is expected for the beta.
+3. Verify: Settings → Extensions lists Chiron, enabled. In a new Desktop chat, "what do
+   you remember about …?" should show Claude recalling.
+
+Tell the user: Desktop has no automatic recall on every message (that's Claude Code's
+hook), so in Desktop Claude recalls when it judges memory might help, and asking
+"check your memory" always works. Cowork can use it in sessions on this computer, not
+in cloud sessions started from the web or phone. If Chiron isn't running (Docker
+Desktop closed, for the Docker install), the tools report that instead of answering.
 
 ## Finish
 
