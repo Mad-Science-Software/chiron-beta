@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "\"$USERPROFILE/.chiron/bin/chiron.exe\" hook --tool claude", "timeout": 5 }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "associative-memory": {
+      "command": "${USERPROFILE}/.chiron/bin/chiron.exe",
+      "args": ["mcp"]
+    }
+  }
+}

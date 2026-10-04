@@ -11,9 +11,14 @@
       "description": "Chiron: associative memory for Claude, from the Chiron app on this computer (Mac and Linux). Recalls related memories on every prompt."
     },
     {
+      "name": "chiron-windows",
+      "source": "./plugin-windows",
+      "description": "Chiron on Windows: associative memory for Claude, from the Chiron app on this computer. Recalls related memories on every prompt."
+    },
+    {
       "name": "chiron-docker",
       "source": "./plugin-docker",
-      "description": "Chiron for the Docker install (Windows for now): associative memory for Claude, recalling related memories on every prompt."
+      "description": "Chiron for the Docker install: associative memory for Claude, recalling related memories on every prompt."
     }
   ]
 }
