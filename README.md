@@ -15,7 +15,7 @@ You don't need to do this by hand. Open Claude Code and say:
 
 On a Mac, Windows or Linux it takes about 5 minutes and installs the Chiron app: no
 admin password, no Docker. You'll need [Claude Code](https://claude.com/claude-code) and
-about 1 GB of free disk space. On Windows the app isn't code-signed yet, so Windows may
+about 400 MB of free disk space. On Windows the app isn't code-signed yet, so Windows may
 call it an unknown publisher.
 
 Before installing, read [BETA.md](BETA.md): it's short, and it explains what taking part

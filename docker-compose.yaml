@@ -1,4 +1,4 @@
-# Chiron 0.5.0, from prebuilt images: `docker compose --profile app up -d`.
+# Chiron 0.5.1, from prebuilt images: `docker compose --profile app up -d`.
 # Only the memory server is published, on 127.0.0.1, so memory is never reachable
 # from the network.
 services:
@@ -27,7 +27,7 @@ services:
 
   migrate:
     profiles: [app]
-    image: ghcr.io/mad-science-software/chiron-migrate:0.5.0
+    image: ghcr.io/mad-science-software/chiron-migrate:0.5.1
     command: ["-path", "/migrations", "-database", "postgres://postgres:postgres@db:5432/chiron?sslmode=disable", "up"]
     depends_on:
       db:
@@ -43,7 +43,7 @@ services:
         condition: service_healthy
   api:
     profiles: [app]
-    image: ghcr.io/mad-science-software/chiron-api:0.5.0
+    image: ghcr.io/mad-science-software/chiron-api:0.5.1
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/chiron?sslmode=disable
@@ -64,7 +64,7 @@ services:
   # docs/ingestion.md has the mounts each source needs.
   ingest:
     profiles: [ingest]
-    image: ghcr.io/mad-science-software/chiron-ingest:0.5.0
+    image: ghcr.io/mad-science-software/chiron-ingest:0.5.1
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/chiron?sslmode=disable
       OLLAMA_URL: http://ollama:11434

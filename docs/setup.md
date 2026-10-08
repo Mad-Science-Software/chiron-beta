@@ -27,10 +27,12 @@ a README mentions one: it's for developing Chiron.
    (https://github.com/Mad-Science-Software/chiron-beta/blob/main/BETA.md), summed up in a
    few plain sentences, and ask whether they agree. Stop if they don't.
 2. **Claude Code**: `claude --version`. Inside the Claude Desktop app's Code tab there is
-   no `claude` command: wherever this guide runs `claude plugin …`, ask the user to type
-   the same thing as a slash command in the Code tab instead (`claude plugin install X`
-   becomes `/plugin install X`; give `marketplace add` the full path to the chiron
-   folder), then check with `/plugin`.
+   no `claude` command on the PATH, and typing `/plugin install …` there opens the plugin
+   menu without its arguments. The Desktop app carries its own copy: on Windows, find it
+   with `ls "$LOCALAPPDATA"/Packages/Claude_*/LocalCache/Roaming/Claude/claude-code/*/claude.exe`
+   (the Microsoft Store version; use the newest folder) and run this guide's
+   `claude plugin …` commands with that full path. If it can't be found, the user can add
+   the marketplace and install the plugin through the `/plugin` menu by hand.
 3. **Python 3.9 or newer and git**: `python3 --version` and `git --version` (on Windows,
    `python` or `py` may be the Python command). On a Mac without developer tools, the
    first one opens a system dialog offering to install them (both come with it); tell
@@ -156,7 +158,7 @@ Docker Desktop needs a paid licence at larger companies. If Docker is installed 
 running, start Docker Desktop and wait for `docker info`. Have the user turn on **Start
 Docker Desktop when you sign in** in its settings: without it, memory silently stops
 after a reboot. About 25 GB of free disk space is needed: Docker Desktop, its Linux
-subsystem and Chiron's images (the app, section A, needs under 1 GB).
+subsystem and Chiron's images (the app, section A, needs about 400 MB).
 
 ### B2. Start Chiron
 
@@ -235,7 +237,8 @@ Desktop, which connects to the same memory; it works with the app (through its o
 3. Verify: Settings → Extensions lists Chiron, enabled. In a new Desktop chat, "what do
    you remember about …?" should show Claude recalling.
 
-Tell the user: Desktop has no automatic recall on every message (that's Claude Code's
+Tell the user: chats that were already open don't get the extension; start a new
+chat. Desktop has no automatic recall on every message (that's Claude Code's
 hook), so in Desktop Claude recalls when it judges memory might help, and asking
 "check your memory" always works. Cowork can use it in sessions on this computer, not
 in cloud sessions started from the web or phone. In the Desktop app's Code tab the
