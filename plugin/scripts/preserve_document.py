@@ -6,6 +6,9 @@ Usage: preserve_document.py <document.json> <cues.json>
 cues.json is a JSON list of {"sentence", "authors", "observed_at"}. The
 record_body, source, and external_id come from document.json, so the agent only
 writes cues. A document that's already stored counts as done.
+
+The native app does the same with `chiron preserve <document.json> <cues.json>`,
+which needs no Python. This script stays for the Docker server.
 """
 import json
 import sys

@@ -5,7 +5,7 @@ with no built-in importer (Slack, Microsoft Teams, Notion, a notes folder, a CRM
 Read [`docs/ingestion.md`](ingestion.md) first: this guide only replaces its step 1.
 
 You write a small **converter** that turns the source into conversations, then hand
-those to `ingest-documents`, which validates them, skips anything already stored, and
+those to `chiron ingest documents`, which validates them, skips anything already stored, and
 writes the same documents and batch lists the built-in importers do. From there the
 normal sub-agent workflow takes over. You don't change Chiron's code.
 
@@ -22,9 +22,15 @@ normal sub-agent workflow takes over. You don't change Chiron's code.
   can import more later, and reruns skip what's stored. Private conversations (direct
   messages, private channels) are out of scope unless the user names them explicitly;
   "all channels" doesn't include them.
-- **Write the converter in Python with only the standard library**, saved as
-  `~/chiron-ingest/<source>/convert.py`, so it can be rerun later for new data. Give it
-  options to limit what it converts (e.g. `--channels`, `--limit`) for the trial run.
+- **Write the converter in a language this computer already has.** Do not make the
+  user install anything for it. Check what is there, for example `python3 --version`,
+  `node --version` or `perl -v`. Every Windows computer has PowerShell. Python 3 with
+  only its standard library is a good choice when it is installed, but it is not
+  necessary. If every option needs an install, tell the user and let them decide.
+- **Save the converter** as `~/chiron-ingest/<source>/convert` with the usual file
+  extension for its language (for example `convert.py` or `convert.ps1`). Then you can
+  run it again later for new data. Give it options to limit what it converts (e.g.
+  `--channels`, `--limit`) for the trial run.
 
 ## The conversation format
 
@@ -56,27 +62,23 @@ Make the text readable: mentions as `@Name`, channel links as `#name`, links as
 ## Steps
 
 1. Agree on the source, scope and export with the user, and have them download it.
-2. Look at the export's structure (a few files, not all of it) and write `convert.py`.
+2. Look at the export's structure (a few files, not all of it) and write the converter.
 3. Run it on a small slice first, import that slice (step 4 with `--limit 2`), and show
    the user the two rendered documents it writes. Check names are resolved, timestamps
    are right, and the list of conversations it read contains only what was agreed
    (print it).
-4. Run it on the agreed scope, then import. With the Chiron app:
-   `~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/<source>/conversations.jsonl" --out "$HOME/chiron-ingest/<source>/out"`.
-   With the Docker install, from `~/chiron`:
+4. Run it on the agreed scope, then import:
 
    ```sh
-   cd ~/chiron
    OUT="$HOME/chiron-ingest/<source>/out"
-   docker compose --profile ingest run --rm -v "$HOME/chiron-ingest:$HOME/chiron-ingest" \
-     ingest ingest-documents --in "$HOME/chiron-ingest/<source>/conversations.jsonl" --out "$OUT"
+   ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/<source>/conversations.jsonl" --out "$OUT"
    ```
 
    It stops at the first invalid line and says what's wrong; fix the converter and rerun.
 5. Continue with step 2 of [`docs/ingestion.md`](ingestion.md): a sample batch first, then
    one sub-agent per batch.
 6. When finished, delete the export and `out/` (they hold private data) but keep
-   `convert.py` for future imports, and tell the user the Chiron team would welcome it
+   the converter for future imports, and tell the user the Chiron team would welcome it
    as a starting point for a built-in importer.
 
 ## Example: Slack

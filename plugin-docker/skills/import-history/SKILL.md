@@ -9,10 +9,10 @@ Only import what the user explicitly asks for, one source at a time.
 
 Follow the import guide, which this plugin doesn't repeat:
 
-- **Claude Code sessions, git, email**: `~/chiron/docs/ingestion.md`
-- **Any other source** (Slack, a chat export, notes): `~/chiron/docs/custom-sources.md`
+- **Claude Code sessions, git, email**: `~/.chiron/docs/ingestion.md`
+- **Any other source** (Slack, a chat export, notes): `~/.chiron/docs/custom-sources.md`
 
-If `~/chiron` doesn't exist, read them from
+If `~/.chiron/docs` doesn't exist, read them from
 https://github.com/Mad-Science-Software/chiron-beta/tree/main/docs instead.
 
 Rerunning an import is safe: anything already in memory is skipped, and a conversation

@@ -30,36 +30,21 @@ source, tell them:
 
 ## 1. Run the importer
 
-**With the Chiron app** (Mac, Linux), run the importer directly, with the same options
-as the Docker commands below and no `docker compose … ingest` part or `-v` mounts:
-
-```sh
-~/.chiron/bin/chiron ingest claude-code --projects "$HOME/.claude/projects" --owner "Full Name" --out "$OUT"
-~/.chiron/bin/chiron ingest git --repo "$REPO" --out "$OUT"
-~/.chiron/bin/chiron ingest mbox --mbox "$MBOX_FOLDER/All mail.mbox" --mailbox work --out "$OUT"
-~/.chiron/bin/chiron ingest documents --in "$IN" --out "$OUT"
-```
-
-**With the Docker install**, the importers run in Docker, from `~/chiron`. Mount every folder **at the same path it has
-on the host** (`-v "$X:$X"`): batch lists then contain paths that work outside the
-container, and commit ids match any earlier import. Don't add `:ro`; Docker Desktop
-silently drops read-only mounts written this way. The importers only read the sources.
-
-Use a working folder per source under `~/chiron-ingest`, e.g.
-`OUT="$HOME/chiron-ingest/claude-code" && mkdir -p "$OUT"`.
+Run the importer from the app (`~/.chiron/bin/chiron`, or `chiron.exe` on Windows). Use
+a working folder per source under `~/chiron-ingest`, e.g.
+`OUT="$HOME/chiron-ingest/claude-code" && mkdir -p "$OUT"`. The importers only read the
+sources.
 
 **Claude Code conversations** (ask for the user's full name; it's credited on their messages):
 
 ```sh
-docker compose --profile ingest run --rm -v "$HOME/.claude/projects:$HOME/.claude/projects" -v "$OUT:$OUT" \
-  ingest ingest-claude-code --projects "$HOME/.claude/projects" --owner "Full Name" --out "$OUT"
+~/.chiron/bin/chiron ingest claude-code --projects "$HOME/.claude/projects" --owner "Full Name" --out "$OUT"
 ```
 
-**Git repositories** (one `-v` and one `--repo` per repository):
+**Git repositories** (one `--repo` per repository):
 
 ```sh
-docker compose --profile ingest run --rm -v "$REPO:$REPO" -v "$OUT:$OUT" \
-  ingest ingest-git --repo "$REPO" --out "$OUT"
+~/.chiron/bin/chiron ingest git --repo "$REPO" --out "$OUT"
 ```
 
 `--since 2026-01-01` and `--limit 200` (newest first) narrow it.
@@ -67,8 +52,7 @@ docker compose --profile ingest run --rm -v "$REPO:$REPO" -v "$OUT:$OUT" \
 **Email** (a Google Takeout `.mbox` export; `--mailbox` is a short name for the account):
 
 ```sh
-docker compose --profile ingest run --rm -v "$MBOX_FOLDER:$MBOX_FOLDER" -v "$OUT:$OUT" \
-  ingest ingest-mbox --mbox "$MBOX_FOLDER/All mail.mbox" --mailbox work --out "$OUT"
+~/.chiron/bin/chiron ingest mbox --mbox "$MBOX_FOLDER/All mail.mbox" --mailbox work --out "$OUT"
 ```
 
 **Any other source** (Slack, Teams, Notion, a notes folder…): follow
@@ -87,7 +71,10 @@ by 20 when you run the importer. Sub-agents can use a smaller, cheaper model (e.
 past runs did well with it.
 
 Then start one sub-agent per remaining batch, all in parallel, each with this prompt
-(fill in the batch path):
+(fill in the batch path). On the Docker server (the `chiron-docker` plugin), there is no
+`chiron preserve`: in step 3 of the prompt, use
+`python3 ~/chiron/plugin/scripts/preserve_document.py` with the same two arguments. It
+needs Python 3.9 or newer.
 
 > You are turning documents into memories in Chiron, the user's local memory server.
 > Your batch list is `<OUT>/batch-<N>.txt`: one document JSON path per line.
@@ -115,9 +102,10 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 >    written there. `observed_at` is the timestamp of the message
 >    where the point was made, not today. Never invent a name, reason or detail that isn't
 >    in the document. Record what was said even if you think it's wrong; don't correct it.
-> 3. Save it: `python3 ~/chiron/plugin/scripts/preserve_document.py <document.json> <cues.json>`.
->    It passes the record body through unchanged, so never retype it. `PRESERVED` and
->    `ALREADY STORED` both mean done; on `ERROR`, fix the cues and run it again.
+> 3. Save it: `~/.chiron/bin/chiron preserve <document.json> <cues.json>` (`chiron.exe`
+>    on Windows). It passes the record body through unchanged, so never retype it.
+>    `PRESERVED` and `ALREADY STORED` both mean done; on `ERROR`, fix the cues and run it
+>    again.
 >
 > A document with no substance at all gets no cues; skip it. Also skip any document that
 > contains a password, access key, or similar credential: memories can't be deleted, so

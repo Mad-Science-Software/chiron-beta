@@ -12,38 +12,20 @@ Tell the user what you're doing as you go, in plain language. Ask before anythin
 needs their password or touches their personal data. Don't create a `.env` file, even if
 a README mentions one: it's for developing Chiron.
 
-## Which install
+## What gets installed
 
-- **Mac, Windows or Linux: the Chiron app** (section A). One download, about 5 minutes,
-  no admin password, no Docker.
-- **The Docker install** (section B) is the older way, for anyone who prefers containers.
-- **Already running the Docker install?** Section C moves the memories into the app.
-- **Also using the Claude Desktop app** (chat or Cowork)? After installing, section D
+- **The Chiron app** (section A), on Mac, Windows or Linux: one download, about 5
+  minutes, no admin password, no Docker.
+- **Also using the Claude Desktop app** (chat or Cowork)? After installing, section B
   connects it to the same memory.
 
-**First, for any of them:**
+**First:**
 
 1. **Beta terms.** Show the user the terms in `BETA.md`
    (https://github.com/Mad-Science-Software/chiron-beta/blob/main/BETA.md), summed up in a
    few plain sentences, and ask whether they agree. Stop if they don't.
-2. **Claude Code**: `claude --version`. Inside the Claude Desktop app's Code tab there is
-   no `claude` command on the PATH, and typing `/plugin install …` there opens the plugin
-   menu without its arguments. The Desktop app carries its own copy: on Windows, find it
-   with `ls "$LOCALAPPDATA"/Packages/Claude_*/LocalCache/Roaming/Claude/claude-code/*/claude.exe`
-   (the Microsoft Store version; use the newest folder) and run this guide's
-   `claude plugin …` commands with that full path. If it can't be found, the user can add
-   the marketplace and install the plugin through the `/plugin` menu by hand.
-3. **Python 3.9 or newer and git**: `python3 --version` and `git --version` (on Windows,
-   `python` or `py` may be the Python command). On a Mac without developer tools, the
-   first one opens a system dialog offering to install them (both come with it); tell
-   the user to click Install and wait, rather than waiting on the command yourself.
-   Python runs the memory check and history imports; recall itself needs no Python.
-4. **Get Chiron's files**: if `~/chiron` doesn't exist yet,
-   `git clone https://github.com/Mad-Science-Software/chiron-beta.git ~/chiron`.
-   It holds this guide, the plugins and helper scripts (no source code, no GitHub account
-   needed). Keep it in that permanent spot (not Downloads, Desktop or an iCloud-synced
-   folder): the plugin is installed from it. Developers using the source repository use
-   their clone instead.
+2. **Nothing else to install first.** Chiron needs no git, no Python and no copy of a
+   repository: the app carries the plugin and the settings for each AI assistant.
 
 ## A. The Chiron app (Mac, Windows and Linux)
 
@@ -52,13 +34,14 @@ a README mentions one: it's for developing Chiron.
 On a Mac or Linux:
 
 ```sh
-sh ~/chiron/install.sh
+curl -fsSL https://github.com/Mad-Science-Software/chiron-beta/releases/latest/download/install.sh | sh
 ```
 
 On Windows:
 
 ```sh
-powershell -NoProfile -ExecutionPolicy Bypass -File ~/chiron/install.ps1
+curl -fsSL -o "$TEMP/install.ps1" https://raw.githubusercontent.com/Mad-Science-Software/chiron-beta/main/install.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File "$TEMP/install.ps1"
 ```
 
 (The bypass applies to this one script; Windows blocks scripts by default.)
@@ -82,46 +65,79 @@ If it fails, read `~/.chiron/logs/chiron.log` and the embedding server's log (`o
 on a Mac, `llama.cpp.log` on Windows and Linux) in the same folder, tell the user what
 went wrong in plain language, and stop rather than improvising.
 
-### A2. Install the Claude Code plugin
+### A2. Connect the AI assistants
 
-The plugin connects Claude Code to the app and adds a hook that recalls related memories
-for every message the user sends. It installs for the user, so it applies in every
-project; that's intended, and these commands are the only settings change setup makes.
-On Windows the plugin is `chiron-windows` instead of `chiron`.
+Chiron finds the AI assistants on this computer and connects them itself: Claude Code,
+Claude Desktop (chat and Cowork), Codex CLI and Gemini CLI. It adds its entry to each
+one's settings and keeps every other setting. (On Windows, `chiron` is
+`~/.chiron/bin/chiron.exe`.)
 
 ```sh
-claude plugin marketplace add ~/chiron
-claude plugin install chiron@mad-science          # Windows: chiron-windows@mad-science
+~/.chiron/bin/chiron assistants
 ```
 
+This lists each assistant, whether it is on this computer, and whether it is connected.
+Ask the user which ones they use. Then connect those, one at a time:
+
+```sh
+~/.chiron/bin/chiron assistants connect claude-code     # also: claude-desktop, codex, gemini
+```
+
+Or connect every one that is installed: `~/.chiron/bin/chiron assistants connect --all`.
+
+- **Claude Code** gets the Chiron plugin. The plugin adds the memory tools and a hook that
+  recalls related memories for every message the user sends. It installs for the user,
+  so it applies in every project. Chiron runs the `claude` command for this, also the copy
+  inside the Claude Desktop app when `claude` isn't on the PATH.
+- **Claude Desktop** gets an entry in `claude_desktop_config.json` that runs Chiron
+  directly. If the Chiron extension (`chiron.mcpb`) is already installed, Chiron leaves it
+  and adds nothing.
+- **Codex CLI** gets an MCP server in `~/.codex/config.toml` and a hook in
+  `~/.codex/hooks.json`. If Codex asks to review the hook, the user approves it.
+- **Gemini CLI** gets the Chiron extension, linked from `~/.chiron/assistants/gemini`.
+
+Chiron keeps a copy of each file it changes, with `.chiron-backup` at the end of the name.
+"Restart it to load Chiron" means the assistant reads the change when it starts next.
+
+If a connect reports a problem, tell the user in plain language. It says what to do. For
+example, when Chiron can't find the `claude` command, the user types two `/plugin`
+commands in Claude Code. If an assistant's settings file can't be read, Chiron changes
+nothing; don't repair the file without the user's yes.
+
 If `claude plugin list` also shows `chiron-docker@mad-science` or `chiron-app@mad-science`
-(older names, or the Docker install's), uninstall them (`claude plugin uninstall <name>@mad-science`); if `claude mcp list` shows a `chiron`
-server registered by hand, remove it (`claude mcp remove chiron`), so the tools don't
-appear twice.
+(older names), uninstall them (`claude plugin uninstall <name>@mad-science`); if
+`claude mcp list` shows a `chiron` server registered by hand, remove it
+(`claude mcp remove chiron`), so the tools don't appear twice.
 
 Verify:
 
 ```sh
-claude plugin list                                  # chiron (or chiron-windows) @mad-science, enabled
-python3 ~/chiron/plugin/scripts/check_memory.py     # Chiron memory is working (empty so far).
+~/.chiron/bin/chiron assistants                    # the assistants you connected: connected
+~/.chiron/bin/chiron check                         # the memory check passes
 ```
 
 The memory check makes a real recall, the same call the hook makes, and fails with the
 reason if memory can't be reached. (The hook stays silent when memory is down, so
 prompts never break; that's why it isn't the check.)
 
-### A3. Other coding agents
+### A3. If `chiron assistants connect` can't do it
 
-Only for tools the user actually uses (ask). Both read Chiron's MCP instructions, so
-they need no instruction file. If Chiron is down, their hook stays quiet. On Windows,
-use `$USERPROFILE/.chiron/bin/chiron.exe` where these say `$HOME/.chiron/bin/chiron`,
-without the `sh -c` wrapper.
+Use these steps only when a connect fails and its message doesn't help. Run
+`chiron assistants connect` once first: it writes the files these steps use.
 
-**Gemini CLI**: `gemini extensions link ~/chiron/integrations/gemini`, then restart it.
+**Claude Code** (on Windows the plugin is `chiron-windows`):
+
+```sh
+claude plugin marketplace add ~/.chiron/assistants/claude-code
+claude plugin install chiron@mad-science          # Windows: chiron-windows@mad-science
+```
+
+**Gemini CLI**: `gemini extensions link ~/.chiron/assistants/gemini`, then restart it.
 
 **Codex CLI**: add to `~/.codex/config.toml` and `~/.codex/hooks.json` (read both first
-and merge; keep everything already there). If Codex asks to review the hook, the user
-approves it.
+and merge; keep everything already there). On Windows, use
+`$USERPROFILE/.chiron/bin/chiron.exe` where these say `$HOME/.chiron/bin/chiron`,
+without the `sh -c` wrapper.
 
 ```toml
 [mcp_servers.associative-memory]
@@ -139,113 +155,37 @@ args = ["-c", "exec \"$HOME/.chiron/bin/chiron\" mcp"]
 }
 ```
 
-Then go to section D if they use Claude Desktop, otherwise **Finish**.
+**Claude Desktop**: see section B.
 
-## B. The Docker install
+Then go to section B if they use Claude Desktop, otherwise **Finish**.
 
-Set expectations: about 20–30 minutes, and if Docker isn't installed yet, the user will
-need to be at the computer to enter their admin password, accept Docker's licence, pick
-an install option, and possibly restart. After a restart they reopen Claude Code and ask
-to continue installing Chiron.
+## B. Claude Desktop and Cowork (optional)
 
-### B1. Docker
+Only if the user also uses the Claude Desktop app's chat or Cowork (ask). The app must
+be installed and running first (section A). If A2 connected `claude-desktop`, Claude
+Desktop is already connected: ask the user to quit Claude Desktop completely and open
+it again, then skip to the verify step (3). Otherwise:
 
-`docker info` must succeed. If Docker is missing, ask the user to install Docker Desktop
-(https://www.docker.com/products/docker-desktop/); on Windows it uses WSL 2, which it
-offers to set up, and virtualization must be on (if Docker reports it's off, that's a
-BIOS setting: stop and tell the user). On a work computer, ask first: IT may block it, and
-Docker Desktop needs a paid licence at larger companies. If Docker is installed but not
-running, start Docker Desktop and wait for `docker info`. Have the user turn on **Start
-Docker Desktop when you sign in** in its settings: without it, memory silently stops
-after a reboot. About 25 GB of free disk space is needed: Docker Desktop, its Linux
-subsystem and Chiron's images (the app, section A, needs about 400 MB).
+1. Run `~/.chiron/bin/chiron assistants connect claude-desktop`. If it reports a
+   problem, use the Chiron extension instead: download it with
+   `curl -fsSL -o ~/Downloads/chiron.mcpb https://github.com/Mad-Science-Software/chiron-beta/releases/latest/download/chiron.mcpb`.
+2. For the extension only: ask the user to double-click `chiron.mcpb` in their Downloads
+   folder and click **Install**. If double-clicking does nothing (the Microsoft Store
+   version of Claude for Windows ignores it), have them open Claude Desktop's Settings →
+   Extensions and drag the file onto that page, or use **Advanced settings → Install
+   Extension…** there. Desktop notes the extension isn't verified: it isn't signed yet,
+   which is expected for the beta.
+3. Verify: in a new Desktop chat, "what do you remember about …?" should show Claude
+   recalling.
 
-### B2. Start Chiron
-
-```sh
-cd ~/chiron
-docker compose --profile app up -d
-```
-
-The first run downloads Chiron's images and the embedding model and takes a few
-minutes. Running it again is safe, so if it fails the first time, run it again before
-debugging. Verify: `curl -s localhost:8090/readyz` prints `{"status":"ready"}`. If not,
-check `docker compose --profile app ps` and `docker compose logs api`. If port 8090 is
-taken, tell the user what holds it rather than changing the port.
-
-### B3. Install the Claude Code plugin
-
-```sh
-claude plugin marketplace add ~/chiron
-claude plugin install chiron-docker@mad-science
-```
-
-Verify: `claude plugin list` shows `chiron-docker@mad-science` enabled, and
-`python3 ~/chiron/plugin/scripts/check_memory.py` says memory is working (use `python` or
-`py` if that's this computer's Python).
-
-**Gemini CLI**: `gemini extensions link ~/chiron/integrations/gemini-docker`. **Codex CLI**:
-`[mcp_servers.chiron]` with `url = "http://localhost:8090/mcp"`, and a `UserPromptSubmit`
-command hook running
-`curl -s --max-time 4 -X POST -H 'Content-Type: application/json' --data-binary @- 'http://localhost:8090/hooks/prompt?tool=codex'`.
-
-Then go to section D if they use Claude Desktop, otherwise **Finish**.
-
-## C. Moving from the Docker install to the app
-
-Do the steps in this order, so memory keeps working at every point. Docker must be
-running for the copy.
-
-1. **Back up** the Docker memory first:
-   `cd ~/chiron && docker compose exec -T db pg_dump -U postgres chiron > ~/chiron-backup-$(date +%F).sql`
-2. **Get the newest files**: `cd ~/chiron && git pull`.
-3. **Install the app** (section A1). It starts with an empty memory.
-4. **Copy the memories over**: `~/.chiron/bin/chiron import-from-docker` (`chiron.exe` on
-   Windows). It copies every
-   record and cue, checks they all arrived and that sample searches give the same
-   results in both, and restarts the app. If any check fails it stops and leaves Docker
-   as it was; show the user its output.
-5. **Switch the plugin**: `claude plugin marketplace update mad-science && claude plugin update chiron@mad-science`
-   (the `chiron` plugin now belongs to the app; if `claude plugin list` doesn't then
-   show version 0.4.2 or later, run `claude plugin uninstall chiron@mad-science && claude plugin install chiron@mad-science`),
-   On Windows instead: `claude plugin marketplace update mad-science`, uninstall
-   `chiron-docker@mad-science` (and `chiron@mad-science` if an old install has it), then
-   `claude plugin install chiron-windows@mad-science`. Then check with
-   `python3 ~/chiron/plugin/scripts/check_memory.py` and the user's memory count in
-   `chiron status`. Gemini or Codex users: switch them to section A3's settings. If they
-   have the Claude Desktop extension from before 0.5.0 on Windows, reinstall it (section
-   D): older versions can't reach the app there.
-6. **Stop Docker's Chiron**: `cd ~/chiron && docker compose --profile app down` (never
-   `-v`). Its data stays in Docker until the user decides to delete it
-   (`docker compose --profile app down -v`, which removes the old copy for good); the
-   backup from step 1 is a second safety net. Docker Desktop itself can stay or go.
-7. Tell the user to start a new Claude Code session.
-
-## D. Claude Desktop and Cowork (optional)
-
-Only if the user also uses the Claude Desktop app's chat or Cowork (ask). Chiron must be
-installed and running first (section A or B). This adds the Chiron extension to Claude
-Desktop, which connects to the same memory; it works with the app (through its own
-`chiron mcp`) and the Docker install.
-
-1. Download it: `curl -fsSL -o ~/Downloads/chiron.mcpb https://github.com/Mad-Science-Software/chiron-beta/releases/latest/download/chiron.mcpb`
-2. Ask the user to double-click `chiron.mcpb` in their Downloads folder and click
-   **Install**. If double-clicking does nothing (the Microsoft Store version of Claude for
-   Windows ignores it), have them open Claude Desktop's Settings → Extensions and drag
-   the file onto that page, or use **Advanced settings → Install Extension…** there. Desktop notes the
-   extension isn't verified: it isn't signed yet, which is expected for the beta.
-3. Verify: Settings → Extensions lists Chiron, enabled. In a new Desktop chat, "what do
-   you remember about …?" should show Claude recalling.
-
-Tell the user: chats that were already open don't get the extension; start a new
+Tell the user: chats that were already open don't get Chiron; start a new
 chat. Desktop has no automatic recall on every message (that's Claude Code's
 hook), so in Desktop Claude recalls when it judges memory might help, and asking
 "check your memory" always works. Cowork can use it in sessions on this computer, not
 in cloud sessions started from the web or phone. In the Desktop app's Code tab the
-memory tools then appear twice, the plugin's and the extension's: both reach the same
+memory tools then appear twice, the plugin's and Desktop's own: both reach the same
 memory, so it's harmless, and the plugin is still what gives the Code tab automatic
-recall. If Chiron isn't running (Docker
-Desktop closed, for the Docker install), the tools report that instead of answering.
+recall. If Chiron isn't running, the tools report that instead of answering.
 
 ## Finish
 
@@ -276,27 +216,16 @@ the user explicitly asks. If they do, follow [`docs/ingestion.md`](ingestion.md)
 
 ## Day to day
 
-**The app** (`chiron` is `~/.chiron/bin/chiron`):
+`chiron` is `~/.chiron/bin/chiron` (`chiron.exe` on Windows):
 
-- **Update**: `chiron update`, then
-  `cd ~/chiron && git pull && claude plugin marketplace update mad-science && claude plugin update chiron@mad-science`.
-  The update keeps the previous version and goes back to it if the new one doesn't start.
-- **Is it working?** `chiron status`, and `python3 ~/chiron/plugin/scripts/check_memory.py`.
+- **Update**: `chiron update`. That one step also updates the Claude Code plugin and the
+  other assistants' settings, for the assistants the user connected. The update keeps
+  the previous version and goes back to it if the new one doesn't start.
+- **Assistants**: `chiron assistants` shows which are connected and when each last used
+  memory; `chiron assistants connect <id>` and `chiron assistants disconnect <id>` change
+  that.
+- **Is it working?** `chiron status`, and `chiron check`.
   Logs are in `~/.chiron/logs`. If it's stopped, `chiron install` starts it again.
 - **Back up**: `chiron backup` writes `~/chiron-backup-<date>.db`, safely while it runs.
 - **Stop**: `chiron uninstall` stops it starting at login. Memories are kept.
 - **Never** delete `~/.chiron` unless the user wants their memory erased permanently.
-
-**The Docker install**, all from `~/chiron`:
-
-- **Update**: `git pull && docker compose --profile app pull && docker compose --profile app up -d && claude plugin marketplace update mad-science && claude plugin update chiron-docker@mad-science`
-  (an install from before 0.4.2 has this plugin as `chiron@mad-science`: if
-  `claude plugin list` shows that, uninstall it and install `chiron-docker@mad-science`)
-  (from a source checkout, `up -d --build` replaces the `pull`). Gemini CLI's linked
-  extension follows `git pull` on its own.
-- **If memory stops working**: run the memory check; if it fails, make sure Docker
-  Desktop is running, then `docker compose --profile app up -d`.
-- **Back up**: `docker compose exec -T db pg_dump -U postgres chiron > ~/chiron-backup-$(date +%F).sql`
-- **Stop**: `docker compose --profile app down`. Memories are kept.
-- **Never** run `docker compose down -v` or delete Docker volumes unless the user wants
-  their memory erased permanently.
