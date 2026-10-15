@@ -60,6 +60,8 @@ embeddings ready. A flask icon appears in the Mac menu bar or the Windows tray (
 taskbar's arrow until the user pins it): it shows the memory count, offers updates, opens
 the logs, and can stop memory until the next login. (`"menu_bar": false` in
 `~/.chiron/config.json` hides it.)
+On a Mac, Chiron also appears in Spotlight and Launchpad (`~/Applications/Chiron.app`):
+opening it shows the review window. Uninstall removes it.
 
 If it fails, read `~/.chiron/logs/chiron.log` and the embedding server's log (`ollama.log`
 on a Mac, `llama.cpp.log` on Windows and Linux) in the same folder, tell the user what
