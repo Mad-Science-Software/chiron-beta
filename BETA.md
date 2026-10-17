@@ -7,9 +7,11 @@ to them.
 (Amsterdam-Duivendrecht, the Netherlands). It may have bugs, lose data or change in ways
 that need reinstalling. Don't rely on it as the only place you keep anything important.
 
-**Your memories stay on your computer.** Chiron stores them in a database on your own
-machine, reachable only from that machine. Mad Science Software doesn't receive,
-collect or see them, and Chiron sends no usage data anywhere.
+**Your memories stay on your computer until you join a team.** Chiron stores them in a
+database on your own machine, reachable only from that machine, and Mad Science Software
+doesn't receive, collect or see them. Once you join a team, everything this computer
+remembers syncs to your team's Chiron server as your private memory; your team sees only
+what you choose to share. Chiron sends no usage data anywhere else.
 
 **It checks for updates.** Once a day, Chiron asks this beta's GitHub page which
 version is newest, so Claude can tell you when an update is out. That request carries

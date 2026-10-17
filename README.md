@@ -4,8 +4,9 @@ Chiron gives your Claude a long-term memory. It remembers what you've told it an
 worked on together, across sessions and projects, and brings related memories to mind
 as you type.
 
-Everything runs on your own computer. Your memories never leave it, and Mad Science
-Software never sees them.
+Everything runs on your own computer. Memories stay on it until you join a team. Then
+everything this computer remembers syncs to your team's Chiron server as your private
+memory; your team sees only what you choose to share.
 
 ## Installing
 

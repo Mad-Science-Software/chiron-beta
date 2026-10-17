@@ -5,8 +5,11 @@ their Claude has persistent memory. You are installing, not developing: don't ch
 Chiron's code, create branches, or install git hooks, whatever AGENTS.md or the README
 say about development.
 
-Memories are private to this computer: nothing about them is sent anywhere, and the
-memory server can't be reached from the network.
+Chiron needs a team with an active free trial or subscription. Until this computer joins
+one, memory is off: the assistant can't recall or save. The memory server can't be reached
+from the network. Private memories stay on this computer. They go to the team's Chiron
+server only if the user turns on private backup in the Chiron app. Shared memories sync
+through the team's server, and the team sees only what the user chooses to share.
 
 Tell the user what you're doing as you go, in plain language. Ask before anything that
 needs their password or touches their personal data. Don't create a `.env` file, even if
@@ -67,7 +70,19 @@ If it fails, read `~/.chiron/logs/chiron.log` and the embedding server's log (`o
 on a Mac, `llama.cpp.log` on Windows and Linux) in the same folder, tell the user what
 went wrong in plain language, and stop rather than improvising.
 
-### A2. Connect the AI assistants
+### A2. Join a team
+
+Memory is off until this computer joins a team with a free trial or a subscription. Ask
+the user whether their team uses Chiron already.
+
+- If a teammate sent an invite link, tell the user to open it and sign in.
+- If not, tell the user to start a free trial on the website. That creates their team.
+
+Then run `~/.chiron/bin/chiron connect`. It shows a link and a code. Tell the user to
+open the link, check that it shows the same code, and approve it. The command waits for
+the approval. Then `~/.chiron/bin/chiron check` shows the team.
+
+### A3. Connect the AI assistants
 
 Chiron finds the AI assistants on this computer and connects them itself: Claude Code,
 Claude Desktop (chat and Cowork), Codex CLI and Gemini CLI. It adds its entry to each
@@ -122,7 +137,7 @@ The memory check makes a real recall, the same call the hook makes, and fails wi
 reason if memory can't be reached. (The hook stays silent when memory is down, so
 prompts never break; that's why it isn't the check.)
 
-### A3. If `chiron assistants connect` can't do it
+### A4. If `chiron assistants connect` can't do it
 
 Use these steps only when a connect fails and its message doesn't help. Run
 `chiron assistants connect` once first: it writes the files these steps use.
@@ -164,7 +179,7 @@ Then go to section B if they use Claude Desktop, otherwise **Finish**.
 ## B. Claude Desktop and Cowork (optional)
 
 Only if the user also uses the Claude Desktop app's chat or Cowork (ask). The app must
-be installed and running first (section A). If A2 connected `claude-desktop`, Claude
+be installed and running first (section A). If A3 connected `claude-desktop`, Claude
 Desktop is already connected: ask the user to quit Claude Desktop completely and open
 it again, then skip to the verify step (3). Otherwise:
 
@@ -199,7 +214,15 @@ session. Then explain, briefly and in plain language:
 - **How to use it**: "remember that …", "what do you remember about …?", or "save what
   we decided today". Claude can also import their history (past sessions, git, email)
   whenever they ask.
-- **Privacy**: memories stay on this computer.
+- **Team and subscription**: memory works only while this computer is in a team with an
+  active free trial or subscription. When the trial or subscription ends, memory turns off
+  for their assistants. Their memories stay on this computer, and they can still view and
+  delete them in the Chiron app. Everything comes back when the team subscribes. Without a
+  connection to the server, memory keeps working for 30 days after the last sync.
+- **Privacy**: private memories stay on this computer. To keep a copy on the team's
+  Chiron server, they turn on private backup in the Chiron app. Then their other
+  computers, Connected apps (claude.ai, ChatGPT) and the dashboard can see them too.
+  The team sees only what they choose to share.
 - **Memories are who said what, and when**: each one records that someone said or did
   something on a given day, not that it's true. A mistake or a change of mind is simply
   a newer memory, and Claude weighs them by date. Claude and Chiron never erase anything,
