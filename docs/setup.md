@@ -59,7 +59,7 @@ user can allow it in Windows Security, and that's their call to make. The first 
 "Chiron … is running". Everything lives in `~/.chiron`.
 
 Verify: `~/.chiron/bin/chiron status` (`chiron.exe` on Windows) says it's running with
-embeddings ready. A flask icon appears in the Mac menu bar or the Windows tray (under the
+embeddings ready. The Chiron icon (a key over a circle) appears in the Mac menu bar or the Windows tray (under the
 taskbar's arrow until the user pins it): it shows the memory count, offers updates, opens
 the logs, and can stop memory until the next login. (`"menu_bar": false` in
 `~/.chiron/config.json` hides it.)
