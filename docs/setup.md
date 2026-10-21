@@ -27,7 +27,12 @@ a README mentions one: it's for developing Chiron.
 1. **Beta terms.** Show the user the terms in `BETA.md`
    (https://github.com/Mad-Science-Software/chiron-beta/blob/main/BETA.md), summed up in a
    few plain sentences, and ask whether they agree. Stop if they don't.
-2. **Nothing else to install first.** Chiron needs no git, no Python and no copy of a
+2. **The memory plan.** Before anything is installed, decide with the user which history
+   Chiron imports: past Claude Code sessions, git repositories, email, other exports.
+   Follow [`docs/memory-plan.md`](memory-plan.md). It ends with a plan the user approved
+   in `~/chiron-ingest/plan.md`. After the install you run that plan on your own
+   (**Finish**, below). If the user wants no history imported, write a plan that says so.
+3. **Nothing else to install first.** Chiron needs no git, no Python and no copy of a
    repository: the app carries the plugin and the settings for each AI assistant.
 
 ## A. The Chiron app (Mac, Windows and Linux)
@@ -206,14 +211,16 @@ recall. If Chiron isn't running, the tools report that instead of answering.
 
 ## Finish
 
-Tell the user to start a new Claude Code session: the memory tools only load in a new
-session. Then explain, briefly and in plain language:
+Tell the user that the memory tools load in a new Claude Code session, and to start one
+after this session reports that the memory plan has run (below). Then explain, briefly
+and in plain language ([`docs/about-chiron.md`](about-chiron.md) has the full picture,
+for when they ask more; after the install it is also `~/.chiron/docs/about-chiron.md`):
 
 - **What it does**: Claude can save things to memory and recall them in later sessions,
   in any project. Related memories also come to mind automatically as they type.
 - **How to use it**: "remember that …", "what do you remember about …?", or "save what
-  we decided today". Claude can also import their history (past sessions, git, email)
-  whenever they ask.
+  we decided today". "Bring memory up to date" runs their memory plan again and imports
+  what is new.
 - **Team and subscription**: memory works only while this computer is in a team with an
   active free trial or subscription. When the trial or subscription ends, memory turns off
   for their assistants. Their memories stay on this computer, and they can still view and
@@ -225,19 +232,32 @@ session. Then explain, briefly and in plain language:
   The team sees only what they choose to share.
 - **Memories are who said what, and when**: each one records that someone said or did
   something on a given day, not that it's true. A mistake or a change of mind is simply
-  a newer memory, and Claude weighs them by date. Claude and Chiron never erase anything,
-  so they should only agree to saving what they're comfortable keeping. A backup now and
-  then is worth it (below).
+  a newer memory, and Claude weighs them by date. Nothing is erased on its own: Claude
+  can stage memories for deletion, and they confirm each one in the Chiron app. So they
+  should only agree to saving what they're comfortable keeping. A backup now and then is
+  worth it (below).
 - **Updates**: when a new version is out, Claude mentions it once in a session and offers
   to install it.
 
-Offer to save a first memory: ask what they work on and save their answer, with consent.
+The memory tools aren't loaded in this session, so you can't save a memory here. The
+memory plan gives memory its first content. Without one, suggest that in their new
+session they tell Claude what they work on and ask it to remember.
 
 Mention that this is a beta: anything that breaks, feels off or surprises them is worth
 an email to james@madsciencesoftware.dev (never including their memories).
 
-Don't import any existing history (email, past Claude sessions, git repositories) unless
-the user explicitly asks. If they do, follow [`docs/ingestion.md`](ingestion.md).
+**Then run the memory plan** (`~/chiron-ingest/plan.md`), in this session: follow "Run
+the memory plan" in [`docs/ingestion.md`](ingestion.md). Run it only when its header
+says `Agreed on <date>`. If it says `Draft`, ask once whether they approve now: on yes,
+write `Agreed on <date>` and run it; otherwise leave the file and tell them that "finish
+the memory plan" in a later session runs it when they approve. An agreed plan carries
+the user's decisions, so don't ask again; the user doesn't need to stay at the keyboard.
+Report when it's done. The memory tools aren't loaded in this session, so a source the
+plan marks for sharing ends as `sharing pending`: tell the user to start a new session
+and say "finish the memory plan".
+
+Without an approved plan, don't import any history unless the user asks. When they do,
+the `import-history` skill makes the plan with them and runs it.
 
 ## Day to day
 

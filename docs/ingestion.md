@@ -4,17 +4,75 @@ This guide is for the AI agent (Claude Code) that installed Chiron, when the use
 import existing history. You orchestrate; sub-agents write the memories. No API key is
 involved: the cues are written by sub-agents in the user's own Claude session.
 
-Memories stay in this computer's Chiron: nobody else can recall them, whatever a cue's
-visibility scope says (scopes only matter within this one database).
+Every imported memory is private to the user. It stays on this computer unless they
+turn on private backup in the Chiron app. The team sees it only after the user shares
+it: you stage it, they confirm it in the Chiron app.
 
-Only import what the user explicitly asks for, one source at a time. Before starting a
-source, tell them:
+Import only what the user agreed to, one source at a time. With a memory plan
+(`~/chiron-ingest/plan.md`, next section), the plan is the agreement. Without one,
+before starting a source tell them:
 
 - what will be read (which folders, mailboxes or repositories) and roughly how much,
-- that memories can't be deleted afterwards, only superseded,
+- that a memory can be deleted afterwards only after a review in the Chiron app, so an
+  import is quicker than its undo,
 - that writing memories uses their Claude usage, which grows with the size of the history,
   and that the history passes through Claude as sub-agents read it, including what other
   people wrote in it.
+
+## Run the memory plan
+
+The plan ([`docs/memory-plan.md`](memory-plan.md)) lists the sources the user approved,
+each with its scope, its import command, what to share, and a status. Run it only when
+its header says `Agreed on <date>`. A `Draft` header gets read back to the user for
+their yes first; on yes, write `Agreed on <date>` in the header, then run it. On no,
+leave the file as it is: no session runs a draft. There are two runs:
+
+- **Finish the plan** (after the install, or "finish the memory plan"): run every
+  source whose status is `planned`, `waiting for export`, `importing` or `blocked`. For
+  a source whose status ends in `sharing pending`, do only point 5.
+- **Bring memory up to date**: rerun every source except the `skipped` ones, blocked
+  ones included, with the plan's command. The importer skips what is stored, so only
+  new documents get written. Then set the `imported` line to today's date, with the new
+  count added to the old one, and apply point 5 to the new memories of a source whose
+  Share line is not `nothing`.
+
+Run it without further questions:
+
+1. Take the sources in the plan's order. For each source, do steps 1 to 3 below with
+   the plan's command. A source whose command says "write a converter" follows
+   [`docs/custom-sources.md`](custom-sources.md) first: the plan is its scope agreement.
+2. Update the source's status in the plan file after every step, so a session that
+   stops can continue where it was: `importing <date>` when the importer runs, the
+   `imported` status when the source's step 3 is done. A later run treats `importing`
+   like `planned`; the importer skips what is stored.
+3. When a source can't start (the export hasn't arrived, a path is gone), set its status
+   to `blocked: <reason>` and go on to the next. Don't wait and don't ask.
+4. The plan already answers the confirmations in steps 1 and 2 below: the size, and the
+   sample. If the importer writes more than twice the documents the plan estimated,
+   that's outside what the user agreed: set `blocked: <count> documents, plan expected
+   <estimate>` and go on. Check the sample batch yourself: read a few of the `.cues.json`
+   files it wrote, compare them with the cue guide, correct the sub-agent prompt if they
+   fall short, and continue. Keep three or four good cues for the report.
+5. Sharing. If the plan says what the team may see from a source, and the
+   `stage_for_sharing` memory tool is loaded in this session: call it once with no
+   record ids to get the team's sharing policy (the plan's "per team policy" means the
+   policy decides), recall with the `source` filter set to the source's prefix
+   (`claude-code:`, `git:<repository>`, `gmail:<mailbox>`, or the converter's `source`
+   value) and queries for the kind the plan names, stage the record ids with one reason
+   per group, and set the status to `imported <date>: N documents`. Without
+   the tool (the install session), set `imported <date>: N documents, sharing pending`.
+   A Share line of `all` (reference material) stages every memory of the source, 200
+   per call. Every import is written private first; the team sees it only after the
+   user's review.
+6. Report at the end, in plain language: for each source, how many documents were
+   imported, with three or four of its cues as examples; which sources are blocked
+   and why; which documents were skipped for holding a credential (by subject, never the
+   secret); for a source blocked by its count, that a higher estimate on its Scope line
+   lets it through next time; and, when anything is `sharing pending`, that a new
+   session with "finish the memory plan" stages it for their review in the Chiron app.
+
+Keep the plan file when done: "bring memory up to date" runs it again, and only new
+documents get imported.
 
 ## How it works
 
@@ -59,22 +117,22 @@ sources.
 [`docs/custom-sources.md`](custom-sources.md) to write a converter, then come back for step 2.
 
 Each importer prints how many documents and characters it wrote. Tell the user, and confirm
-before going on if it's large (more than a few hundred documents).
+before going on if it's large (more than a few hundred documents). With a memory plan,
+the plan's estimate stands in for this confirmation ("Run the memory plan", point 4).
 
 ## 2. Write the memories with sub-agents
 
 **Start with one batch as a sample.** Show the user a handful of the cues it saved (recall
 them) and ask whether the style and level of detail are right before running the rest.
+With a memory plan, judge the sample yourself against the cue guide instead of asking.
 
 Size batches at about 20 documents each: pass `--batches` as the document count divided
 by 20 when you run the importer. Sub-agents can use a smaller, cheaper model (e.g. Sonnet);
 past runs did well with it.
 
 Then start one sub-agent per remaining batch, all in parallel, each with this prompt
-(fill in the batch path). On the Docker server (the `chiron-docker` plugin), there is no
-`chiron preserve`: in step 3 of the prompt, use
-`python3 ~/chiron/plugin/scripts/preserve_document.py` with the same two arguments. It
-needs Python 3.9 or newer.
+(fill in the batch path). The cue guide the prompt names is written by
+`chiron assistants connect`, so it is there after the install.
 
 > You are turning documents into memories in Chiron, the user's local memory server.
 > Your batch list is `<OUT>/batch-<N>.txt`: one document JSON path per line.
@@ -84,9 +142,8 @@ needs Python 3.9 or newer.
 > only write the `.cues.json` files described below; if you need any other scratch file,
 > name it after your batch number.
 >
-> First read the description of the chiron `preserve` tool (if its schema isn't loaded,
-> search your deferred tools for it). Its cue-writing rules are the standard for every cue
-> you write.
+> First read the cue guide, `~/.chiron/docs/cue-guide.md`. Its rules are the standard
+> for every cue you write.
 >
 > For each document in the list:
 > 1. Read the JSON. `record_body` is the source text. In emails and conversations, each
@@ -108,8 +165,8 @@ needs Python 3.9 or newer.
 >    again.
 >
 > A document with no substance at all gets no cues; skip it. Also skip any document that
-> contains a password, access key, or similar credential: memories can't be deleted, so
-> it must not be stored. List those separately in your report, by file name, without
+> contains a password, access key, or similar credential: a stored secret can only be
+> removed later by a review in the Chiron app, so it must not be stored. List those separately in your report, by file name, without
 > repeating the secret.
 >
 > When finished, report how many documents you preserved, skipped and failed, with the
@@ -125,4 +182,7 @@ Tell the user what was imported. If sub-agents skipped documents for containing
 credentials, tell the user which ones (by subject), and suggest they change those
 passwords if they're still in use. Then delete the working folder (`rm -rf "$OUT"`). The
 rerun already removed the documents that were stored, so what's left is anything skipped
-or failed, which can still hold private history.
+or failed, which can still hold private history. With a memory plan, set the source's
+`imported` status, add a `- Skipped for a credential: <subjects>` line under it when
+sub-agents skipped any, and go on to the next source; the report comes when the whole
+plan is done.

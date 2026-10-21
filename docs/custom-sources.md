@@ -14,7 +14,7 @@ normal sub-agent workflow takes over. You don't change Chiron's code.
 - **Get the data as an export the user downloads**, not through a live connection. Most
   tools offer one (Slack: Workspace settings → Import/Export Data; Notion: Export; Teams:
   Microsoft's data export). If only an API is available, explain what token it needs and
-  what it can read, and let the user decide. Never put a token in a file inside `~/chiron`
+  what it can read, and let the user decide. Never put a token in a file inside `~/chiron-ingest`
   or in the converter itself.
 - **Everything stays on this computer.** Work in `~/chiron-ingest/<source>/`. Don't upload
   the data anywhere or paste large parts of it into the conversation.
@@ -62,11 +62,13 @@ Make the text readable: mentions as `@Name`, channel links as `#name`, links as
 ## Steps
 
 1. Agree on the source, scope and export with the user, and have them download it.
+   With a memory plan ([`docs/memory-plan.md`](memory-plan.md)), the plan is this
+   agreement: take the scope and the export's location from it.
 2. Look at the export's structure (a few files, not all of it) and write the converter.
 3. Run it on a small slice first, import that slice (step 4 with `--limit 2`), and show
    the user the two rendered documents it writes. Check names are resolved, timestamps
    are right, and the list of conversations it read contains only what was agreed
-   (print it).
+   (print it). With a memory plan, make these checks yourself and go on.
 4. Run it on the agreed scope, then import:
 
    ```sh
@@ -80,6 +82,26 @@ Make the text readable: mentions as `@Name`, channel links as `#name`, links as
 6. When finished, delete the export and `out/` (they hold private data) but keep
    the converter for future imports, and tell the user the Chiron team would welcome it
    as a starting point for a built-in importer.
+
+## Reference works
+
+A regulation, a standard, a textbook or a manual is a **library**: `source` is
+`library:<name>` (`library:eu-ai-act`), and each section is one conversation with one
+message. `conversation_id` is `library:<name>:<stable id>` built from the work's own
+structure (the article number, the chapter and section number). `subject` is the
+section's number and title (`Article 5: Prohibited AI practices`). The message has
+`from` the plan's Credit line (the author or the publishing body as printed), `at` the
+publication date as an RFC 3339 timestamp in UTC (`2024-06-13T00:00:00Z` for the act's
+date; 1 January for a work dated only by year), and `text` the section's text.
+
+The work holds no private data, so you download it yourself: `curl -fsSL -o` from the
+link in the plan's Scope line into `~/chiron-ingest/<source>/`, and it can stay there
+afterwards. Prefer the HTML or EPUB edition. For a PDF, use `pdftotext -layout` when it
+is installed; if nothing on this computer reads PDF, tell the user and let them decide,
+as the ground rules say. Keep headings, lists and tables readable, and drop page headers
+and footers. Long sections are split automatically. A library carries nothing personal,
+so the plan usually gives it `Share: all`: imported private, then staged for the user's
+review like any import.
 
 ## Example: Slack
 

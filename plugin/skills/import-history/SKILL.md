@@ -1,20 +1,32 @@
 ---
 name: import-history
-description: Import existing history into Chiron memory, such as past Claude Code sessions, git repositories, email (Gmail exports or mailboxes), or another source like Slack. Use when the user asks to import, ingest, or load their history, or to bring memory up to date with new items from a source imported before.
+description: Import existing history into Chiron memory, such as past Claude Code sessions, git repositories, email (Gmail exports or mailboxes), or another source like Slack. Use when the user asks to import, ingest, or load their history, to run or finish their memory plan, or to bring memory up to date with new items from a source imported before.
 ---
 
 # Importing history into Chiron
 
-Only import what the user explicitly asks for, one source at a time.
+Import only what the user agreed to, one source at a time.
 
-Follow the import guide, which this plugin doesn't repeat:
+**With a memory plan.** `~/chiron-ingest/plan.md` is the plan the user approved when
+Chiron was installed. If it exists, follow "Run the memory plan" in the import guide:
+"finish the memory plan" runs what is not yet imported and stages what is marked
+`sharing pending`; "bring memory up to date" reruns every source, and only what is new
+gets imported. A plan whose header says `Draft` instead of `Agreed on <date>` is read
+back to the user for their yes first; on yes, write `Agreed on <date>` in the header,
+then run it.
 
+**Without a plan**, or for a source the plan does not name, make the plan first with
+the user, then run it. The planning guide says how: `~/.chiron/docs/memory-plan.md`.
+
+The guides, which this plugin doesn't repeat:
+
+- **The plan**: `~/.chiron/docs/memory-plan.md`
 - **Claude Code sessions, git, email**: `~/.chiron/docs/ingestion.md`
-- **Any other source** (Slack, a chat export, notes): `~/.chiron/docs/custom-sources.md`
+- **Any other source** (Slack, a chat export, notes, a reference work such as a
+  regulation or a textbook): `~/.chiron/docs/custom-sources.md`
 
 If `~/.chiron/docs` doesn't exist, read them from
 https://github.com/Mad-Science-Software/chiron-beta/tree/main/docs instead.
 
 Rerunning an import is safe: anything already in memory is skipped, and a conversation
-that gained messages gets only the new ones. So "bring memory up to date" is the same
-steps run again over the same sources.
+that gained messages gets only the new ones.
