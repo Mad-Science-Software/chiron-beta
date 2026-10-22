@@ -15,7 +15,9 @@ normal sub-agent workflow takes over. You don't change Chiron's code.
   tools offer one (Slack: Workspace settings → Import/Export Data; Notion: Export; Teams:
   Microsoft's data export). If only an API is available, explain what token it needs and
   what it can read, and let the user decide. Never put a token in a file inside `~/chiron-ingest`
-  or in the converter itself.
+  or in the converter itself. The one exception is the Gmail connector built into the
+  person's Claude ("Email through the Claude Gmail connector", below): it needs no token
+  in a file.
 - **Everything stays on this computer.** Work in `~/chiron-ingest/<source>/`. Don't upload
   the data anywhere or paste large parts of it into the conversation.
 - **Agree on scope first**: which channels, folders or date range. Less is better; the user
@@ -43,7 +45,7 @@ source looks the same to the agents.
 | `conversation_id` | Stable, unique id built from the source's own ids: `<source>:<account>:<native id>`, e.g. `slack:T024BE7LD:C024BE91L:1696160000.000200` (workspace id, not its name). The same conversation must get the same id on every run, or it will be stored twice. Must not contain `#`. |
 | `source` | Where it came from, e.g. `slack:acme`. Shown with every memory. |
 | `subject` | Short title built mechanically, e.g. `#launch thread: Pricing page copy is ready for…` (the first ~60 characters of the opening message) or `#general on 2026-09-30`. |
-| `messages` | Every message in the conversation so far, each `{"at", "from", "text"}` (optionally `"to"` and `"cc"`): `at` an RFC 3339 timestamp in UTC (`2026-09-30T14:05:00Z`), `from` the sender's real name (resolve user ids). |
+| `messages` | Every message in the conversation so far, at least one, each `{"at", "from", "text"}` (optionally `"to"` and `"cc"`, each one string of addresses separated by commas, not a list): `at` an RFC 3339 timestamp, best in UTC (`2026-09-30T14:05:00Z`), `from` the sender's real name (resolve user ids), never empty. Messages are sorted by `at`, so their order in the file does not matter. |
 
 **Always write the whole conversation**, including messages imported before. Chiron
 keeps track of what it already holds: on a rerun, a conversation that gained replies
@@ -82,6 +84,23 @@ Make the text readable: mentions as `@Name`, channel links as `#name`, links as
 6. When finished, delete the export and `out/` (they hold private data) but keep
    the converter for future imports, and tell the user the Chiron team would welcome it
    as a starting point for a built-in importer.
+
+## Email through the Claude Gmail connector
+
+When the person's Claude has the Gmail connector, new mail needs no Takeout export:
+Claude searches the connector for threads since the last run (for example
+`after:2026/10/07 (category:primary OR in:sent OR is:important)`), fetches each thread
+as plain text, and writes the conversation file itself. One conversation per thread:
+`conversation_id` is `gmail:<mailbox>:<thread id in decimal>`. The connector's thread
+`id` is hexadecimal; convert it (`printf '%d' 0x<id>`), which gives the same digits as
+`thread-f:` in the thread's URL and the `X-GM-THRID` of a Takeout export, so a thread
+stored before gets only its new messages. `source` is `gmail:<mailbox>`; `from` is the
+sender as the connector gives it (name and address when it has both), as the Takeout
+import does; `text` is the body with the quoted earlier messages, signatures and
+unsubscribe footers removed.
+Skip threads where every sender is automated (invoices, notifications, newsletters).
+A sub-agent can do the fetching when it has the connector's tools. The connector reaches
+only the account it is connected to; other mailboxes still need an export.
 
 ## Reference works
 

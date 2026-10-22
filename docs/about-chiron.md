@@ -36,13 +36,23 @@ person chooses to share.
   material. A memory plan, made when Chiron was installed, says what to import; "bring
   memory up to date" runs it again for what is new.
 - **Private first.** Everything a person saves or imports is private to them and stays
-  on their computer. Private backup, a switch in the Chiron app, keeps a copy on the
-  team's server for their other devices and the Connected apps. Someone who leaves a
+  on their computer. Private backup, a switch in the Chiron app's settings (the gear,
+  then Private memories), keeps a copy on the team's server for their other devices and
+  the Connected apps; the app asks before it turns on. Someone who leaves a
   team, or is removed, loses their private backups from the server; what they shared
   stays with the team.
+- **One person, several teams.** A person can join more than one team on one computer:
+  their firm and a personal project, say. Each team keeps its own shared memories, and
+  the person's private memories follow them into every team. Memory works in one team
+  at a time. The person switches in the Chiron app, the Chiron menu, or with
+  `chiron switch`; the assistant can ask to switch (the `switch_team` tool), and the
+  person confirms in the Chiron app. Private backup is on in one team at a time. While
+  it is on in one team, a private memory can be shared only into that team: turn backup
+  off there first to share it into another team.
 - **Sharing is a review.** The assistant can stage memories for sharing; the person
-  looks them over in the Chiron app (Review and share) and confirms. The team's sharing
-  policy, set by the owner, says what belongs in shared memory. Deleting a memory works
+  looks them over in the Chiron window and confirms. The team's sharing policy, set by
+  the owner, says what belongs in shared memory; the app shows it under the gear, then
+  Team, then Sharing policy. Deleting a memory works
   the same way: staged by the assistant, confirmed by the person. A memory made private
   again disappears from teammates at their next sync.
 
@@ -82,7 +92,10 @@ person chooses to share.
 
 - **Free trial.** 14 days, 2 seats, no card. The trial creates the team. During the
   private beta the site has no sign-up: Mad Science sets teams up one at a time ("Talk
-  to us" on chironmemory.com), and the trial starts then.
+  to us" on chironmemory.com) and sends an offer link. Its page gives a prompt for the
+  person's Claude Code, which installs Chiron; the account and the team are created
+  when the app connects, and the trial starts then. An invite link works the same way
+  for a teammate.
 - **Team.** Priced per person per month, or yearly at a saving; the current price is on
   chironmemory.com/pricing. Each person gets 5M tokens of private backup, and the team
   shares 15M tokens. Recall on every computer (Mac, Windows, Linux). Each person
@@ -111,8 +124,12 @@ person chooses to share.
 ## Where things are
 
 - **The Chiron app** on each computer: the menu bar or tray icon shows the memory
-  count and the memories staged for review, opens Review and share, connects the
-  computer to its team, offers updates, opens the logs, and stops and starts memory.
+  count and the memories staged for review, opens the Chiron window, connects the
+  computer to its team or adds another, switches between the teams it joined, offers
+  updates, opens the logs, and stops and starts memory. The gear in the window's top
+  right corner opens Settings: the team (sharing policy, add a team), private memories
+  (the backup switch), the AI assistants, and this computer (version, memory count,
+  embedding model, last sync, a memory check).
   The assistant mentions a new version once and offers to install it; `chiron backup`
   writes a backup file.
 - **The dashboard** at chironmemory.com: members, seats, devices, sharing policy,

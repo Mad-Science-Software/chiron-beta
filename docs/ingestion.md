@@ -5,7 +5,7 @@ import existing history. You orchestrate; sub-agents write the memories. No API 
 involved: the cues are written by sub-agents in the user's own Claude session.
 
 Every imported memory is private to the user. It stays on this computer unless they
-turn on private backup in the Chiron app. The team sees it only after the user shares
+turn on private backup in the Chiron app's settings. The team sees it only after the user shares
 it: you stage it, they confirm it in the Chiron app.
 
 Import only what the user agreed to, one source at a time. With a memory plan
@@ -54,7 +54,10 @@ Run it without further questions:
    files it wrote, compare them with the cue guide, correct the sub-agent prompt if they
    fall short, and continue. Keep three or four good cues for the report.
 5. Sharing. If the plan says what the team may see from a source, and the
-   `stage_for_sharing` memory tool is loaded in this session: call it once with no
+   `stage_for_sharing` memory tool is loaded in this session: when Chiron reports that
+   this computer is in more than one team, make sure memory is in the team the plan's
+   `Team:` line names; if not, ask to switch with the `switch_team` tool and wait for
+   the user's yes in the Chiron app before you stage. Then call it once with no
    record ids to get the team's sharing policy (the plan's "per team policy" means the
    policy decides), recall with the `source` filter set to the source's prefix
    (`claude-code:`, `git:<repository>`, `gmail:<mailbox>`, or the converter's `source`
@@ -112,6 +115,9 @@ sources.
 ```sh
 ~/.chiron/bin/chiron ingest mbox --mbox "$MBOX_FOLDER/All mail.mbox" --mailbox work --out "$OUT"
 ```
+
+With the Gmail connector in Claude and no export, follow "Email through the Claude Gmail
+connector" in [`docs/custom-sources.md`](custom-sources.md) instead.
 
 **Any other source** (Slack, Teams, Notion, a notes folder…): follow
 [`docs/custom-sources.md`](custom-sources.md) to write a converter, then come back for step 2.

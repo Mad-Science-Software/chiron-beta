@@ -13,7 +13,8 @@ Chiron was installed. If it exists, follow "Run the memory plan" in the import g
 `sharing pending`; "bring memory up to date" reruns every source, and only what is new
 gets imported. A plan whose header says `Draft` instead of `Agreed on <date>` is read
 back to the user for their yes first; on yes, write `Agreed on <date>` in the header,
-then run it.
+then run it. On a computer in more than one team, sharing goes to the team memory is
+in; the plan's `Team:` line says which.
 
 **Without a plan**, or for a source the plan does not name, make the plan first with
 the user, then run it. The planning guide says how: `~/.chiron/docs/memory-plan.md`.
@@ -21,9 +22,9 @@ the user, then run it. The planning guide says how: `~/.chiron/docs/memory-plan.
 The guides, which this plugin doesn't repeat:
 
 - **The plan**: `~/.chiron/docs/memory-plan.md`
-- **Claude Code sessions, git, email**: `~/.chiron/docs/ingestion.md`
-- **Any other source** (Slack, a chat export, notes, a reference work such as a
-  regulation or a textbook): `~/.chiron/docs/custom-sources.md`
+- **Claude Code sessions, git, email from a Takeout export**: `~/.chiron/docs/ingestion.md`
+- **Any other source** (Slack, a chat export, notes, email through the Gmail connector,
+  a reference work such as a regulation or a textbook): `~/.chiron/docs/custom-sources.md`
 
 If `~/.chiron/docs` doesn't exist, read them from
 https://github.com/Mad-Science-Software/chiron-beta/tree/main/docs instead.

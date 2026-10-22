@@ -24,20 +24,27 @@ a README mentions one: it's for developing Chiron.
 
 **First:**
 
-1. **Beta terms.** Show the user the terms in `BETA.md`
+1. **The code in the prompt.** The user may have pasted an offer code or an invite code
+   together with this guide. The offer page and the invite page on the website give
+   them. Keep the code for step A2: it creates the user's account and team, or joins
+   their team, when the app connects. Without a code, A2 says what to do.
+2. **Beta terms.** Show the user the terms in `BETA.md`
    (https://github.com/Mad-Science-Software/chiron-beta/blob/main/BETA.md), summed up in a
    few plain sentences, and ask whether they agree. Stop if they don't.
-2. **The memory plan.** Before anything is installed, decide with the user which history
+3. **The memory plan.** Before anything is installed, decide with the user which history
    Chiron imports: past Claude Code sessions, git repositories, email, other exports.
    Follow [`docs/memory-plan.md`](memory-plan.md). It ends with a plan the user approved
    in `~/chiron-ingest/plan.md`. After the install you run that plan on your own
    (**Finish**, below). If the user wants no history imported, write a plan that says so.
-3. **Nothing else to install first.** Chiron needs no git, no Python and no copy of a
+4. **Nothing else to install first.** Chiron needs no git, no Python and no copy of a
    repository: the app carries the plugin and the settings for each AI assistant.
 
 ## A. The Chiron app (Mac, Windows and Linux)
 
 ### A1. Install the app
+
+If `~/.chiron/bin/chiron status` (`chiron.exe` on Windows) already says Chiron is
+running, skip to A2.
 
 On a Mac or Linux:
 
@@ -65,11 +72,15 @@ user can allow it in Windows Security, and that's their call to make. The first 
 
 Verify: `~/.chiron/bin/chiron status` (`chiron.exe` on Windows) says it's running with
 embeddings ready. The Chiron icon (a key over a circle) appears in the Mac menu bar or the Windows tray (under the
-taskbar's arrow until the user pins it): it shows the memory count, offers updates, opens
-the logs, and can stop memory until the next login. (`"menu_bar": false` in
-`~/.chiron/config.json` hides it.)
+taskbar's arrow until the user pins it): it shows the memory count, opens the Chiron
+window (**Open Chiron**), switches between teams when the computer is in more than one,
+offers updates, opens the logs, and can stop memory until the next login.
+(`"menu_bar": false` in `~/.chiron/config.json` hides it.) The Chiron window shows the
+user's memories, and the gear in its top right corner opens Settings: the team (sharing
+policy, add a team), private memories (the backup switch), the AI assistants, and this
+computer (version, memory count, embedding model, last sync, a memory check).
 On a Mac, Chiron also appears in Spotlight and Launchpad (`~/Applications/Chiron.app`):
-opening it shows the review window. Uninstall removes it.
+opening it shows the Chiron window. Uninstall removes it.
 
 If it fails, read `~/.chiron/logs/chiron.log` and the embedding server's log (`ollama.log`
 on a Mac, `llama.cpp.log` on Windows and Linux) in the same folder, tell the user what
@@ -77,15 +88,43 @@ went wrong in plain language, and stop rather than improvising.
 
 ### A2. Join a team
 
-Memory is off until this computer joins a team with a free trial or a subscription. Ask
-the user whether their team uses Chiron already.
+Memory is off until this computer joins a team with a free trial or a subscription.
 
-- If a teammate sent an invite link, tell the user to open it and sign in.
-- If not, tell the user to start a free trial on the website. That creates their team.
+- **With an offer code** from the prompt: run `~/.chiron/bin/chiron connect --offer CODE`.
+- **With an invite code** from the prompt: run `~/.chiron/bin/chiron connect --invite CODE`.
+- **Without a code**, ask the user whether their team uses Chiron already. If a teammate
+  sent an invite link, tell the user to open it: the page shows a prompt with an invite
+  code in it. Use that code as above. If not, tell the user to start a free trial on the
+  website, or, during the private beta, to ask Mad Science for an offer ("Talk to us" on
+  chironmemory.com). An offer link gives a prompt with an offer code. With a team that
+  exists already, run `~/.chiron/bin/chiron connect` on its own.
 
-Then run `~/.chiron/bin/chiron connect`. It shows a link and a code. Tell the user to
-open the link, check that it shows the same code, and approve it. The command waits for
-the approval. Then `~/.chiron/bin/chiron check` shows the team.
+The command shows a link and a code, and opens the link in the browser. With an offer
+code, the page asks the user to create their account with the address the offer was
+sent to and to name their team. With an invite code, it asks them to sign in or create
+their account with the invited address. Without a code, the user signs in and picks a
+team, or, with no team yet, names a new one on the page; a teammate's invite link is
+the way into a team that exists. After creating an account the user may have to verify
+their email: they open the link in the email and press "I've verified my email". That is
+not an error. Tell the user to check that the page shows the same code once they are
+signed in. The Chiron app shows the same connection and code (in the setup window on
+the first run; later under the gear, Add a team). The command waits until the page has
+approved this computer and the app has joined the team; a team the computer was in
+already does not end the wait. The page then says the app finishes on its own, and the
+user can close the tab. The code works for 15 minutes: if the command times out, run it
+again for a new code. If the page says the offer or the invite has expired or was
+already used, tell the user to ask for a new link. Do not guess another code. Then
+`~/.chiron/bin/chiron check` shows the team, and
+`~/.chiron/bin/chiron switch` lists every team this computer is in and marks the one
+memory is in.
+
+A user can be in more than one team on this computer, for example their firm and a
+personal project. Run `~/.chiron/bin/chiron connect` again to join another team; on the
+approval page the user picks the team. Memory works in one team at a time. Every team
+stays in sync, and `~/.chiron/bin/chiron switch` lists the teams or switches to one
+(`chiron switch "Team name"`). The user can also switch in the Chiron menu or the Chiron
+app. An agent can ask to switch with the `switch_team` tool; the user confirms the switch
+in the Chiron app, and the agent cannot switch on its own.
 
 ### A3. Connect the AI assistants
 
@@ -226,10 +265,18 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   for their assistants. Their memories stay on this computer, and they can still view and
   delete them in the Chiron app. Everything comes back when the team subscribes. Without a
   connection to the server, memory keeps working for 30 days after the last sync.
+- **More than one team**: they can join a second team (their firm and a personal project,
+  say). Memory is in one team at a time; they switch in the Chiron menu, in the Chiron
+  app, or with `chiron switch`. Claude can ask to switch, and they confirm in the Chiron
+  app. Their private memories follow them into every team; what they share stays with
+  the team they shared it in. Private backup is on in one team at a time. While it is
+  on in one team, a private memory can be shared only into that team: turn backup off
+  there first to share it into another team.
 - **Privacy**: private memories stay on this computer. To keep a copy on the team's
-  Chiron server, they turn on private backup in the Chiron app. Then their other
-  computers, Connected apps (claude.ai, ChatGPT) and the dashboard can see them too.
-  The team sees only what they choose to share.
+  Chiron server, they turn on private backup in the Chiron app (the gear, then Private
+  memories; the app asks them to confirm), in one team. Then their
+  other computers, that team's Connected apps (claude.ai, ChatGPT) and its dashboard can
+  see them too. The team sees only what they choose to share.
 - **Memories are who said what, and when**: each one records that someone said or did
   something on a given day, not that it's true. A mistake or a change of mind is simply
   a newer memory, and Claude weighs them by date. Nothing is erased on its own: Claude
@@ -269,6 +316,9 @@ the `import-history` skill makes the plan with them and runs it.
 - **Assistants**: `chiron assistants` shows which are connected and when each last used
   memory; `chiron assistants connect <id>` and `chiron assistants disconnect <id>` change
   that.
+- **Teams**: `chiron switch` lists the teams this computer is in; `chiron switch "Team
+  name"` moves memory to one. `chiron connect` joins another team (`--offer CODE` or
+  `--invite CODE` with a code from the website).
 - **Is it working?** `chiron status`, and `chiron check`.
   Logs are in `~/.chiron/logs`. If it's stopped, `chiron install` starts it again.
 - **Back up**: `chiron backup` writes `~/chiron-backup-<date>.db`, safely while it runs.

@@ -1,7 +1,7 @@
 # Planning what goes into memory
 
 This guide is for the AI agent (Claude Code) installing Chiron for someone. Use it
-before the install (step 2 of [`docs/setup.md`](setup.md)). You and the user decide
+before the install (step 3 of [`docs/setup.md`](setup.md)). You and the user decide
 together which history Chiron imports, and you write that down as a plan. After the
 install, you run the plan on your own, with no more questions ("Run the memory plan" in
 [`docs/ingestion.md`](ingestion.md)).
@@ -24,7 +24,8 @@ Ask, in plain language:
   projects", "what my clients asked for", "how we do things here".
 - Whether they are on a team that shares memory, and what the team may see of their
   history. If they do not know, the team's sharing policy decides at staging time
-  (step 3).
+  (step 3). When they are in more than one team on this computer, which team may see
+  it.
 
 Their answers decide which sources matter and which to leave out.
 
@@ -36,7 +37,7 @@ Chiron imports these sources itself:
 |---|---|---|---|
 | Claude Code sessions | each conversation, in segments | `~/.claude/projects` on this computer | nothing: it is already here |
 | Git repositories | each commit: its message and the files it changed | the folders where they keep code | nothing |
-| Email | each email thread, with the people in it | a Google Takeout `.mbox` export of Gmail, or another `.mbox` file | the user requests the export; Google takes hours to days to make it |
+| Email | each email thread, with the people in it | a Google Takeout `.mbox` export of Gmail, another `.mbox` file, or the Gmail connector in the user's Claude (that account only; "Email through the Claude Gmail connector" in [`custom-sources.md`](custom-sources.md)) | the user requests the export; Google takes hours to days to make it. Nothing when Claude has the Gmail connector |
 | Anything else (Slack, Teams, Notion, a notes folder, a CRM export…) | each conversation or page | an export the user downloads | the user downloads the export; after the install you write a converter ([`custom-sources.md`](custom-sources.md)); the plan is its scope agreement |
 
 Look at what is on this computer, read-only, and tell the user what you find. Ask
@@ -58,7 +59,8 @@ If a source needs an export, tell the user how to request it now, so it is ready
 the install:
 
 - **Gmail**: https://takeout.google.com, deselect everything except Mail, choose the
-  `.mbox` format. Google sends a download link by email when it is ready.
+  `.mbox` format. Google sends a download link by email when it is ready. Not needed
+  when the user's Claude has the Gmail connector for that account.
 - **Slack**: Workspace settings, Import/Export Data (admins only; public channels).
 - **Other tools**: the export is in the tool's settings. Do not use a live connection
   or an API token.
@@ -92,9 +94,10 @@ For each source, agree on:
   adds only what is new.
 - **Scope.** Which repositories, and a date range for their commits (`--since`). Which
   Gmail labels (`--include`, default `Category Personal,Sent,Important`). Which
-  channels. Sessions and email have no date filter: their scope is the whole source,
-  or for Gmail its labels. Name what stays out: a personal repository, a mailbox,
-  direct messages.
+  channels. Sessions and a Takeout export have no date filter: their scope is the whole
+  source, or for Gmail its labels. Email through the Gmail connector takes a date
+  (`after:`) and the same categories. Name what stays out: a personal repository, a
+  mailbox, direct messages.
 - **Who is credited.** The user's full name on their own messages. Other people keep
   the names the source gives them.
 - **Private, or shared with the team.** Every import is private to the user. If the
@@ -106,9 +109,12 @@ For each source, agree on:
   decides at staging time. Reference material the whole team may use gets
   `Share: all`: after the import you stage every memory of the source, in calls of up
   to 200, and the user confirms them in the Chiron app. Every import is written
-  private first; nothing reaches the team without that review.
+  private first; nothing reaches the team without that review. If the computer is in
+  more than one team, the `Team:` line names the team the sharing is for; every import
+  is private and follows the user into every team.
 - **Order.** Most useful first. Sessions and repositories need no export, so they
-  usually go first. Email goes when the export has arrived.
+  usually go first. Email goes when the export has arrived, or at once through the
+  Gmail connector.
 
 Say these once, so the user knows them before they agree:
 
