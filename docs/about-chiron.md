@@ -30,7 +30,9 @@ person chooses to share.
   the assistant translates a question in another language before it recalls.
 - **Saving.** The assistant saves when the person asks ("remember that…", "save what
   we decided"), and when something worth keeping comes up: a decision and its reason,
-  a change of mind, a lesson. It asks before it keeps anything personal.
+  a change of mind, a lesson. It asks before it keeps anything personal. A save is
+  always private: the assistant cannot write into the team's memory. To give the team a
+  memory, it stages it for sharing and the person confirms in the Chiron app.
 - **Importing.** History comes in through imports run by the person's own assistant:
   past Claude Code sessions, git repositories, email exports, chat exports, reference
   material. A memory plan, made when Chiron was installed, says what to import; "bring
@@ -116,7 +118,8 @@ person chooses to share.
   memories stay on each computer and come back when the team subscribes. The team's
   copy on the server (shared memories and private backups) is deleted 30 days after
   the end unless the team subscribes again. Without a connection to the server, memory
-  keeps working for 30 days after the last sync.
+  keeps working for 30 days after the last sync. A pause for a required update has no
+  such limit: memory keeps working until the computer updates.
 - **Cancelling** is any time, from the billing page; the app keeps the memories it has.
   The dashboard's account page can download a person's memories and delete their
   account.
@@ -130,8 +133,10 @@ person chooses to share.
   right corner opens Settings: the team (sharing policy, add a team), private memories
   (the backup switch), the AI assistants, and this computer (version, memory count,
   embedding model, last sync, a memory check).
-  The assistant mentions a new version once and offers to install it; `chiron backup`
-  writes a backup file.
+  The assistant mentions a new version once and offers to install it (`chiron update`).
+  Mad Science can require a newer Chiron for a team, for example before its memory grows
+  large: an older computer then pauses sync until it updates, keeps the memory it holds,
+  and the assistant says so once. `chiron backup` writes a backup file.
 - **The dashboard** at chironmemory.com: members, seats, devices, sharing policy,
   billing, and a view of shared memories and one's own private backups, where a
   person can delete their own memories (owners and admins any shared one). Sharing

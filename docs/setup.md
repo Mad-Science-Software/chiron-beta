@@ -44,7 +44,8 @@ a README mentions one: it's for developing Chiron.
 ### A1. Install the app
 
 If `~/.chiron/bin/chiron status` (`chiron.exe` on Windows) already says Chiron is
-running, skip to A2.
+running, skip to A2. If it also says the team needs a newer Chiron, run
+`~/.chiron/bin/chiron update` first.
 
 On a Mac or Linux:
 
@@ -178,8 +179,12 @@ Verify:
 ```
 
 The memory check makes a real recall, the same call the hook makes, and fails with the
-reason if memory can't be reached. (The hook stays silent when memory is down, so
-prompts never break; that's why it isn't the check.)
+reason if memory can't be reached or the team's sync is refused. (The hook stays silent
+when memory is down, so prompts never break; that's why it isn't the check.)
+
+If the check's `Sync` line says the team needs a newer Chiron than this computer runs,
+run `~/.chiron/bin/chiron update` and run the check again. Memory keeps working
+meanwhile; only sync waits for the update.
 
 ### A4. If `chiron assistants connect` can't do it
 
@@ -264,7 +269,8 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   active free trial or subscription. When the trial or subscription ends, memory turns off
   for their assistants. Their memories stay on this computer, and they can still view and
   delete them in the Chiron app. Everything comes back when the team subscribes. Without a
-  connection to the server, memory keeps working for 30 days after the last sync.
+  connection to the server, memory keeps working for 30 days after the last sync. A pause
+  for a required update has no such limit: memory keeps working until the computer updates.
 - **More than one team**: they can join a second team (their firm and a personal project,
   say). Memory is in one team at a time; they switch in the Chiron menu, in the Chiron
   app, or with `chiron switch`. Claude can ask to switch, and they confirm in the Chiron
@@ -284,7 +290,12 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   should only agree to saving what they're comfortable keeping. A backup now and then is
   worth it (below).
 - **Updates**: when a new version is out, Claude mentions it once in a session and offers
-  to install it.
+  to install it. Mad Science can set, for a team, the oldest Chiron its computers may sync
+  with, for example before the team's memory grows large. A computer on an older version
+  then pauses sync until it updates; `chiron status`, `chiron check` and the Chiron menu
+  show the reason. Memory keeps working with what the computer holds, and Claude says so
+  once and offers the update. What the user saves or shares meanwhile reaches the team and
+  their private backup after the update, and turning private backup on also waits for it.
 
 The memory tools aren't loaded in this session, so you can't save a memory here. The
 memory plan gives memory its first content. Without one, suggest that in their new
