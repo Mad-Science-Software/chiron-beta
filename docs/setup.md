@@ -78,8 +78,9 @@ window (**Open Chiron**), switches between teams when the computer is in more th
 offers updates, opens the logs, and can stop memory until the next login.
 (`"menu_bar": false` in `~/.chiron/config.json` hides it.) The Chiron window shows the
 user's memories, and the gear in its top right corner opens Settings: the team (sharing
-policy, add a team), private memories (the backup switch), the AI assistants, and this
-computer (version, memory count, embedding model, last sync, a memory check).
+policy, add a team), private memories (the backup switch), the AI assistants, this
+computer (version, memory count, embedding model, last sync, a memory check, what
+memory takes on disk, and which shared sources stay on the server).
 On a Mac, Chiron also appears in Spotlight and Launchpad (`~/Applications/Chiron.app`):
 opening it shows the Chiron window. Uninstall removes it.
 
@@ -269,7 +270,8 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   active free trial or subscription. When the trial or subscription ends, memory turns off
   for their assistants. Their memories stay on this computer, and they can still view and
   delete them in the Chiron app. Everything comes back when the team subscribes. Without a
-  connection to the server, memory keeps working for 30 days after the last sync. A pause
+  connection to the server, memory keeps working for 30 days after the last sync, with
+  what the computer holds. A pause
   for a required update has no such limit: memory keeps working until the computer updates.
 - **More than one team**: they can join a second team (their firm and a personal project,
   say). Memory is in one team at a time; they switch in the Chiron menu, in the Chiron
@@ -282,7 +284,18 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   Chiron server, they turn on private backup in the Chiron app (the gear, then Private
   memories; the app asks them to confirm), in one team. Then their
   other computers, that team's Connected apps (claude.ai, ChatGPT) and its dashboard can
-  see them too. The team sees only what they choose to share.
+  see them too. The team sees only what they choose to share. While backup is on,
+  private memories stop at their limit, so a large import needs backup off first.
+- **Copies of shared sources**: the team's shared memory comes to this computer whole.
+  Under "Everything shared", and under each teammate, in the Chiron window, each source (a mailbox, a repository,
+  an imported library) has a button to keep or remove its copy on this computer; the
+  app says what the copy takes before it is kept, and the copy arrives, or goes, at the
+  next sync. The choice is this computer's, for the team memory is in. A source without
+  a copy stays on the team's server: the window still shows it in the team's memory,
+  but Claude cannot recall it on this computer until a copy is kept; the prompt hook
+  names such sources, so Claude can say so. The settings sheet (the gear, then This
+  computer) and `chiron status` show what memory takes and which sources are on the
+  server only.
 - **Memories are who said what, and when**: each one records that someone said or did
   something on a given day, not that it's true. A mistake or a change of mind is simply
   a newer memory, and Claude weighs them by date. Nothing is erased on its own: Claude
@@ -296,6 +309,9 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   show the reason. Memory keeps working with what the computer holds, and Claude says so
   once and offers the update. What the user saves or shares meanwhile reaches the team and
   their private backup after the update, and turning private backup on also waits for it.
+  After the update that brings the search graph, recall stays correct but is slower while
+  the app builds the graph in the background: a few minutes on a large memory, longer on
+  a very large one.
 
 The memory tools aren't loaded in this session, so you can't save a memory here. The
 memory plan gives memory its first content. Without one, suggest that in their new
@@ -311,8 +327,9 @@ write `Agreed on <date>` and run it; otherwise leave the file and tell them that
 the memory plan" in a later session runs it when they approve. An agreed plan carries
 the user's decisions, so don't ask again; the user doesn't need to stay at the keyboard.
 Report when it's done. The memory tools aren't loaded in this session, so a source the
-plan marks for sharing ends as `sharing pending`: tell the user to start a new session
-and say "finish the memory plan".
+plan marks for sharing, except `Share: all`, ends as `sharing pending`: tell the user to
+start a new session and say "finish the memory plan". A `Share: all` source the user
+shares themselves with "Share all" in the Chiron window.
 
 Without an approved plan, don't import any history unless the user asks. When they do,
 the `import-history` skill makes the plan with them and runs it.

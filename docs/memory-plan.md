@@ -79,10 +79,15 @@ the user pick.
   paywalled text, a subscription database or a scan of a bought book.
 - A legal download of the text (PDF, HTML, EPUB), not a crawl of a website.
 - Size: a regulation is tens to a few hundred documents; a textbook can be a few
-  thousand. Give the estimate, and start with the parts the user uses.
+  thousand. Give the estimate, and start with the parts the user uses. Estimate its
+  tokens too (characters divided by four): shared, the whole work counts against the
+  team's shared pool, so a work that does not fit stays out, goes in part, or needs a
+  larger pool.
 - Reference material carries nothing personal, so the plan usually shares all of it
-  (section 3, "Private, or shared with the team"): imported private, then staged for
-  the user's review.
+  (section 3, "Private, or shared with the team"): imported private, then shared by the
+  user with "Share all" in the Chiron app, one confirmation. Shared, it counts against
+  the team's shared memory like anything else, and each teammate chooses in the Chiron
+  window whether their computer keeps a copy of it.
 - The import is a converter job: "Reference works" in
   [`custom-sources.md`](custom-sources.md).
 
@@ -107,11 +112,15 @@ For each source, agree on:
   not know what the team may see, write `Share: per team policy`: the `stage_for_sharing`
   tool returns the team's policy when it is called with no record ids, and the policy
   decides at staging time. Reference material the whole team may use gets
-  `Share: all`: after the import you stage every memory of the source, in calls of up
-  to 200, and the user confirms them in the Chiron app. Every import is written
-  private first; nothing reaches the team without that review. If the computer is in
-  more than one team, the `Team:` line names the team the sharing is for; every import
-  is private and follows the user into every team.
+  `Share: all`: after the import, tell the user to open the source under Yours in the
+  Chiron app and press "Share all", which shares every memory of the source at once
+  after one confirmation; you stage nothing for it. Every import is written private
+  first; nothing reaches the team without that review. While private backup is on,
+  private memories stop at the person's limit, so a source larger than that needs
+  backup off (the gear, then Private memories) before the import, or a smaller scope.
+  If the
+  computer is in more than one team, the `Team:` line names the team the sharing is
+  for; every import is private and follows the user into every team.
 - **Order.** Most useful first. Sessions and repositories need no export, so they
   usually go first. Email goes when the export has arrived, or at once through the
   Gmail connector.
@@ -174,6 +183,13 @@ Agreed on <date>. Team: <team name, or "none">. Share with the team: <which kind
 - Scope: Regulation (EU) 2024/1689, articles and annexes (about 250 documents); download https://eur-lex.europa.eu/eli/reg/2024/1689/oj to ~/chiron-ingest/ai-act/
 - Credit: European Union
 - Command: write a converter (custom-sources.md, "Reference works"), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/ai-act/conversations.jsonl" --out "$HOME/chiron-ingest/ai-act/out" --batches 13
+- Share: all
+
+## 6. Library: state solar law
+- Status: planned
+- Scope: the solar statutes and rulings of the three states the team works in (about 4,000 documents, about 3M tokens); downloads listed in ~/chiron-ingest/solar-law/sources.md
+- Credit: as printed on each work
+- Command: write a converter (custom-sources.md, "Reference works"), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/solar-law/conversations.jsonl" --out "$HOME/chiron-ingest/solar-law/out" --batches 200
 - Share: all
 
 ## Left out

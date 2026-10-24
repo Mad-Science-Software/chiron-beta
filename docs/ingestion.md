@@ -6,7 +6,8 @@ involved: the cues are written by sub-agents in the user's own Claude session.
 
 Every imported memory is private to the user. It stays on this computer unless they
 turn on private backup in the Chiron app's settings. The team sees it only after the user shares
-it: you stage it, they confirm it in the Chiron app.
+it in the Chiron app: you stage it and they confirm it, or, for a source the plan
+shares whole (`Share: all`, such as a library), they press "Share all" on the source.
 
 Import only what the user agreed to, one source at a time. With a memory plan
 (`~/chiron-ingest/plan.md`, next section), the plan is the agreement. Without one,
@@ -61,18 +62,23 @@ Run it without further questions:
    record ids to get the team's sharing policy (the plan's "per team policy" means the
    policy decides), recall with the `source` filter set to the source's prefix
    (`claude-code:`, `git:<repository>`, `gmail:<mailbox>`, or the converter's `source`
-   value) and queries for the kind the plan names, stage the record ids with one reason
+   value) and `search` set to `exact`, so no matching record is missed, and queries for
+   the kind the plan names, stage the record ids with one reason
    per group, and set the status to `imported <date>: N documents`. Without
    the tool (the install session), set `imported <date>: N documents, sharing pending`.
-   A Share line of `all` (reference material) stages every memory of the source, 200
-   per call. Every import is written private first; the team sees it only after the
-   user's review.
+   A Share line of `all` (reference material) needs no tool: the user shares it from the
+   Chiron app, opening the source under Yours and pressing "Share all", one
+   confirmation. Stage nothing for it, set `imported <date>: N documents`, and put the
+   instruction in the report. Every import is written private first; the team sees it
+   only after the user's review.
 6. Report at the end, in plain language: for each source, how many documents were
    imported, with three or four of its cues as examples; which sources are blocked
    and why; which documents were skipped for holding a credential (by subject, never the
    secret); for a source blocked by its count, that a higher estimate on its Scope line
-   lets it through next time; and, when anything is `sharing pending`, that a new
-   session with "finish the memory plan" stages it for their review in the Chiron app.
+   lets it through next time; for each `Share: all` source, that they open it under
+   Yours in the Chiron window and press "Share all"; and, when anything is
+   `sharing pending`, that a new session with "finish the memory plan" stages it for
+   their review in the Chiron app.
 
 Keep the plan file when done: "bring memory up to date" runs it again, and only new
 documents get imported.

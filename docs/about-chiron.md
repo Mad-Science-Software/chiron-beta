@@ -43,6 +43,14 @@ person chooses to share.
   the Connected apps; the app asks before it turns on. Someone who leaves a
   team, or is removed, loses their private backups from the server; what they shared
   stays with the team.
+- **Copies of shared sources.** The team's shared memory comes to every member's
+  computer, grouped by source (a mailbox, a repository, an imported library). Under
+  "Everything shared", and under each teammate, in the Chiron window each source has a button to keep or remove
+  its copy on this computer; the app says what the copy takes first, and the copy
+  arrives, or goes, at the next sync. The choice is this computer's, for the team memory
+  is in. A source without a copy stays on the team's server: the window still shows it
+  in the team's memory, but the assistant cannot recall it on this computer until a
+  copy is kept. A person's own memories always stay on the computer.
 - **One person, several teams.** A person can join more than one team on one computer:
   their firm and a personal project, say. Each team keeps its own shared memories, and
   the person's private memories follow them into every team. Memory works in one team
@@ -113,13 +121,15 @@ person chooses to share.
   memories stop saving until they delete private memories in the app or turn backup
   off. When the team's 15M shared pool is full, nothing more can be shared until
   someone unshares memories, or the team talks to Mad Science about Enterprise. A
-  token is about four characters; 5M tokens is about 15,000 business emails.
+  token is about four characters; 5M tokens is about 15,000 business emails. Every
+  shared memory counts, an imported library as much as a conversation.
 - **When the trial or subscription ends**, memory turns off for the assistants. The
   memories stay on each computer and come back when the team subscribes. The team's
   copy on the server (shared memories and private backups) is deleted 30 days after
   the end unless the team subscribes again. Without a connection to the server, memory
-  keeps working for 30 days after the last sync. A pause for a required update has no
-  such limit: memory keeps working until the computer updates.
+  keeps working for 30 days after the last sync, with what the computer holds. A
+  pause for a required update has no such limit: memory keeps working until the
+  computer updates.
 - **Cancelling** is any time, from the billing page; the app keeps the memories it has.
   The dashboard's account page can download a person's memories and delete their
   account.
@@ -132,8 +142,11 @@ person chooses to share.
   updates, opens the logs, and stops and starts memory. The gear in the window's top
   right corner opens Settings: the team (sharing policy, add a team), private memories
   (the backup switch), the AI assistants, and this computer (version, memory count,
-  embedding model, last sync, a memory check).
+  embedding model, last sync, a memory check, what memory takes on disk, and which
+  shared sources stay on the server).
   The assistant mentions a new version once and offers to install it (`chiron update`).
+  After some updates the app rebuilds its search index in the background; recall works
+  meanwhile, only slower.
   Mad Science can require a newer Chiron for a team, for example before its memory grows
   large: an older computer then pauses sync until it updates, keeps the memory it holds,
   and the assistant says so once. `chiron backup` writes a backup file.

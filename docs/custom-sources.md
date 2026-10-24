@@ -114,13 +114,20 @@ publication date as an RFC 3339 timestamp in UTC (`2024-06-13T00:00:00Z` for the
 date; 1 January for a work dated only by year), and `text` the section's text.
 
 The work holds no private data, so you download it yourself: `curl -fsSL -o` from the
-link in the plan's Scope line into `~/chiron-ingest/<source>/`, and it can stay there
+link, or the list of links, in the plan's Scope line into `~/chiron-ingest/<source>/`, and it can stay there
 afterwards. Prefer the HTML or EPUB edition. For a PDF, use `pdftotext -layout` when it
 is installed; if nothing on this computer reads PDF, tell the user and let them decide,
 as the ground rules say. Keep headings, lists and tables readable, and drop page headers
 and footers. Long sections are split automatically. A library carries nothing personal,
-so the plan usually gives it `Share: all`: imported private, then staged for the user's
-review like any import.
+so the plan usually gives it `Share: all`: imported private; after the import the user
+opens the source under Yours in the Chiron app and presses "Share all" (one
+confirmation). You stage nothing for it.
+
+Shared, a library counts against the team's shared memory like any other source. Each
+teammate then chooses in the Chiron window whether their computer keeps a copy of it
+(beside the source, under "Everything shared" or under the teammate who shared it);
+without a copy it stays on the team's
+server, and memory on that computer cannot recall it until a copy is kept.
 
 ## Example: Slack
 
