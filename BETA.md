@@ -1,38 +1,46 @@
 # Taking part in the Chiron beta
 
-Plain-language terms for trying Chiron before its release. By installing it, you agree
-to them.
+Chiron is in beta. Your use of it is covered by our
+[Terms of Service](https://chironmemory.com/terms) and
+[Privacy Policy](https://chironmemory.com/privacy). You agree to the Terms of Service
+when you sign in or create your account. This page adds what is particular to the beta,
+in plain words. Where the two differ, the Terms of Service apply.
 
-**It's free and early.** Chiron is unfinished software from Mad Science Software BV
-(Amsterdam-Duivendrecht, the Netherlands). It may have bugs, lose data or change in ways
-that need reinstalling. Don't rely on it as the only place you keep anything important.
+**It's early software.** Chiron is made by Mad Science Software B.V.
+(Amsterdam-Duivendrecht, the Netherlands). It may have bugs, and an update may change
+how it works or ask you to install it again. Don't rely on it as the only place you keep
+anything important.
 
-**Your memories stay on your computer until you join a team.** Chiron stores them in a
-database on your own machine, reachable only from that machine, and Mad Science Software
-doesn't receive, collect or see them. Once you join a team, everything this computer
-remembers syncs to your team's Chiron server as your private memory; your team sees only
-what you choose to share. Chiron sends no usage data anywhere else.
+**Your memories are kept on your computer.** Chiron stores them in a database on your
+own computer, and recall runs there too. Private memories stay on your computer. They
+go to your team's Chiron server only if you turn on private backup in the Chiron app.
+Memories you share go to your team's server, which Mad Science Software runs, so your
+teammates' assistants can recall them. Your team sees only what you share. A web
+assistant that you connect, such as claude.ai or ChatGPT, recalls from what is on the
+team's server.
 
-**It checks for updates.** Once a day, Chiron asks this beta's GitHub page which
-version is newest, so Claude can tell you when an update is out. That request carries
-nothing about you or your memories, and Claude asks before updating.
+**Your assistant sees what it works with.** Your AI assistant (Claude, Codex, Gemini or
+another) reads and writes your memories. The parts it works with go to that assistant's
+provider, as everything else you share with it does. Chiron doesn't change that.
 
-**Claude still sees what Claude sees.** Memories are written and read by your Claude
-assistant, so the parts it works with pass through Anthropic, as everything you share
-with Claude does. Chiron doesn't change that, and doesn't send anything anywhere else.
+**It checks for updates.** Once a day, Chiron asks GitHub which version is newest, so
+your assistant can tell you when an update is out. The request carries nothing about
+you or your memories, and your assistant asks before it updates. On the first start,
+Chiron downloads the embedding program from GitHub, and the model that makes memories
+searchable from Ollama's model registry.
 
-**Memories aren't edited or erased one by one.** A correction is saved as a newer
-memory. Only save what you're comfortable keeping, and keep work for clients or
-employers within whatever rules apply to you there. To erase everything, remove
-Chiron and its stored data (ask your Claude how).
+**You decide what stays.** In the Chiron app you can delete your private memories and
+stop sharing ones you shared. A correction is usually saved as a newer memory, so the
+older one stays until you delete it. Keep work for clients or employers within the rules
+that apply to you there. To remove everything, ask your assistant to remove Chiron and
+its data.
 
-**You can stop any time.** Ask your Claude to remove Chiron and its data.
-
-**No warranty.** The beta is provided as is, without warranties of any kind, and Mad
-Science Software isn't liable for losses from using it, as far as the law allows.
+**It needs an active team.** Chiron works on a computer that is in a team with a free
+trial or a subscription. When the trial or subscription ends, your assistants stop
+recalling and saving. The Chiron app still opens, so you can look at and delete your
+memories. Subscribing again within 30 days brings everything back. After 30 days, Mad
+Science Software deletes the team's copy on the server: shared memories and private
+backups. The memories on each computer stay there.
 
 **Feedback is welcome, never required.** Email james@madsciencesoftware.dev. If you
-send feedback, we may use it to improve Chiron.
-
-**Inviting others.** If someone you know would like to try it, put them in touch with
-us rather than installing it for them, so we can help them if anything goes wrong.
+send feedback, we may use it to improve Chiron. Never send your memories themselves.

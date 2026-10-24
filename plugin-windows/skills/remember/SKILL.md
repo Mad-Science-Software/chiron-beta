@@ -5,9 +5,9 @@ description: Save something to Chiron memory. Use when the user asks to remember
 
 # Saving to Chiron memory
 
-Memories are permanent: nothing can be edited or deleted, only superseded by a newer
-memory. Save only what the user would be comfortable keeping, and ask before saving
-anything personal about them or other people.
+Memories are not edited. A correction is a newer memory, and the older one stays until
+the user deletes it in the Chiron app. Save only what the user would be comfortable
+keeping, and ask before saving anything personal about them or other people.
 
 1. **Pick what's worth keeping.** Decisions and their reasons, changes of mind, lessons
    from something that went wrong, facts about people and projects the user will want

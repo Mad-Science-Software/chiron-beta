@@ -28,9 +28,11 @@ a README mentions one: it's for developing Chiron.
    together with this guide. The offer page and the invite page on the website give
    them. Keep the code for step A2: it creates the user's account and team, or joins
    their team, when the app connects. Without a code, A2 says what to do.
-2. **Beta terms.** Show the user the terms in `BETA.md`
-   (https://github.com/Mad-Science-Software/chiron-beta/blob/main/BETA.md), summed up in a
-   few plain sentences, and ask whether they agree. Stop if they don't.
+2. **Beta terms.** Tell the user in two or three plain sentences what `BETA.md`
+   (https://github.com/Mad-Science-Software/chiron-beta/blob/main/BETA.md) says. Chiron is
+   early software. Private memories stay on this computer, and the team sees only what
+   they share. They agree to the Terms of Service on the website when they sign in or
+   create their account (step A2). Don't ask them to agree here as well.
 3. **The memory plan.** Before anything is installed, decide with the user which history
    Chiron imports: past Claude Code sessions, git repositories, email, other exports.
    Follow [`docs/memory-plan.md`](memory-plan.md). It ends with a plan the user approved
