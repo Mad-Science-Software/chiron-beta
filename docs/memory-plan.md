@@ -81,8 +81,13 @@ the user pick.
 - Size: a regulation is tens to a few hundred documents; a textbook can be a few
   thousand. Give the estimate, and start with the parts the user uses. Estimate its
   tokens too (characters divided by four): shared, the whole work counts against the
-  team's shared pool, so a work that does not fit stays out, goes in part, or needs a
-  larger pool.
+  team's shared pool, so a work that does not fit stays out, goes in part, needs a
+  larger pool, or comes from a published library.
+- Mad Science also publishes libraries of reference material. A team holds up to two.
+  The user can pick them on the page where the computer connects (step A2 of the setup
+  guide), or later on the dashboard's Libraries page. A published library does not
+  count against private or shared storage. If the user picks a library that covers a
+  work in the plan, mark that work `skipped: in a published library`.
 - Reference material carries nothing personal, so the plan usually shares all of it
   (section 3, "Private, or shared with the team"): imported private, then shared by the
   user with "Share all" in the Chiron app, one confirmation. Shared, it counts against

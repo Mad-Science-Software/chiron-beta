@@ -69,7 +69,9 @@ team on this computer, so a source imported in one team cannot come into another
    policy decides), recall with the `source` filter set to the source's prefix
    (`claude-code:`, `git:<repository>`, `gmail:<mailbox>`, or the converter's `source`
    value) and `search` set to `exact`, so no matching record is missed, and queries for
-   the kind the plan names, stage the record ids with one reason
+   the kind the plan names. Leave out cues whose `visibility_scope` starts with
+   `published:`: they belong to a published library the team holds, and staging refuses
+   them. Stage the record ids with one reason
    per group, and set the status to `imported <date>: N documents`. Without
    the tool (the install session), set `imported <date>: N documents, sharing pending`.
    A Share line of `all` (reference material) needs no tool: the user shares it from the

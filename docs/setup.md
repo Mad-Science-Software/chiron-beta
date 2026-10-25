@@ -108,7 +108,9 @@ code, the page asks the user to create their account with the address the offer 
 sent to and to name their team. With an invite code, it asks them to sign in or create
 their account with the invited address. Without a code, the user signs in and picks a
 team, or, with no team yet, names a new one on the page; a teammate's invite link is
-the way into a team that exists. After creating an account the user may have to verify
+the way into a team that exists. When the page makes a new team and Mad Science has
+published libraries, it lists them: the user can pick up to two, or none. An owner or
+admin can pick or change them later on the dashboard's Libraries page. After creating an account the user may have to verify
 their email: they open the link in the email and press "I've verified my email". That is
 not an error. Tell the user to check that the page shows the same code once they are
 signed in. The Chiron app shows the same connection and code (in the setup window on
@@ -299,9 +301,16 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   names such sources, so Claude can say so. The settings sheet (the gear, then This
   computer) and `chiron status` show what memory takes and which sources are on the
   server only.
+- **Published libraries**: the team can hold up to two libraries of reference material
+  from Mad Science. Each comes to this computer whole, and Claude recalls it beside the
+  team's memory. Its memories are read-only, and they do not count against storage. The
+  Chiron window lists them under "Published libraries". Owners and admins pick them on
+  the dashboard's Libraries page.
 - **Memories are who said what, and when**: each one records that someone said or did
   something on a given day, not that it's true. A mistake or a change of mind is simply
-  a newer memory, and Claude weighs them by date. Nothing is erased on its own: Claude
+  a newer memory, and Claude weighs them by date. When a memory shapes Claude's answer
+  or action, Claude says so: that it came from Chiron, whose memory it was, and when.
+  Nothing is erased on its own: Claude
   can stage memories for deletion, and they confirm each one in the Chiron app. So they
   should only agree to saving what they're comfortable keeping. A backup now and then is
   worth it (below).

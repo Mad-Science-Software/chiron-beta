@@ -28,6 +28,9 @@ person chooses to share.
   and the Connected apps (claude.ai, ChatGPT), the assistant recalls when it judges
   memory may help, and "check your memory" always works. Cues are matched in English:
   the assistant translates a question in another language before it recalls.
+- **The assistant says when it uses memory.** When a memory shapes an answer or an
+  action, the assistant tells the person it came from Chiron, whose memory it was and
+  when. Cues it did not use, it does not mention.
 - **Saving.** The assistant saves when the person asks ("remember that…", "save what
   we decided"), and when something worth keeping comes up: a decision and its reason,
   a change of mind, a lesson. It asks before it keeps anything personal. A save is
@@ -61,6 +64,17 @@ person chooses to share.
   person confirms in the Chiron app. Private backup is a choice for each team. Private
   memories saved before private memory belonged to a team now belong to one team: the
   team with private backup on, or else the team memory was in at the update.
+- **Published libraries.** Mad Science publishes libraries of reference material, such
+  as game design writing or the reports on a disaster. A team holds at most two. The
+  person who makes the team can pick them then, on the page where the computer
+  connects or on the dashboard; owners and admins pick or change them later on the
+  dashboard's Libraries page. A library
+  comes to every computer in the team whole, and the assistant recalls it beside the
+  team's own memory. Its memories are read-only: nobody in the team owns them, so
+  nobody can share, move, stage or delete one. To remove a library, the team drops it.
+  Libraries are free: they do not count against private or shared storage. The Chiron
+  window and the dashboard list each library under "Published libraries", with a bar
+  that gives what the team's libraries hold.
 - **Sharing is a review.** The assistant can stage memories for sharing; the person
   looks them over in the Chiron window and confirms. The team's sharing policy, set by
   the owner, says what belongs in shared memory; the app shows it under the gear, then
@@ -83,7 +97,8 @@ person chooses to share.
 - **Knowledge across a team.** What one person learned about a client, a tool or a
   process is there for a colleague's assistant too, once shared.
 - **Reference material.** Regulations, standards and manuals the team works under,
-  imported once, come to mind beside the team's own experience.
+  imported once or picked from Mad Science's published libraries, come to mind beside
+  the team's own experience.
 
 ## What it is less good for
 
@@ -114,7 +129,8 @@ person chooses to share.
   they are in, and the team shares 15M tokens. Recall on every computer (Mac, Windows,
   Linux). Each person imports with their own AI assistant. The owner dashboard manages members, seats,
   devices, the sharing policy and billing. Owners change seats any time; with more
-  people than seats, everyone keeps access but nobody new can join.
+  people than seats, everyone keeps access but nobody new can join. Each team can also
+  hold up to two published libraries, which are free.
 - **Enterprise.** Set up directly with Mad Science Software. Adds live connectors for
   email (Gmail, Outlook), team chat (Slack, Teams), files (Google Drive, SharePoint),
   project tools and meeting notes, which bring new items in as they arrive; connectors
@@ -125,7 +141,8 @@ person chooses to share.
   the app or turn backup off. When the team's 15M shared pool is full, nothing more can be shared until
   someone unshares memories, or the team talks to Mad Science about Enterprise. A
   token is about four characters; 5M tokens is about 15,000 business emails. Every
-  shared memory counts, an imported library as much as a conversation.
+  shared memory counts, an imported library as much as a conversation. A published
+  library does not count.
 - **When the trial or subscription ends**, memory turns off for the assistants. The
   memories stay on each computer and come back when the team subscribes. The team's
   copy on the server (shared memories and private backups) is deleted 30 days after
@@ -146,7 +163,8 @@ person chooses to share.
   right corner opens Settings: the team (sharing policy, add a team), private memories
   (the backup switch), the AI assistants, and this computer (version, memory count,
   embedding model, last sync, a memory check, what memory takes on disk, and which
-  shared sources stay on the server).
+  shared sources stay on the server). The window's sidebar also lists the team's
+  published libraries.
   The assistant mentions a new version once and offers to install it (`chiron update`).
   After some updates the app rebuilds its search index in the background; recall works
   meanwhile, only slower.
@@ -154,7 +172,7 @@ person chooses to share.
   large: an older computer then pauses sync until it updates, keeps the memory it holds,
   and the assistant says so once. `chiron backup` writes a backup file.
 - **The dashboard** at chironmemory.com: members, seats, devices, sharing policy,
-  billing, and a view of shared memories and one's own private backups, where a
+  the team's published libraries, billing, and a view of shared memories and one's own private backups, where a
   person can delete their own memories (owners and admins any shared one). Sharing
   and unsharing happen in the Chiron app.
 - **Connected apps**, in early access: claude.ai and ChatGPT reach the same memory
