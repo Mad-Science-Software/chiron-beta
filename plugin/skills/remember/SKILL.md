@@ -16,7 +16,8 @@ keeping, and ask before saving anything personal about them or other people.
    memory says something different, save the new one anyway: the later date is what
    supersedes it.
 3. **Save it with `preserve`.** Follow the cue-writing rules in the tool's description.
-   A save is always private; to give it to the team, stage it with `stage_for_sharing`
+   A save is always private, in the team memory is in; to give it to that team, stage it
+   with `stage_for_sharing`
    and the person confirms in the Chiron app.
    Credit the people and AI models who said or decided it, by name, with the date it
    happened (not today, if it was earlier). Never save passwords, keys or other

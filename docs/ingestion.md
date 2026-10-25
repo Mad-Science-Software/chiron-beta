@@ -4,7 +4,8 @@ This guide is for the AI agent (Claude Code) that installed Chiron, when the use
 import existing history. You orchestrate; sub-agents write the memories. No API key is
 involved: the cues are written by sub-agents in the user's own Claude session.
 
-Every imported memory is private to the user. It stays on this computer unless they
+Every imported memory is private to the user, in the team memory is in when the import
+runs. It stays on this computer unless they
 turn on private backup in the Chiron app's settings. The team sees it only after the user shares
 it in the Chiron app: you stage it and they confirm it, or, for a source the plan
 shares whole (`Share: all`, such as a library), they press "Share all" on the source.
@@ -37,7 +38,14 @@ leave the file as it is: no session runs a draft. There are two runs:
   count added to the old one, and apply point 5 to the new memories of a source whose
   Share line is not `nothing`.
 
-Run it without further questions:
+Run it without further questions, with one exception. When this computer is in more
+than one team, an import is private to the team that memory is in, and only that team
+can get it. Before you import or stage, run `~/.chiron/bin/chiron switch`. It marks the
+team that memory is in with `*`. If that is not the team on the plan's `Team:` line, ask
+to switch with the `switch_team` tool and wait for the user's yes in the Chiron app.
+Without the tool, ask the user to switch in the Chiron menu, then run
+`~/.chiron/bin/chiron switch` again. The importer skips a document that is stored in any
+team on this computer, so a source imported in one team cannot come into another team.
 
 1. Take the sources in the plan's order. For each source, do steps 1 to 3 below with
    the plan's command. A source whose command says "write a converter" follows
@@ -55,10 +63,8 @@ Run it without further questions:
    files it wrote, compare them with the cue guide, correct the sub-agent prompt if they
    fall short, and continue. Keep three or four good cues for the report.
 5. Sharing. If the plan says what the team may see from a source, and the
-   `stage_for_sharing` memory tool is loaded in this session: when Chiron reports that
-   this computer is in more than one team, make sure memory is in the team the plan's
-   `Team:` line names; if not, ask to switch with the `switch_team` tool and wait for
-   the user's yes in the Chiron app before you stage. Then call it once with no
+   `stage_for_sharing` memory tool is loaded in this session: check that memory is in
+   the plan's team, as in the exception above. Then call it once with no
    record ids to get the team's sharing policy (the plan's "per team policy" means the
    policy decides), recall with the `source` filter set to the source's prefix
    (`claude-code:`, `git:<repository>`, `gmail:<mailbox>`, or the converter's `source`
@@ -174,7 +180,7 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 > 3. Save it: `~/.chiron/bin/chiron preserve <document.json> <cues.json>` (`chiron.exe`
 >    on Windows). It passes the record body through unchanged, so never retype it.
 >    `PRESERVED` and `ALREADY STORED` both mean done; on `ERROR`, fix the cues and run it
->    again.
+>    again. A record takes at most 50 cues.
 >
 > A document with no substance at all gets no cues; skip it. Also skip any document that
 > contains a password, access key, or similar credential: a stored secret can only be

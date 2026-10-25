@@ -24,8 +24,8 @@ Ask, in plain language:
   projects", "what my clients asked for", "how we do things here".
 - Whether they are on a team that shares memory, and what the team may see of their
   history. If they do not know, the team's sharing policy decides at staging time
-  (step 3). When they are in more than one team on this computer, which team may see
-  it.
+  (step 3). When they are in more than one team on this computer, which team the
+  import is for: it stays private in that team, and only that team can get it.
 
 Their answers decide which sources matter and which to leave out.
 
@@ -115,12 +115,14 @@ For each source, agree on:
   `Share: all`: after the import, tell the user to open the source under Yours in the
   Chiron app and press "Share all", which shares every memory of the source at once
   after one confirmation; you stage nothing for it. Every import is written private
-  first; nothing reaches the team without that review. While private backup is on,
-  private memories stop at the person's limit, so a source larger than that needs
-  backup off (the gear, then Private memories) before the import, or a smaller scope.
+  first; nothing reaches the team without that review. While private backup is on
+  in a team, private memories in that team stop at the person's limit there, so a
+  source larger than that needs backup off in that team (the gear, then Private
+  memories) before the import, or a smaller scope.
   If the
-  computer is in more than one team, the `Team:` line names the team the sharing is
-  for; every import is private and follows the user into every team.
+  computer is in more than one team, the `Team:` line names the team the import is
+  for. An import is private to the team that memory is in when it runs, so the user
+  switches to that team before the import runs.
 - **Order.** Most useful first. Sessions and repositories need no export, so they
   usually go first. Email goes when the export has arrived, or at once through the
   Gmail connector.

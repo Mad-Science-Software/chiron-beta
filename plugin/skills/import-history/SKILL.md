@@ -13,8 +13,9 @@ Chiron was installed. If it exists, follow "Run the memory plan" in the import g
 `sharing pending`; "bring memory up to date" reruns every source, and only what is new
 gets imported. A plan whose header says `Draft` instead of `Agreed on <date>` is read
 back to the user for their yes first; on yes, write `Agreed on <date>` in the header,
-then run it. On a computer in more than one team, sharing goes to the team memory is
-in; the plan's `Team:` line says which.
+then run it. On a computer in more than one team, an import is private to the team
+memory is in, and only that team can get it; the plan's `Team:` line says which team,
+so switch to it first.
 
 **Without a plan**, or for a source the plan does not name, make the plan first with
 the user, then run it. The planning guide says how: `~/.chiron/docs/memory-plan.md`.

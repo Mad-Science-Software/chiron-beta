@@ -278,16 +278,17 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
 - **More than one team**: they can join a second team (their firm and a personal project,
   say). Memory is in one team at a time; they switch in the Chiron menu, in the Chiron
   app, or with `chiron switch`. Claude can ask to switch, and they confirm in the Chiron
-  app. Their private memories follow them into every team; what they share stays with
-  the team they shared it in. Private backup is on in one team at a time. While it is
-  on in one team, a private memory can be shared only into that team: turn backup off
-  there first to share it into another team.
+  app. Each team has its own private memories: a memory saved or imported while memory
+  is in a team stays private in that team, and they can share it only with that team.
+  So they switch to the right team before an import. Private backup is a choice for
+  each team.
 - **Privacy**: private memories stay on this computer. To keep a copy on the team's
   Chiron server, they turn on private backup in the Chiron app (the gear, then Private
-  memories; the app asks them to confirm), in one team. Then their
+  memories; the app asks them to confirm), for each team. Then their
   other computers, that team's Connected apps (claude.ai, ChatGPT) and its dashboard can
-  see them too. The team sees only what they choose to share. While backup is on,
-  private memories stop at their limit, so a large import needs backup off first.
+  see them too. The team sees only what they choose to share. While backup is on in a
+  team, private memories in that team stop at their limit there, so a large import
+  needs backup off in that team first.
 - **Copies of shared sources**: the team's shared memory comes to this computer whole.
   Under "Everything shared", and under each teammate, in the Chiron window, each source (a mailbox, a repository,
   an imported library) has a button to keep or remove its copy on this computer; the

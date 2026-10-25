@@ -19,7 +19,7 @@ person chooses to share.
 - **A memory is a record plus cues.** The record is the moment as it happened (the
   message, the thread, the commit). Cues are short sentences that bring it to mind. The
   assistant recalls by meaning, not by keyword, and can expand any cue to read the
-  whole record.
+  whole record. A long record comes in parts.
 - **Who said what, and when.** Every memory carries its authors and its date. A memory
   says that someone said or did something on that day, not that it is true. A mistake
   or a change of mind is a newer memory, and the assistant weighs them by date.
@@ -31,14 +31,15 @@ person chooses to share.
 - **Saving.** The assistant saves when the person asks ("remember that…", "save what
   we decided"), and when something worth keeping comes up: a decision and its reason,
   a change of mind, a lesson. It asks before it keeps anything personal. A save is
-  always private: the assistant cannot write into the team's memory. To give the team a
+  always private, in the team memory is in: the assistant cannot write into the team's
+  shared memory. To give the team a
   memory, it stages it for sharing and the person confirms in the Chiron app.
 - **Importing.** History comes in through imports run by the person's own assistant:
   past Claude Code sessions, git repositories, email exports, chat exports, reference
   material. A memory plan, made when Chiron was installed, says what to import; "bring
   memory up to date" runs it again for what is new.
-- **Private first.** Everything a person saves or imports is private to them and stays
-  on their computer. Private backup, a switch in the Chiron app's settings (the gear,
+- **Private first.** Everything a person saves or imports is private to them, in the
+  team memory is in, and stays on their computer. Private backup, a switch in the Chiron app's settings (the gear,
   then Private memories), keeps a copy on the team's server for their other devices and
   the Connected apps; the app asks before it turns on. Someone who leaves a
   team, or is removed, loses their private backups from the server; what they shared
@@ -52,13 +53,14 @@ person chooses to share.
   in the team's memory, but the assistant cannot recall it on this computer until a
   copy is kept. A person's own memories always stay on the computer.
 - **One person, several teams.** A person can join more than one team on one computer:
-  their firm and a personal project, say. Each team keeps its own shared memories, and
-  the person's private memories follow them into every team. Memory works in one team
-  at a time. The person switches in the Chiron app, the Chiron menu, or with
+  their firm and a personal project, say. Each team keeps its own shared memories and
+  its own private memories: a private memory belongs to the team that memory was in
+  when it was saved, and only that team sees it or backs it up. Memory works in one
+  team at a time. The person switches in the Chiron app, the Chiron menu, or with
   `chiron switch`; the assistant can ask to switch (the `switch_team` tool), and the
-  person confirms in the Chiron app. Private backup is on in one team at a time. While
-  it is on in one team, a private memory can be shared only into that team: turn backup
-  off there first to share it into another team.
+  person confirms in the Chiron app. Private backup is a choice for each team. Private
+  memories saved before private memory belonged to a team now belong to one team: the
+  team with private backup on, or else the team memory was in at the update.
 - **Sharing is a review.** The assistant can stage memories for sharing; the person
   looks them over in the Chiron window and confirms. The team's sharing policy, set by
   the owner, says what belongs in shared memory; the app shows it under the gear, then
@@ -92,8 +94,9 @@ person chooses to share.
   that holds the invoices.
 - **A system of record.** Memory holds moments, not the current state of a file, a
   ticket or a booking. The source stays the source.
-- **Long verbatim passages.** Expanding a record gives the moment as it was captured,
-  but memory is not a document store for reading whole files.
+- **Long verbatim passages.** Expanding a record gives the moment as it was captured;
+  a long record comes back in parts, so it fits what every assistant takes in one
+  reply. Memory is still not a document store for reading whole files.
 - **What was never saved or imported.** A conversation in a tool that was not imported
   is not in memory. New items arrive with the next save or import, not by themselves,
   except on Enterprise with live connectors.
@@ -107,9 +110,9 @@ person chooses to share.
   when the app connects, and the trial starts then. An invite link works the same way
   for a teammate.
 - **Team.** Priced per person per month, or yearly at a saving; the current price is on
-  chironmemory.com/pricing. Each person gets 5M tokens of private backup, and the team
-  shares 15M tokens. Recall on every computer (Mac, Windows, Linux). Each person
-  imports with their own AI assistant. The owner dashboard manages members, seats,
+  chironmemory.com/pricing. Each person gets 5M tokens of private backup in each team
+  they are in, and the team shares 15M tokens. Recall on every computer (Mac, Windows,
+  Linux). Each person imports with their own AI assistant. The owner dashboard manages members, seats,
   devices, the sharing policy and billing. Owners change seats any time; with more
   people than seats, everyone keeps access but nobody new can join.
 - **Enterprise.** Set up directly with Mad Science Software. Adds live connectors for
@@ -117,9 +120,9 @@ person chooses to share.
   project tools and meeting notes, which bring new items in as they arrive; connectors
   built for the team's own systems; guided onboarding; priority support; and limits
   set for the team.
-- **At the limit.** When private backup is on and the person's 5M is full, new private
-  memories stop saving until they delete private memories in the app or turn backup
-  off. When the team's 15M shared pool is full, nothing more can be shared until
+- **At the limit.** When private backup is on and the person's 5M in that team is full,
+  new private memories in that team stop saving until they delete private memories in
+  the app or turn backup off. When the team's 15M shared pool is full, nothing more can be shared until
   someone unshares memories, or the team talks to Mad Science about Enterprise. A
   token is about four characters; 5M tokens is about 15,000 business emails. Every
   shared memory counts, an imported library as much as a conversation.
