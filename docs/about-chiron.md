@@ -42,44 +42,52 @@ person chooses to share.
   material. A memory plan, made when Chiron was installed, says what to import; "bring
   memory up to date" runs it again for what is new.
 - **Private first.** Everything a person saves or imports is private to them, in the
-  team memory is in, and stays on their computer. Private backup, a switch in the Chiron app's settings (the gear,
-  then Private memories), keeps a copy on the team's server for their other devices and
-  the Connected apps; the app asks before it turns on. Someone who leaves a
+  team memory is in, and stays on their computer. Chiron sends only a count of the
+  private memories that are not backed up, with no content; Mad Science staff can see
+  that count, and team owners and admins cannot. Private backup, a switch in the Chiron
+  app (Settings, then Storage), keeps a copy on the team's server for their other
+  devices and the Connected apps; the app asks before it turns on. Someone who leaves a
   team, or is removed, loses their private backups from the server; what they shared
   stays with the team.
 - **Copies of shared sources.** The team's shared memory comes to every member's
-  computer, grouped by source (a mailbox, a repository, an imported library). Under
-  "Everything shared", and under each teammate, in the Chiron window each source has a button to keep or remove
-  its copy on this computer; the app says what the copy takes first, and the copy
-  arrives, or goes, at the next sync. The choice is this computer's, for the team memory
-  is in. A source without a copy stays on the team's server: the window still shows it
-  in the team's memory, but the assistant cannot recall it on this computer until a
-  copy is kept. A person's own memories always stay on the computer.
+  computer, grouped by source (a mailbox, a repository, an imported library). In the
+  Chiron window, Settings, This computer, "Teammates' shared memories" lists each source
+  with a "Keep a copy here" switch, which keeps or removes its copy on this computer;
+  the app says what the copy takes first, and the copy arrives, or goes, at the next
+  sync. The choice is this computer's, for the team memory is in. A source without a
+  copy stays on the team's server: the Memories tab still shows it, with a "server
+  only" tag, but the assistant cannot recall it on this computer until a copy is kept. A person's own memories always stay on the computer.
 - **One person, several teams.** A person can join more than one team on one computer:
   their firm and a personal project, say. Each team keeps its own shared memories and
   its own private memories: a private memory belongs to the team that memory was in
   when it was saved, and only that team sees it or backs it up. Memory works in one
   team at a time. The person switches in the Chiron app, the Chiron menu, or with
   `chiron switch`; the assistant can ask to switch (the `switch_team` tool), and the
-  person confirms in the Chiron app. Private backup is a choice for each team. Private
+  person confirms in the Chiron app. To leave a team, the person opens Settings, Team,
+  and presses Leave. They can also choose to erase that team's memories from the
+  computer, which includes private memories that were never backed up. The owner
+  cannot leave: in the admin portal they make someone else the owner, or delete the
+  team. Private backup is a choice for each team. Private
   memories saved before private memory belonged to a team now belong to one team: the
   team with private backup on, or else the team memory was in at the update.
 - **Published libraries.** Mad Science publishes libraries of reference material, such
   as game design writing or the reports on a disaster. A team holds at most two. The
   person who makes the team can pick them then, on the page where the computer
-  connects or on the dashboard; owners and admins pick or change them later on the
-  dashboard's Libraries page. A library
+  connects or on the offer page; owners and admins pick or change them later on the
+  Libraries sheet of the admin portal. A library
   comes to every computer in the team whole, and the assistant recalls it beside the
   team's own memory. Its memories are read-only: nobody in the team owns them, so
   nobody can share, move, stage or delete one. To remove a library, the team drops it.
-  Libraries are free: they do not count against private or shared storage. The Chiron
-  window and the dashboard list each library under "Published libraries", with a bar
-  that gives what the team's libraries hold.
+  Libraries are free: they do not count against private or shared storage. The
+  Memories tab of the Chiron window shows library memories with Whose set to Library,
+  as view only; a library that has not fully reached the computer shows as "still
+  arriving". The admin portal lists the team's libraries on its Libraries sheet.
 - **Sharing is a review.** The assistant can stage memories for sharing; the person
-  looks them over in the Chiron window and confirms. The team's sharing policy, set by
-  the owner, says what belongs in shared memory; the app shows it under the gear, then
-  Team, then Sharing policy. Deleting a memory works
-  the same way: staged by the assistant, confirmed by the person. A memory made private
+  looks them over in the Suggestions tab of the Chiron window and approves them, one
+  at a time or with one approve button for each group. The team's sharing policy, set
+  by the owner, says what belongs in shared memory; the app shows it in Settings,
+  Team. Deleting a memory works
+  the same way: staged by the assistant, approved by the person. A memory made private
   again disappears from teammates at their next sync.
 
 ## What it is good for
@@ -127,7 +135,7 @@ person chooses to share.
 - **Team.** Priced per person per month, or yearly at a saving; the current price is on
   chironmemory.com/pricing. Each person gets 5M tokens of private backup in each team
   they are in, and the team shares 15M tokens. Recall on every computer (Mac, Windows,
-  Linux). Each person imports with their own AI assistant. The owner dashboard manages members, seats,
+  Linux). Each person imports with their own AI assistant. The admin portal manages members, seats,
   devices, the sharing policy and billing. Owners change seats any time; with more
   people than seats, everyone keeps access but nobody new can join. Each team can also
   hold up to two published libraries, which are free.
@@ -139,7 +147,7 @@ person chooses to share.
 - **At the limit.** When private backup is on and the person's 5M in that team is full,
   new private memories in that team stop saving until they delete private memories in
   the app or turn backup off. When the team's 15M shared pool is full, nothing more can be shared until
-  someone unshares memories, or the team talks to Mad Science about Enterprise. A
+  someone makes memories private or deletes them, or the team talks to Mad Science about Enterprise. A
   token is about four characters; 5M tokens is about 15,000 business emails. Every
   shared memory counts, an imported library as much as a conversation. A published
   library does not count.
@@ -151,32 +159,44 @@ person chooses to share.
   pause for a required update has no such limit: memory keeps working until the
   computer updates.
 - **Cancelling** is any time, from the billing page; the app keeps the memories it has.
-  The dashboard's account page can download a person's memories and delete their
-  account.
+  Each person downloads their memories in the Chiron app (Settings, Account). To delete
+  their account, they press "Delete account…" there, then approve in the browser: they
+  type their email, and the website asks for a sign-in from the last 5 minutes. The
+  request expires after 15 minutes. A person without the app uses the "Delete your
+  account" link on the website.
 
 ## Where things are
 
 - **The Chiron app** on each computer: the menu bar or tray icon shows the memory
   count and the memories staged for review, opens the Chiron window, connects the
   computer to its team or adds another, switches between the teams it joined, offers
-  updates, opens the logs, and stops and starts memory. The gear in the window's top
-  right corner opens Settings: the team (sharing policy, add a team), private memories
-  (the backup switch), the AI assistants, and this computer (version, memory count,
-  embedding model, last sync, a memory check, what memory takes on disk, and which
-  shared sources stay on the server). The window's sidebar also lists the team's
-  published libraries.
+  updates, opens the logs, and stops and starts memory. The window has three tabs.
+  Memories is a sheet of every memory in the team: the person's own, teammates' shared
+  ones and the team's libraries, with the columns Memory, Whose, Visibility, Source,
+  Date and Size. Suggestions holds what the assistant staged for sharing or deletion.
+  Settings has six sections: Team (sharing policy, add or leave a team), Storage (the
+  private backup switch), AI assistants, Devices, This computer (version, memory count,
+  embedding model, last sync, a memory check, what memory takes on disk, and the
+  copies of teammates' shared memories) and Account (download memories, delete the
+  account).
   The assistant mentions a new version once and offers to install it (`chiron update`).
-  After some updates the app rebuilds its search index in the background; recall works
-  meanwhile, only slower.
+  After some updates the app rebuilds its search graph and the window's search index
+  in the background; recall and search work meanwhile, only slower. An update that
+  upgrades the memory store first saves a copy of it; with too little free disk space,
+  Chiron says how much it needs, and memory stays as it was.
   Mad Science can require a newer Chiron for a team, for example before its memory grows
   large: an older computer then pauses sync until it updates, keeps the memory it holds,
   and the assistant says so once. `chiron backup` writes a backup file.
-- **The dashboard** at chironmemory.com: members, seats, devices, sharing policy,
-  the team's published libraries, billing, and a view of shared memories and one's own private backups, where a
-  person can delete their own memories (owners and admins any shared one). Sharing
-  and unsharing happen in the Chiron app.
+- **The admin portal** at chironmemory.com, for owners and admins: a sheet each for
+  the overview, members and invites, devices, the sharing policy, the team's published
+  libraries, connectors, billing and team settings. A member sees one card there instead: how to
+  install Chiron and how to connect a website such as claude.ai. Sharing, deleting
+  and downloading memories, leaving the team and deleting the account happen in the
+  Chiron app. A person who no longer has the app can delete their account from the
+  "Delete your account" link on the card, or in the portal's Account menu. Copies on
+  their computers then stay there until they remove Chiron.
 - **Connected apps**, in early access: claude.ai and ChatGPT reach the same memory
-  through a connector the dashboard sets up. For them recall runs on Chiron's server,
+  through a connector address from the website's "Connect a website" card. For them recall runs on Chiron's server,
   and they can recall and read, not save, change or share.
 - **Assistants**: Claude Code, Claude Desktop (chat and Cowork), Codex CLI, Gemini CLI,
   and any other assistant on the computer that supports the Model Context Protocol

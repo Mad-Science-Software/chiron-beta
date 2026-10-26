@@ -6,9 +6,10 @@ involved: the cues are written by sub-agents in the user's own Claude session.
 
 Every imported memory is private to the user, in the team memory is in when the import
 runs. It stays on this computer unless they
-turn on private backup in the Chiron app's settings. The team sees it only after the user shares
-it in the Chiron app: you stage it and they confirm it, or, for a source the plan
-shares whole (`Share: all`, such as a library), they press "Share all" on the source.
+turn on private backup in the Chiron app (Settings, then Storage). The team sees it
+only after the user shares it in the Chiron app: you stage it and they approve it in
+the Suggestions tab, or, for a source the plan shares whole (`Share: all`, such as a
+library), they share the source in the Memories tab (point 5 below).
 
 Import only what the user agreed to, one source at a time. With a memory plan
 (`~/chiron-ingest/plan.md`, next section), the plan is the agreement. Without one,
@@ -55,7 +56,10 @@ team on this computer, so a source imported in one team cannot come into another
    `imported` status when the source's step 3 is done. A later run treats `importing`
    like `planned`; the importer skips what is stored.
 3. When a source can't start (the export hasn't arrived, a path is gone), set its status
-   to `blocked: <reason>` and go on to the next. Don't wait and don't ask.
+   to `blocked: <reason>` and go on to the next. Don't wait and don't ask. A full disk is
+   different: when a sub-agent reports that the disk is full, start no more batches and
+   no more sources. Set the source to `blocked: disk full`, and tell the user to free
+   disk space. "Finish the memory plan" continues the plan later.
 4. The plan already answers the confirmations in steps 1 and 2 below: the size, and the
    sample. If the importer writes more than twice the documents the plan estimated,
    that's outside what the user agreed: set `blocked: <count> documents, plan expected
@@ -74,19 +78,20 @@ team on this computer, so a source imported in one team cannot come into another
    them. Stage the record ids with one reason
    per group, and set the status to `imported <date>: N documents`. Without
    the tool (the install session), set `imported <date>: N documents, sharing pending`.
-   A Share line of `all` (reference material) needs no tool: the user shares it from the
-   Chiron app, opening the source under Yours and pressing "Share all", one
-   confirmation. Stage nothing for it, set `imported <date>: N documents`, and put the
+   A Share line of `all` (reference material) needs no tool: the user shares it in the
+   Memories tab of the Chiron window. They filter the Source column to the source, tick
+   the header checkbox, and press "Share N" (N is the count). It shares at once and
+   offers Undo. Stage nothing for it, set `imported <date>: N documents`, and put the
    instruction in the report. Every import is written private first; the team sees it
-   only after the user's review.
+   only after the user's choice.
 6. Report at the end, in plain language: for each source, how many documents were
    imported, with three or four of its cues as examples; which sources are blocked
    and why; which documents were skipped for holding a credential (by subject, never the
    secret); for a source blocked by its count, that a higher estimate on its Scope line
-   lets it through next time; for each `Share: all` source, that they open it under
-   Yours in the Chiron window and press "Share all"; and, when anything is
-   `sharing pending`, that a new session with "finish the memory plan" stages it for
-   their review in the Chiron app.
+   lets it through next time; for each `Share: all` source, the steps in point 5 to
+   share it in the Memories tab; and, when anything is `sharing pending`, that a new
+   session with "finish the memory plan" stages it for them to approve in the
+   Suggestions tab.
 
 Keep the plan file when done: "bring memory up to date" runs it again, and only new
 documents get imported.
@@ -109,6 +114,10 @@ Run the importer from the app (`~/.chiron/bin/chiron`, or `chiron.exe` on Window
 a working folder per source under `~/chiron-ingest`, e.g.
 `OUT="$HOME/chiron-ingest/claude-code" && mkdir -p "$OUT"`. The importers only read the
 sources.
+
+Before a large source, check the free disk space with `df -h ~`. Chiron counts a disk
+with less than 256 MB free as full, and saves can then fail. If the disk is near that,
+tell the user to free space before you start.
 
 **Claude Code conversations** (ask for the user's full name; it's credited on their messages):
 
@@ -182,7 +191,9 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 > 3. Save it: `~/.chiron/bin/chiron preserve <document.json> <cues.json>` (`chiron.exe`
 >    on Windows). It passes the record body through unchanged, so never retype it.
 >    `PRESERVED` and `ALREADY STORED` both mean done; on `ERROR`, fix the cues and run it
->    again. A record takes at most 50 cues.
+>    again. A record takes at most 50 cues. If the `ERROR` says the disk is full, stop at
+>    once: do not run it again and do not save any more documents. Report that the disk
+>    is full.
 >
 > A document with no substance at all gets no cues; skip it. Also skip any document that
 > contains a password, access key, or similar credential: a stored secret can only be

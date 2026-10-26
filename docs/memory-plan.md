@@ -47,7 +47,14 @@ before you open a folder they did not name:
 find ~/.claude/projects -name '*.jsonl' | wc -l; du -sh ~/.claude/projects   # sessions
 git -C "$REPO" rev-list --count HEAD; git -C "$REPO" log -1 --format=%cd    # a repository
 ls -la ~/Downloads/Takeout* 2>/dev/null; du -sh "$MBOX"                     # an export
+df -h ~                                                                      # free disk space
 ```
+
+Check the free disk space before you plan a large source. Chiron counts a disk with
+less than 256 MB free as full: saves can then fail, and the Chiron window shows a
+warning. If the
+disk is near that, tell the user to free space before the import, and note it in the
+plan.
 
 Estimate each source in documents: about one document for each 16,000 characters of
 conversation, one for each commit, one for each email thread kept, one for each section
@@ -85,14 +92,15 @@ the user pick.
   larger pool, or comes from a published library.
 - Mad Science also publishes libraries of reference material. A team holds up to two.
   The user can pick them on the page where the computer connects (step A2 of the setup
-  guide), or later on the dashboard's Libraries page. A published library does not
+  guide), or later on the Libraries sheet of the admin portal. A published library does not
   count against private or shared storage. If the user picks a library that covers a
   work in the plan, mark that work `skipped: in a published library`.
 - Reference material carries nothing personal, so the plan usually shares all of it
   (section 3, "Private, or shared with the team"): imported private, then shared by the
-  user with "Share all" in the Chiron app, one confirmation. Shared, it counts against
-  the team's shared memory like anything else, and each teammate chooses in the Chiron
-  window whether their computer keeps a copy of it.
+  user in the Chiron app with one press of "Share N" (section 3). Shared, it counts
+  against the team's shared memory like anything else, and each teammate chooses in
+  the Chiron window (Settings, This computer, "Keep a copy here") whether their
+  computer keeps a copy of it.
 - The import is a converter job: "Reference works" in
   [`custom-sources.md`](custom-sources.md).
 
@@ -117,13 +125,14 @@ For each source, agree on:
   not know what the team may see, write `Share: per team policy`: the `stage_for_sharing`
   tool returns the team's policy when it is called with no record ids, and the policy
   decides at staging time. Reference material the whole team may use gets
-  `Share: all`: after the import, tell the user to open the source under Yours in the
-  Chiron app and press "Share all", which shares every memory of the source at once
-  after one confirmation; you stage nothing for it. Every import is written private
-  first; nothing reaches the team without that review. While private backup is on
+  `Share: all`: after the import, tell the user to open the Memories tab in the
+  Chiron window, filter the Source column to the source, tick the header checkbox, and
+  press "Share N". That shares every memory of the source at once and offers Undo; you
+  stage nothing for it. Every import is written private first; nothing reaches the
+  team without the user's choice. While private backup is on
   in a team, private memories in that team stop at the person's limit there, so a
-  source larger than that needs backup off in that team (the gear, then Private
-  memories) before the import, or a smaller scope.
+  source larger than that needs backup off in that team (Settings, then Storage)
+  before the import, or a smaller scope.
   If the
   computer is in more than one team, the `Team:` line names the team the import is
   for. An import is private to the team that memory is in when it runs, so the user

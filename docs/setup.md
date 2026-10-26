@@ -8,7 +8,9 @@ say about development.
 Chiron needs a team with an active free trial or subscription. Until this computer joins
 one, memory is off: the assistant can't recall or save. The memory server can't be reached
 from the network. Private memories stay on this computer. They go to the team's Chiron
-server only if the user turns on private backup in the Chiron app. Shared memories sync
+server only if the user turns on private backup in the Chiron app. Without backup,
+Chiron sends only a count of the private memories that are not backed up, with no
+content. Mad Science staff can see that count; team owners and admins cannot. Shared memories sync
 through the team's server, and the team sees only what the user chooses to share.
 
 Tell the user what you're doing as you go, in plain language. Ask before anything that
@@ -79,10 +81,14 @@ taskbar's arrow until the user pins it): it shows the memory count, opens the Ch
 window (**Open Chiron**), switches between teams when the computer is in more than one,
 offers updates, opens the logs, and can stop memory until the next login.
 (`"menu_bar": false` in `~/.chiron/config.json` hides it.) The Chiron window shows the
-user's memories, and the gear in its top right corner opens Settings: the team (sharing
-policy, add a team), private memories (the backup switch), the AI assistants, this
-computer (version, memory count, embedding model, last sync, a memory check, what
-memory takes on disk, and which shared sources stay on the server).
+user's memories. It has three tabs: Memories, Suggestions and Settings. Memories is a
+sheet of every memory in the team memory is in, with the columns Memory, Whose,
+Visibility, Source, Date and Size. Suggestions holds what the assistants staged for
+sharing or deletion. Settings has six sections: Team (sharing policy, add or leave a
+team), Storage (the private backup switch), AI assistants, Devices, This computer
+(version, memory count, embedding model, last sync, a memory check, what memory takes
+on disk, and the copies of teammates' shared memories) and Account (download your
+memories, delete your account).
 On a Mac, Chiron also appears in Spotlight and Launchpad (`~/Applications/Chiron.app`):
 opening it shows the Chiron window. Uninstall removes it.
 
@@ -110,11 +116,11 @@ their account with the invited address. Without a code, the user signs in and pi
 team, or, with no team yet, names a new one on the page; a teammate's invite link is
 the way into a team that exists. When the page makes a new team and Mad Science has
 published libraries, it lists them: the user can pick up to two, or none. An owner or
-admin can pick or change them later on the dashboard's Libraries page. After creating an account the user may have to verify
+admin can pick or change them later on the Libraries sheet of the admin portal. After creating an account the user may have to verify
 their email: they open the link in the email and press "I've verified my email". That is
 not an error. Tell the user to check that the page shows the same code once they are
 signed in. The Chiron app shows the same connection and code (in the setup window on
-the first run; later under the gear, Add a team). The command waits until the page has
+the first run; later in Settings, Team, Add a team, or in the window's team menu). The command waits until the page has
 approved this computer and the app has joined the team; a team the computer was in
 already does not end the wait. The page then says the app finishes on its own, and the
 user can close the tab. The code works for 15 minutes: if the command times out, run it
@@ -285,33 +291,37 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   So they switch to the right team before an import. Private backup is a choice for
   each team.
 - **Privacy**: private memories stay on this computer. To keep a copy on the team's
-  Chiron server, they turn on private backup in the Chiron app (the gear, then Private
-  memories; the app asks them to confirm), for each team. Then their
-  other computers, that team's Connected apps (claude.ai, ChatGPT) and its dashboard can
-  see them too. The team sees only what they choose to share. While backup is on in a
+  Chiron server, they turn on private backup in the Chiron app (Settings, then Storage;
+  the app asks them to confirm), for each team. Without backup, Chiron sends only a
+  count of the private memories that are not backed up, with no content. Mad Science
+  staff can see that count; team owners and admins cannot. With backup on, their
+  other computers and that team's Connected apps (claude.ai, ChatGPT) can see them
+  too. The team sees only what they choose to share. While backup is on in a
   team, private memories in that team stop at their limit there, so a large import
   needs backup off in that team first.
 - **Copies of shared sources**: the team's shared memory comes to this computer whole.
-  Under "Everything shared", and under each teammate, in the Chiron window, each source (a mailbox, a repository,
-  an imported library) has a button to keep or remove its copy on this computer; the
+  In the Chiron window, Settings, This computer, "Teammates' shared memories" lists each
+  shared source (a mailbox, a repository, an imported library) with a "Keep a copy
+  here" switch that keeps or removes its copy on this computer; the
   app says what the copy takes before it is kept, and the copy arrives, or goes, at the
   next sync. The choice is this computer's, for the team memory is in. A source without
-  a copy stays on the team's server: the window still shows it in the team's memory,
-  but Claude cannot recall it on this computer until a copy is kept; the prompt hook
-  names such sources, so Claude can say so. The settings sheet (the gear, then This
-  computer) and `chiron status` show what memory takes and which sources are on the
-  server only.
+  a copy stays on the team's server: the Memories tab still shows it, with a "server
+  only" tag, but Claude cannot recall it on this computer until a copy is kept; the
+  prompt hook names such sources, so Claude can say so. Settings, This computer, and
+  `chiron status` show what memory takes and which sources are on the server only.
 - **Published libraries**: the team can hold up to two libraries of reference material
   from Mad Science. Each comes to this computer whole, and Claude recalls it beside the
   team's memory. Its memories are read-only, and they do not count against storage. The
-  Chiron window lists them under "Published libraries". Owners and admins pick them on
-  the dashboard's Libraries page.
+  Memories tab shows their memories with Whose set to Library, as view only; a library
+  that has not fully reached this computer shows as "still arriving". Owners and admins
+  pick them on the Libraries sheet of the admin portal.
 - **Memories are who said what, and when**: each one records that someone said or did
   something on a given day, not that it's true. A mistake or a change of mind is simply
   a newer memory, and Claude weighs them by date. When a memory shapes Claude's answer
   or action, Claude says so: that it came from Chiron, whose memory it was, and when.
   Nothing is erased on its own: Claude
-  can stage memories for deletion, and they confirm each one in the Chiron app. So they
+  can stage memories for deletion, and they approve them in the Suggestions tab of the
+  Chiron window: one at a time, or with the one approve button for the whole group. So they
   should only agree to saving what they're comfortable keeping. A backup now and then is
   worth it (below).
 - **Updates**: when a new version is out, Claude mentions it once in a session and offers
@@ -323,7 +333,8 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   their private backup after the update, and turning private backup on also waits for it.
   After the update that brings the search graph, recall stays correct but is slower while
   the app builds the graph in the background: a few minutes on a large memory, longer on
-  a very large one.
+  a very large one. The same is true of the window's search index: until the app fills
+  it, search in the Memories tab stays correct but is slower.
 
 The memory tools aren't loaded in this session, so you can't save a memory here. The
 memory plan gives memory its first content. Without one, suggest that in their new
@@ -341,7 +352,9 @@ the user's decisions, so don't ask again; the user doesn't need to stay at the k
 Report when it's done. The memory tools aren't loaded in this session, so a source the
 plan marks for sharing, except `Share: all`, ends as `sharing pending`: tell the user to
 start a new session and say "finish the memory plan". A `Share: all` source the user
-shares themselves with "Share all" in the Chiron window.
+shares themselves in the Memories tab of the Chiron window: they filter the Source
+column to that source, tick the header checkbox, and press "Share N" (N is the count).
+It shares at once and offers Undo.
 
 Without an approved plan, don't import any history unless the user asks. When they do,
 the `import-history` skill makes the plan with them and runs it.
@@ -352,7 +365,11 @@ the `import-history` skill makes the plan with them and runs it.
 
 - **Update**: `chiron update`. That one step also updates the Claude Code plugin and the
   other assistants' settings, for the assistants the user connected. The update keeps
-  the previous version and goes back to it if the new one doesn't start.
+  the previous version and goes back to it if the new one doesn't start. An update that
+  upgrades the memory store first saves a copy of it. That needs free disk space of
+  about the size of the store, plus 10%, plus 512 MB. With too little room, Chiron
+  does not upgrade: it says how much it needs and how much is free, and memory stays as
+  it was. The user frees disk space, then starts Chiron again.
 - **Assistants**: `chiron assistants` shows which are connected and when each last used
   memory; `chiron assistants connect <id>` and `chiron assistants disconnect <id>` change
   that.
