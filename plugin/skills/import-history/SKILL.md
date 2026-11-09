@@ -13,13 +13,15 @@ Chiron was installed. If it exists, follow "Run the memory plan" in the import g
 `sharing pending`; "bring memory up to date" reruns every source, and only what is new
 gets imported. A plan whose header says `Draft` instead of `Agreed on <date>` is read
 back to the user for their yes first; on yes, write `Agreed on <date>` in the header,
-then run it. On a computer in more than one team, an import is private to the team
-memory is in, and only that team can get it; the plan's `Team:` line says which team,
-so switch to it first.
+then run it. On a computer in more than one team, an import is private to the team of
+this session's project folder. The plan's `Team:` line
+says which team. Run `~/.chiron/bin/chiron teams` from the project folder first: its
+last line names the project's team. If it is another team, ask the user, then follow "Which team" in the
+import guide.
 
 **A few files only.** Save a handful of files that the user gives you with `preserve`,
 one call each, with no plan. Give each one `source` `note:<project>` and `external_id`
-the file's path, so a second save of it is refused. Skip a file that holds a password
+the file's path, so a second save of it in this team is refused. Skip a file that holds a password
 or key. The plan and the importers are for bulk imports: a mail export, many past
 sessions, a large archive.
 
@@ -36,5 +38,5 @@ The guides, which this plugin doesn't repeat:
 If `~/.chiron/docs` doesn't exist, read them from
 https://github.com/Mad-Science-Software/chiron-beta/tree/main/docs instead.
 
-Rerunning an import is safe: anything already in memory is skipped, and a conversation
+Rerunning an import is safe: anything that this team stores already is skipped, and a conversation
 that gained messages gets only the new ones.

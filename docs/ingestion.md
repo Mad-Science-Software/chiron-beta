@@ -4,8 +4,8 @@ This guide is for the AI agent (Claude Code) that installed Chiron, when the use
 import existing history. You orchestrate; sub-agents write the memories. No API key is
 involved: the cues are written by sub-agents in the user's own Claude session.
 
-Every imported memory is private to the user, in the team memory is in when the import
-runs. It stays on this computer unless they
+Every imported memory is private to the user, in the team of the import session's
+project folder (see "Which team" below). It stays on this computer unless they
 turn on private backup in the Chiron app (Settings, then Storage). The team sees it
 only after the user shares it in the Chiron app: you stage it and they approve it in
 the Suggestions tab, or, for a source the plan shares whole (`Share: all`, such as a
@@ -34,19 +34,40 @@ leave the file as it is: no session runs a draft. There are two runs:
   source whose status is `planned`, `waiting for export`, `importing` or `blocked`. For
   a source whose status ends in `sharing pending`, do only point 5.
 - **Bring memory up to date**: rerun every source except the `skipped` ones, blocked
-  ones included, with the plan's command. The importer skips what is stored, so only
+  ones included, with the plan's command. The importer skips what this team stores
+  already, so only
   new documents get written. Then set the `imported` line to today's date, with the new
   count added to the old one, and apply point 5 to the new memories of a source whose
   Share line is not `nothing`.
 
-Run it without further questions, with one exception. When this computer is in more
-than one team, an import is private to the team that memory is in, and only that team
-can get it. Before you import or stage, run `~/.chiron/bin/chiron switch`. It marks the
-team that memory is in with `*`. If that is not the team on the plan's `Team:` line, ask
-to switch with the `switch_team` tool and wait for the user's yes in the Chiron app.
-Without the tool, ask the user to switch in the Chiron menu, then run
-`~/.chiron/bin/chiron switch` again. The importer skips a document that is stored in any
-team on this computer, so a source imported in one team cannot come into another team.
+Run it without further questions, with one exception: the team. When this computer is in
+more than one team, an import is private to one team.
+
+**Which team.** The session's project folder decides the team for everything in this
+session: the memory tools, `chiron ingest`, `chiron preserve` and `chiron teams`. It is the team that a
+`chiron-config.json` in the project folder or a parent folder names, else the default
+team (`chiron teams` marks it). A `cd` does not change it for the memory tools. For
+`chiron ingest`, `chiron preserve` and `chiron teams`, the project folder is
+`CLAUDE_PROJECT_DIR` when it is set, else the folder the command starts in, so run them
+from the project folder.
+Before you import or stage, run `cd "<project folder>" && ~/.chiron/bin/chiron teams`.
+Its last line names the team. If that is not the team on the plan's `Team:` line, stop
+and ask the user. A pin applies to every folder below it, so never pin the home folder:
+if this session runs in the home folder, ask the user to start the import session in a
+project folder of that team, and continue there. On their yes, run
+`~/.chiron/bin/chiron teams pin "<plan's team>"` in the project folder, then run
+`~/.chiron/bin/chiron teams` again to check. The memory tools of this session use the
+new file at once, with one exception: if this session started before Chiron was updated from a release
+older than 0.15.0 (its memory tools still include `switch_team` and have no `get_changelog` tool), its memory tools use the
+default team until the session restarts. Then
+do not stage in this session: set the source to `imported <date>: N documents,
+sharing pending`, and tell the user to start a new session in the project folder and
+say "finish the memory plan". The sub-agent prompt below gives the sub-agents the project folder.
+If `chiron teams` prints that agents in this folder can't use memory, or a warning,
+or a memory tool says this computer can't use the folder's team, tell the user what
+it says and stop: do not import or stage. The importer skips a document that this
+team stores already. The same documents imported into another team become separate
+memories there.
 
 1. Take the sources in the plan's order. For each source, do steps 1 to 3 below with
    the plan's command. A source whose command says "write a converter" follows
@@ -54,12 +75,14 @@ team on this computer, so a source imported in one team cannot come into another
 2. Update the source's status in the plan file after every step, so a session that
    stops can continue where it was: `importing <date>` when the importer runs, the
    `imported` status when the source's step 3 is done. A later run treats `importing`
-   like `planned`; the importer skips what is stored.
+   like `planned`; the importer skips what this team stores already.
 3. When a source can't start (the export hasn't arrived, a path is gone), set its status
    to `blocked: <reason>` and go on to the next. Don't wait and don't ask. A full disk is
    different: when a sub-agent reports that the disk is full, start no more batches and
    no more sources. Set the source to `blocked: disk full`, and tell the user to free
-   disk space. "Finish the memory plan" continues the plan later.
+   disk space. "Finish the memory plan" continues the plan later. An importer or a
+   sub-agent that reports a refusal because of the folder's team is the same: start no more batches
+   and no more sources, set the source to `blocked: <the message>`, and tell the user.
 4. The plan already answers the confirmations in steps 1 and 2 below: the size, and the
    sample. If the importer writes more than twice the documents the plan estimated,
    that's outside what the user agreed: set `blocked: <count> documents, plan expected
@@ -68,7 +91,8 @@ team on this computer, so a source imported in one team cannot come into another
    fall short, and continue. Keep three or four good cues for the report.
 5. Sharing. If the plan says what the team may see from a source, and the `share` memory
    tool is loaded in this session (releases through 0.13 call it `stage_for_sharing`):
-   check that memory is in the plan's team, as in the exception above. Then call it once
+   check that this session's project folder uses the plan's team, and that this session did not
+   start before an update from a release older than 0.15.0, as in "Which team" above. Then call it once
    with no record ids to get the team's sharing policy (the plan's "per team policy"
    means the policy decides). A team with no policy gets Chiron's default rule, with
    `sharing_policy_is_default` set, until an owner or admin writes one. Then recall with
@@ -110,7 +134,8 @@ documents get imported.
 
 1. An importer reads the source and writes **documents** (one JSON file per email thread,
    conversation segment or commit) plus **batch lists** (`batch-N.txt`, one document path
-   per line) into a working folder. Anything already in Chiron is skipped, so rerunning
+   per line) into a working folder. Anything that this team stores already is skipped,
+   so rerunning
    is safe and picks up where the last run stopped; a conversation that gained messages
    since gets a follow-up document with only the new ones. Within one document, Chiron also drops
    cues that are near-duplicates of each other.
@@ -123,7 +148,10 @@ documents get imported.
 Run the importer from the app (`~/.chiron/bin/chiron`, or `chiron.exe` on Windows). Use
 a working folder per source under `~/chiron-ingest`, e.g.
 `OUT="$HOME/chiron-ingest/claude-code" && mkdir -p "$OUT"`. The importers only read the
-sources.
+sources. Run each importer from this session's project folder:
+`cd "<project folder>" && ~/.chiron/bin/chiron ingest …`. The importer skips only what
+the folder's team stores already. Chiron must run: the importer asks it for the
+folder's team.
 
 Before a large source, check the free disk space with `df -h ~`. Chiron counts a disk
 with less than 256 MB free as full, and saves can then fail. If the disk is near that,
@@ -170,7 +198,7 @@ by 20 when you run the importer. Sub-agents can use a smaller, cheaper model (e.
 past runs did well with it.
 
 Then start one sub-agent per remaining batch, all in parallel, each with this prompt
-(fill in the batch path). The cue guide the prompt names is written by
+(fill in the batch path, and for `<FOLDER>` this session's project folder). The cue guide the prompt names is written by
 `chiron assistants connect`, so it is there after the install.
 
 > You are turning documents into memories in Chiron, the user's local memory server.
@@ -198,12 +226,15 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 >    written there. `observed_at` is the timestamp of the message
 >    where the point was made, not today. Never invent a name, reason or detail that isn't
 >    in the document. Record what was said even if you think it's wrong; don't correct it.
-> 3. Save it: `~/.chiron/bin/chiron preserve <document.json> <cues.json>` (`chiron.exe`
->    on Windows). It takes the record body from the document, so never retype it.
+> 3. Save it: `cd "<FOLDER>" && ~/.chiron/bin/chiron preserve <document.json> <cues.json>`
+>    (`chiron.exe` on Windows). `<FOLDER>` decides the team, so always run it from
+>    there. It takes the record body from the document, so never retype it.
 >    `PRESERVED` and `ALREADY STORED` both mean done; on `ERROR`, fix the cues and run it
 >    again. A record takes at most 50 cues. If the `ERROR` says the disk is full, stop at
 >    once: do not run it again and do not save any more documents. Report that the disk
->    is full.
+>    is full. If the `ERROR` says Chiron refused the call because of this folder's team
+>    or its `chiron-config.json`, stop at once and report the message. Do not change
+>    the cues.
 >
 > A document with no substance at all gets no cues; skip it. Also skip any document that
 > contains a password, access key, or similar credential: a stored secret can only be

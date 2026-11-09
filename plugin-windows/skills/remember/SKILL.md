@@ -17,7 +17,7 @@ personal about them or other people.
    memory says something different, save the new one anyway: the later date is what
    supersedes it.
 3. **Save it with `preserve`.** Follow the cue-writing rules in the tool's description.
-   A save is always private, in the team memory is in; to give it to that team, stage it
+   A save is always private, in the team this session uses (the project folder's team, or the default team); to give it to that team, stage it
    with `share` (when that tool is loaded)
    and the person confirms in the Chiron window, which usually comes forward to ask.
    Credit the people and AI models who said or decided it, by name, with the date it

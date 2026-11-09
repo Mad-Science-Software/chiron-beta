@@ -26,7 +26,7 @@ Ask, in plain language:
   history. If they do not know, the team's sharing policy (or Chiron's default rule,
   until an owner or admin writes one) decides at staging time
   (step 3). When they are in more than one team on this computer, which team the
-  import is for: it stays private in that team, and only that team can get it.
+  import is for: it is private in that team.
 
 Their answers decide which sources matter and which to leave out.
 
@@ -92,8 +92,9 @@ the user pick.
   team's shared pool, so a work that does not fit stays out, goes in part, needs a
   larger pool, or comes from a published library.
 - Mad Science also publishes libraries of reference material. A team holds up to two.
-  The user can pick them on the page where the computer connects (step A2 of the setup
-  guide), or later on the Libraries sheet of the admin portal. A published library does not
+  The user can pick them when the team is made: on the offer page, or on the page where
+  the computer connects (step A2 of the setup guide). Later, an owner or admin picks
+  them on the Libraries sheet of the admin portal. A published library does not
   count against private or shared storage. If the user picks a library that covers a
   work in the plan, mark that work `skipped: in a published library`.
 - Reference material carries nothing personal, so the plan usually shares all of it
@@ -139,8 +140,9 @@ For each source, agree on:
   before the import, or a smaller scope.
   If the
   computer is in more than one team, the `Team:` line names the team the import is
-  for. An import is private to the team that memory is in when it runs, so the user
-  switches to that team before the import runs.
+  for. An import is private to the team of the import session's project folder, so
+  the import runs in a session whose project folder uses that team (see "Which team" in
+  [`ingestion.md`](ingestion.md)).
 - **Order.** Most useful first. Sessions and repositories need no export, so they
   usually go first. Email goes when the export has arrived, or at once through the
   Gmail connector.
@@ -167,7 +169,8 @@ Scope line carries the estimate in documents. Write each command so it runs as i
 stands: the full program path, `~/.chiron/bin/chiron` (`chiron.exe` on Windows); a
 working folder per source under `~/chiron-ingest`, as in the import guide; the export's
 real path, not a placeholder; and `--batches`, the estimate divided by 20, rounded up
-(`--batches 30` for 600 documents). Use this shape:
+(`--batches 30` for 600 documents). The import guide runs each command from the project
+folder of the plan's team. Use this shape:
 
 ```markdown
 # Memory plan for <Full Name>

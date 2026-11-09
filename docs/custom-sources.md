@@ -5,7 +5,7 @@ with no built-in importer (Slack, Microsoft Teams, Notion, a notes folder, a CRM
 Read [`docs/ingestion.md`](ingestion.md) first: this guide only replaces its step 1.
 
 You write a small **converter** that turns the source into conversations, then hand
-those to `chiron ingest documents`, which validates them, skips anything already stored, and
+those to `chiron ingest documents`, which validates them, skips anything already stored in the folder's team, and
 writes the same documents and batch lists the built-in importers do. From there the
 normal sub-agent workflow takes over. You don't change Chiron's code.
 
@@ -21,7 +21,7 @@ normal sub-agent workflow takes over. You don't change Chiron's code.
 - **Everything stays on this computer.** Work in `~/chiron-ingest/<source>/`. Don't upload
   the data anywhere or paste large parts of it into the conversation.
 - **Agree on scope first**: which channels, folders or date range. Less is better; the user
-  can import more later, and reruns skip what's stored. Private conversations (direct
+  can import more later, and reruns skip what this team stores. Private conversations (direct
   messages, private channels) are out of scope unless the user names them explicitly;
   "all channels" doesn't include them.
 - **Write the converter in a language this computer already has.** Do not make the
@@ -76,7 +76,7 @@ Make the text readable: mentions as `@Name`, channel links as `#name`, links as
 
    ```sh
    OUT="$HOME/chiron-ingest/<source>/out"
-   ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/<source>/conversations.jsonl" --out "$OUT"
+   cd "<project folder>" && ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/<source>/conversations.jsonl" --out "$OUT"
    ```
 
    It stops at the first invalid line and says what's wrong; fix the converter and rerun.

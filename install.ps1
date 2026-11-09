@@ -145,4 +145,5 @@ try {
     Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue
 }
 Write-Host ""
-Write-Host "Installed. Next: add the Claude Code plugin (see docs/setup.md), then start a new Claude Code session."
+Write-Host "Installed. Next: open Chiron from the tray, or run %USERPROFILE%\.chiron\bin\chiron.exe review, and choose Connect to your team."
+Write-Host "The same setup connects your AI assistants. An agent that follows docs/setup.md goes on with its next step."

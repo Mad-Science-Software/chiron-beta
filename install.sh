@@ -232,4 +232,5 @@ fi
 chmod 755 "$work/$asset"
 "$work/$asset" install
 echo
-echo "Installed. Next: add the Claude Code plugin (see docs/setup.md), then start a new Claude Code session."
+echo "Installed. Next: run ~/.chiron/bin/chiron review and choose Connect to your team."
+echo "The same setup connects your AI assistants. An agent that follows docs/setup.md goes on with its next step."
