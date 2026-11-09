@@ -23,7 +23,8 @@ Ask, in plain language:
 - What they want Claude to know on day one. Ask for examples: "the decisions in my
   projects", "what my clients asked for", "how we do things here".
 - Whether they are on a team that shares memory, and what the team may see of their
-  history. If they do not know, the team's sharing policy decides at staging time
+  history. If they do not know, the team's sharing policy (or Chiron's default rule,
+  until an owner or admin writes one) decides at staging time
   (step 3). When they are in more than one team on this computer, which team the
   import is for: it stays private in that team, and only that team can get it.
 
@@ -38,7 +39,7 @@ Chiron imports these sources itself:
 | Claude Code sessions | each conversation, in segments | `~/.claude/projects` on this computer | nothing: it is already here |
 | Git repositories | each commit: its message and the files it changed | the folders where they keep code | nothing |
 | Email | each email thread, with the people in it | a Google Takeout `.mbox` export of Gmail, another `.mbox` file, or the Gmail connector in the user's Claude (that account only; "Email through the Claude Gmail connector" in [`custom-sources.md`](custom-sources.md)) | the user requests the export; Google takes hours to days to make it. Nothing when Claude has the Gmail connector |
-| Anything else (Slack, Teams, Notion, a notes folder, a CRM export…) | each conversation or page | an export the user downloads | the user downloads the export; after the install you write a converter ([`custom-sources.md`](custom-sources.md)); the plan is its scope agreement |
+| Anything else (Slack, Teams, Notion, a notes folder, a CRM export…) | each conversation or page | an export the user downloads, or a folder on this computer | the user downloads the export (nothing for a folder already here); after the install you write a converter ([`custom-sources.md`](custom-sources.md)); the plan is its scope agreement |
 
 Look at what is on this computer, read-only, and tell the user what you find. Ask
 before you open a folder they did not name:
@@ -118,16 +119,19 @@ For each source, agree on:
   mailbox, direct messages.
 - **Who is credited.** The user's full name on their own messages. Other people keep
   the names the source gives them.
-- **Private, or shared with the team.** Every import is private to the user. If the
-  team may see part of it, write down which kind: "decisions and project knowledge from
-  the work repositories", "nothing from email". After the import you stage those
-  memories for sharing, and the user confirms them in the Chiron app. If the user does
-  not know what the team may see, write `Share: per team policy`: the `stage_for_sharing`
-  tool returns the team's policy when it is called with no record ids, and the policy
-  decides at staging time. Reference material the whole team may use gets
-  `Share: all`: after the import, tell the user to open the Memories tab in the
-  Chiron window, filter the Source column to the source, tick the header checkbox, and
-  press "Share N". That shares every memory of the source at once and offers Undo; you
+- **Private, or shared with the team.** Every import is private to the user. If the team
+  may see part of it, write down which kind: "decisions and project knowledge from the
+  work repositories", "nothing from email". After the import you stage those memories
+  for sharing, and the user confirms them in the Chiron app. If the user does not know
+  what the team may see, write `Share: per team policy`: the `share` tool
+  (`stage_for_sharing` in releases through 0.13) returns the team's policy when it is
+  called with no record ids, and the policy decides at staging time. A team with no
+  policy gets Chiron's default rule until an owner or admin writes one: work documents
+  and reference works, never personal or private matters. Reference material the whole
+  team may use gets `Share: all`: after the import, tell the user to open the Memories
+  tab in the Chiron window, filter the Source column to the source, tick the header
+  checkbox, and press "Share N". One press shares every memory of the source. On a large
+  source the button shows a spinner for a few seconds. Then the window offers Undo. You
   stage nothing for it. Every import is written private first; nothing reaches the
   team without the user's choice. While private backup is on
   in a team, private memories in that team stop at the person's limit there, so a
@@ -146,8 +150,9 @@ Say these once, so the user knows them before they agree:
 - Writing memories uses their Claude usage, in proportion to the size of the history.
   The history passes through Claude as sub-agents read it, including what other people
   wrote in it.
-- Sub-agents skip any document that holds a password or an access key. You list those
-  at the end.
+- Chiron blanks passwords, keys and card numbers in their common forms before it
+  saves. Sub-agents skip any document that still holds a password or an access key.
+  You list those at the end.
 - A memory can be deleted later, but only after a review in the Chiron app. An import
   is quicker than its undo. That is why the plan matters.
 - The import runs after the install, on its own. You report at the end; you do not ask

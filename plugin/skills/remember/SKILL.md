@@ -5,9 +5,10 @@ description: Save something to Chiron memory. Use when the user asks to remember
 
 # Saving to Chiron memory
 
-Memories are not edited. A correction is a newer memory, and the older one stays until
-the user deletes it in the Chiron app. Save only what the user would be comfortable
-keeping, and ask before saving anything personal about them or other people.
+Memories are not edited, except that Chiron blanks credentials in them. A correction is
+a newer memory, and the older one stays until the user deletes it in the Chiron app.
+Save only what the user would be comfortable keeping, and ask before saving anything
+personal about them or other people.
 
 1. **Pick what's worth keeping.** Decisions and their reasons, changes of mind, lessons
    from something that went wrong, facts about people and projects the user will want
@@ -17,8 +18,8 @@ keeping, and ask before saving anything personal about them or other people.
    supersedes it.
 3. **Save it with `preserve`.** Follow the cue-writing rules in the tool's description.
    A save is always private, in the team memory is in; to give it to that team, stage it
-   with `stage_for_sharing`
-   and the person confirms in the Chiron app.
+   with `share` (when that tool is loaded)
+   and the person confirms in the Chiron window, which usually comes forward to ask.
    Credit the people and AI models who said or decided it, by name, with the date it
    happened (not today, if it was earlier). Never save passwords, keys or other
    credentials.

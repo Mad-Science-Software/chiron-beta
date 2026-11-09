@@ -66,32 +66,42 @@ team on this computer, so a source imported in one team cannot come into another
    <estimate>` and go on. Check the sample batch yourself: read a few of the `.cues.json`
    files it wrote, compare them with the cue guide, correct the sub-agent prompt if they
    fall short, and continue. Keep three or four good cues for the report.
-5. Sharing. If the plan says what the team may see from a source, and the
-   `stage_for_sharing` memory tool is loaded in this session: check that memory is in
-   the plan's team, as in the exception above. Then call it once with no
-   record ids to get the team's sharing policy (the plan's "per team policy" means the
-   policy decides), recall with the `source` filter set to the source's prefix
+5. Sharing. If the plan says what the team may see from a source, and the `share` memory
+   tool is loaded in this session (releases through 0.13 call it `stage_for_sharing`):
+   check that memory is in the plan's team, as in the exception above. Then call it once
+   with no record ids to get the team's sharing policy (the plan's "per team policy"
+   means the policy decides). A team with no policy gets Chiron's default rule, with
+   `sharing_policy_is_default` set, until an owner or admin writes one. Then recall with
+   the `source` filter set to the source's prefix
    (`claude-code:`, `git:<repository>`, `gmail:<mailbox>`, or the converter's `source`
    value) and `search` set to `exact`, so no matching record is missed, and queries for
    the kind the plan names. Leave out cues whose `visibility_scope` starts with
    `published:`: they belong to a published library the team holds, and staging refuses
-   them. Stage the record ids with one reason
-   per group, and set the status to `imported <date>: N documents`. Without
-   the tool (the install session), set `imported <date>: N documents, sharing pending`.
-   A Share line of `all` (reference material) needs no tool: the user shares it in the
-   Memories tab of the Chiron window. They filter the Source column to the source, tick
-   the header checkbox, and press "Share N" (N is the count). It shares at once and
-   offers Undo. Stage nothing for it, set `imported <date>: N documents`, and put the
-   instruction in the report. Every import is written private first; the team sees it
-   only after the user's choice.
+   them. Stage the record ids with one reason per group. The Chiron window usually comes
+   forward on its Suggestions tab for the user to approve them (on a computer with no
+   Chiron window, such as Linux, Chiron tries to open the page in a browser tab). With
+   `stage_for_sharing` (releases through 0.13) it does not, so tell the user to open the
+   Suggestions tab in the Chiron window. Set the status to
+   `imported <date>: N documents`. Without the tool (the install session), set
+   `imported <date>: N documents, sharing pending`. A Share line of `all` (reference
+   material) needs no tool: the user shares it in the Memories tab of the Chiron window.
+   They filter the Source column to the source, tick the header checkbox, and press
+   "Share N" (N is the count). One press shares the whole source. On a large source the
+   button shows a spinner for a few seconds. Then the window offers Undo. Every import
+   is written private first; the team sees it only after the user's choice.
 6. Report at the end, in plain language: for each source, how many documents were
-   imported, with three or four of its cues as examples; which sources are blocked
-   and why; which documents were skipped for holding a credential (by subject, never the
+   imported, with three or four of its cues as examples; which sources are blocked and
+   why; which documents were skipped for holding a credential (by subject, never the
    secret); for a source blocked by its count, that a higher estimate on its Scope line
    lets it through next time; for each `Share: all` source, the steps in point 5 to
-   share it in the Memories tab; and, when anything is `sharing pending`, that a new
-   session with "finish the memory plan" stages it for them to approve in the
-   Suggestions tab.
+   share it in the Memories tab; for each source you staged, how many memories wait in
+   the Suggestions tab of the Chiron window for their approval (if they closed it: Open
+   Chiron, from the Chiron icon in the Mac menu bar or the Windows tray; on Linux, run
+   `~/.chiron/bin/chiron review`, which opens it in the browser); how many the `share`
+   tool refused because the team's server refused them before (`credential_text`,
+   `not_author`), and why, without staging them again; and, when anything is
+   `sharing pending`, that a new session with "finish the memory plan" stages it for
+   them to approve in the Suggestions tab.
 
 Keep the plan file when done: "bring memory up to date" runs it again, and only new
 documents get imported.
@@ -142,7 +152,7 @@ tell the user to free space before you start.
 With the Gmail connector in Claude and no export, follow "Email through the Claude Gmail
 connector" in [`docs/custom-sources.md`](custom-sources.md) instead.
 
-**Any other source** (Slack, Teams, Notion, a notes folder…): follow
+**Any other source** (Slack, Teams, Notion, a notes folder, a CRM export…): follow
 [`docs/custom-sources.md`](custom-sources.md) to write a converter, then come back for step 2.
 
 Each importer prints how many documents and characters it wrote. Tell the user, and confirm
@@ -189,7 +199,7 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 >    where the point was made, not today. Never invent a name, reason or detail that isn't
 >    in the document. Record what was said even if you think it's wrong; don't correct it.
 > 3. Save it: `~/.chiron/bin/chiron preserve <document.json> <cues.json>` (`chiron.exe`
->    on Windows). It passes the record body through unchanged, so never retype it.
+>    on Windows). It takes the record body from the document, so never retype it.
 >    `PRESERVED` and `ALREADY STORED` both mean done; on `ERROR`, fix the cues and run it
 >    again. A record takes at most 50 cues. If the `ERROR` says the disk is full, stop at
 >    once: do not run it again and do not save any more documents. Report that the disk
@@ -197,7 +207,11 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 >
 > A document with no substance at all gets no cues; skip it. Also skip any document that
 > contains a password, access key, or similar credential: a stored secret can only be
-> removed later by a review in the Chiron app, so it must not be stored. List those separately in your report, by file name, without
+> removed later by a review in the Chiron app, so it must not be stored. A credential
+> that shows as `[redacted]` is already blanked. Chiron does not catch every
+> credential, and it blanks at most the first word of a password with spaces that is
+> not in quotes. Skip a document that still holds a credential, or part of one, in plain
+> text. List those separately in your report, by file name and subject, without
 > repeating the secret.
 >
 > When finished, report how many documents you preserved, skipped and failed, with the

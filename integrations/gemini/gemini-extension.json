@@ -1,6 +1,6 @@
 {
   "name": "chiron",
-  "version": "0.13.6",
+  "version": "0.14.0",
   "description": "Persistent memory: connects to the Chiron app on this computer and recalls related memories on every prompt.",
   "mcpServers": {
     "associative-memory": {

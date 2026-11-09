@@ -64,6 +64,7 @@ Make the text readable: mentions as `@Name`, channel links as `#name`, links as
 ## Steps
 
 1. Agree on the source, scope and export with the user, and have them download it.
+   A folder that is already on this computer needs no download.
    With a memory plan ([`docs/memory-plan.md`](memory-plan.md)), the plan is this
    agreement: take the scope and the export's location from it.
 2. Look at the export's structure (a few files, not all of it) and write the converter.
@@ -81,8 +82,10 @@ Make the text readable: mentions as `@Name`, channel links as `#name`, links as
    It stops at the first invalid line and says what's wrong; fix the converter and rerun.
 5. Continue with step 2 of [`docs/ingestion.md`](ingestion.md): a sample batch first, then
    one sub-agent per batch.
-6. When finished, delete the export and `out/` (they hold private data) but keep
-   the converter for future imports, and tell the user the Chiron team would welcome it
+6. When finished, delete `conversations.jsonl` and `out/`, and the export if the user
+   downloaded one for this import. Never delete a folder that the user keeps, such as
+   their notes folder. These files hold private data, and the first two hold
+   credentials that were not blanked. Keep the converter for future imports, and tell the user the Chiron team would welcome it
    as a starting point for a built-in importer.
 
 ## Email through the Claude Gmail connector
@@ -121,7 +124,8 @@ as the ground rules say. Keep headings, lists and tables readable, and drop page
 and footers. Long sections are split automatically. A library carries nothing personal,
 so the plan usually gives it `Share: all`: imported private; after the import the user
 opens the Memories tab in the Chiron window, filters the Source column to the source,
-ticks the header checkbox, and presses "Share N". It shares at once and offers Undo.
+ticks the header checkbox, and presses "Share N". One press shares the whole source. On a
+large source the button shows a spinner for a few seconds. Then the window offers Undo.
 You stage nothing for it.
 
 Shared, a library counts against the team's shared memory like any other source. Each

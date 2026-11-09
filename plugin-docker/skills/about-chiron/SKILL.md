@@ -1,6 +1,6 @@
 ---
 name: about-chiron
-description: Explain Chiron to the user. Use when they ask what Chiron is, how memory works, how to use it, what it is good for or less good for, which plan they have or what Team and Enterprise include, or where to find the app, the admin portal or the Suggestions tab.
+description: Explain Chiron to the user. Use when they ask what Chiron is, how memory works, how to use it, what it is good for or less good for, which plan they have or what Team and Enterprise include, where to find the app, the admin portal or the Suggestions tab, or how to get help or report a problem.
 ---
 
 # About Chiron

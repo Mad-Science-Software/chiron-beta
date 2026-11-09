@@ -17,6 +17,12 @@ then run it. On a computer in more than one team, an import is private to the te
 memory is in, and only that team can get it; the plan's `Team:` line says which team,
 so switch to it first.
 
+**A few files only.** Save a handful of files that the user gives you with `preserve`,
+one call each, with no plan. Give each one `source` `note:<project>` and `external_id`
+the file's path, so a second save of it is refused. Skip a file that holds a password
+or key. The plan and the importers are for bulk imports: a mail export, many past
+sessions, a large archive.
+
 **Without a plan**, or for a source the plan does not name, make the plan first with
 the user, then run it. The planning guide says how: `~/.chiron/docs/memory-plan.md`.
 
