@@ -60,7 +60,7 @@ cannot save.
    together with this guide. The code is the part of the offer link after `/o/`
    (`…/o/CODE`), or of the invite link after `/invite/` (`…/invite/CODE`). Do not
    include a `?` or the text after it. Before the website offers the installers, the
-   offer page and the invite page give a prompt with the code. When it offers them,
+   offer page and the invite page give a prompt with the code. A user who is signed in already sees the invite page's accept button first; "Back to installing from your computer" shows the prompt. When it offers them,
    these pages have the user accept on the page, then download Chiron. If the user
    accepted the offer or the invite on the website already, the team exists: do not
    use the code. Keep the code for step A2: it creates the user's account and team, or
@@ -167,10 +167,14 @@ If `~/.chiron/bin/chiron check` shows the team already, skip to A3.
   exists already for another reason, run `~/.chiron/bin/chiron connect` without a code.
   The user picks that team.
 - **Without a code**, ask the user whether their team uses Chiron already. If a teammate
-  invited them, the invite link is in an email from Chiron ("… invited you to … on
-  Chiron"), or the teammate sent it. If the email is not in the inbox, tell the user to
-  check spam or to ask the teammate for the link. The invite code is in the link
-  (`…/invite/CODE`; see First, step 1). Use that code as above. If no teammate invited them, tell
+  invited them, run `~/.chiron/bin/chiron connect` without a code: when the user signs in
+  with the invited address, the page lists the invite, and one press joins the team and
+  connects this computer. The invite link is not needed. If the page lists no invite,
+  the user is in that team already (they pick it in the list of teams), the invite went
+  to another address, or it closed. The invite link is in an email from
+  Chiron ("… invited you to … on Chiron"), or the teammate sent it. If the email is not
+  in the inbox, tell the user to check spam or to ask the teammate for the link. The
+  invite code is in the link (`…/invite/CODE`; see First, step 1). Use that code as above. If no teammate invited them, tell
   the user to start a free trial on the website, or, before the open beta starts, to
   ask Mad Science for an offer ("Talk to us" on chironmemory.com). The offer code is in the
   offer link (`…/o/CODE`; see First, step 1). For a team that exists already, see the
@@ -180,9 +184,9 @@ The command shows a link and a code, and opens the link in the browser. With an 
 code, the page asks the user to create their account with the address the offer was
 sent to and to name their team (at most 80 characters, on one line). With an invite
 code, it asks them to sign in or create their account with the invited address. Without
-a code, the user signs in and picks a team, or, with no team yet, names a new one on the
-page (at most 80 characters, on one line); a teammate's invite link is the way into a
-team that exists. If the browser opened an offer link before and the offer is still
+a code, the user signs in and picks a team, joins a team that invited their address, or,
+with no team yet, names a new one on the page (at most 80 characters, on one line). The
+page names the account the user signed in with and offers "Switch account". If the browser opened an offer link before and the offer is still
 open, a user with no team sees that offer first. The user starts the team with the
 offer, then picks it and approves the code.
 
@@ -221,23 +225,16 @@ and code (in the setup window on the first run; later in Settings, Team, Add a t
 in the window's team menu). The command waits until the page has approved this computer
 and the app has joined the team; a team the computer was in already does not end the
 wait. The page then says the app finishes on its own, and the user can close the tab.
-The code works for 15 minutes: if the command times out, run it again for a new code. If
-the page says the offer or the invite has expired or was already used, ask the user if
-they accepted it on the website. If they did, the page lists their teams: the user
-picks that team and approves. If they did not, tell the user to ask for a new link.
-For an expired invite, an owner or admin presses "New link" on the
-invite in the admin portal's Members and invites sheet. Chiron emails the new link to
-the invited address. If the email does not go, the owner or admin sends the link that
-the portal shows. They can make a new link for one invite at most once an hour. For an
-invite that was already used or withdrawn, they make a new invite. Do not guess another
-code. Then
+If the user presses "No" on the page, the page says "This computer was not connected." and the command ends with "Not connected: Someone turned this computer down on the website." Ask the user if that was a mistake. If it was, run `~/.chiron/bin/chiron connect` again for a new code. Do not enter the old code again.
+The code works for 15 minutes: if the command times out, run it again for a new code. If the page says the offer has expired or was already used, ask the user if they accepted it on the website. If they did, the page lists their teams: the user picks that team and approves. If they did not, tell the user to ask for a new link. For an invite, the page says why it closed. "Already accepted" names the invited address: the user signs in with that address (press "Switch account" if the page names another one), then picks the team and approves. "Replaced or withdrawn": the user opens the newest invite email from the team, or the owner or admin makes a new invite. "Expired" or "no longer open": an owner or admin presses "New link" on the invite in the admin portal's Members and invites sheet. Chiron emails the new link to the invited address. If the email does not go, the owner or admin sends the link that the portal shows. They can make a new link for one invite at most once an hour. If the page says a newer link replaced this one, the user opens the newest invite email from the team. If the page says the invite link isn't valid, check that the code is the whole part after `/invite/`, without a `?` or the text after it, or ask the teammate for the link again. Do not guess another code. Then
 `~/.chiron/bin/chiron check` shows the team, and
 `~/.chiron/bin/chiron teams` lists every team this computer is in, with the team ID of
 each. Its last line names the team that agents in this session's project folder use.
 
 A user can be in more than one team on this computer, for example their firm and a
-personal project. Run `~/.chiron/bin/chiron connect` again to join another team; on the
-approval page the user picks the team. Every team stays in sync.
+personal project. Run `~/.chiron/bin/chiron connect` again to join another team; the
+command first names the computer's default team and the account in it. This is not an
+error, and the user does not need a new trial. On the approval page the user picks the team. Every team stays in sync.
 
 Agents use one team for each call:
 
@@ -328,10 +325,7 @@ Or connect every one that is installed: `~/.chiron/bin/chiron assistants connect
 Chiron keeps a copy of each file it changes, with `.chiron-backup` at the end of the name.
 "Restart it to load Chiron" means the assistant reads the change when it starts next.
 
-If a connect reports a problem, tell the user in plain language. It says what to do. For
-example, when Chiron can't find the `claude` command, the user types two `/plugin`
-commands in Claude Code. If an assistant's settings file can't be read, Chiron changes
-nothing; don't repair the file without the user's yes.
+If a connect reports a problem, tell the user in plain language. It says what to do. For example, when Chiron can't find Claude Code, the user installs it, or opens the Code tab in Claude Desktop once (Mac and Windows). Then run `~/.chiron/bin/chiron assistants`: it tries the connect again and shows Claude Code as connected. If it still shows the problem, run `~/.chiron/bin/chiron assistants connect claude-code`. The Chiron window also tries again in the background when it opens, a minute or more after the failed connect. Settings, AI assistants, shows the result the next time it opens. If an assistant's settings file can't be read, Chiron changes nothing; don't repair the file without the user's yes.
 
 If `claude plugin list` also shows `chiron-docker@mad-science` or `chiron-app@mad-science`
 (older names), uninstall them (`claude plugin uninstall <name>@mad-science`); if
@@ -347,8 +341,7 @@ Verify:
 
 The memory check makes a real recall, the same call the hook makes, in the team the
 window shows. It fails with the reason if memory can't be reached or the sync of any team on this
-computer is refused; the message names that team. It does not read a folder's `chiron-config.json`: `chiron teams` from the project folder
-says which team agents in that project use. (The hook stays silent
+computer is refused; the message names that team. It does not read a folder's `chiron-config.json`: `chiron teams` or `chiron status`, run from the project folder, says which team agents in that project use. (The hook stays silent
 when memory is down, so prompts never break; that's why it isn't the check.)
 
 If the check's `Sync` line says the team needs a newer Chiron than this computer runs,
@@ -574,8 +567,8 @@ the `import-history` skill makes the plan with them and runs it.
   team that agents in the session's project folder use. `chiron teams pin "Team name"`
   makes agents in the project folder use that team. `chiron connect` joins another team
   (`--offer CODE` or `--invite CODE`, with the code from the offer or invite link, as in
-  First, step 1).
-- **Is it working?** `chiron status`, and `chiron check`.
+  First, step 1). Without a code, the page lists the open invites to the address the user signs in with, and one press joins that team.
+- **Is it working?** `chiron status` (its team lines name the team the window shows and the team agents in the project folder use; run it from the project folder), and `chiron check`.
   Logs are in `~/.chiron/logs`. If it's stopped, `chiron install` starts it again.
 - **Open the window**: `chiron review` opens the Chiron window, or the review page in
   the browser where there is no window (Linux). Open Chiron in the menu bar or tray

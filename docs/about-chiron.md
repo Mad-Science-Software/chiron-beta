@@ -245,12 +245,12 @@ person chooses to share.
   discount comes off the first yearly invoice; later, the billing page can switch it
   to monthly billing.
   An invite link works the same way
-  for a teammate: its page gives the prompt, or, with the installers, the teammate
+  for a teammate: its page gives the prompt (a signed-in teammate first sees the button to accept on the page), or, with the installers, the teammate
   accepts on the page and then downloads Chiron. An owner or admin enters the teammate's email address on the admin
   portal's Members and invites sheet, or in the Chiron window (Settings, Team), and
   Chiron emails them the link. The portal and the window also show the link; if the
   email does not go, the owner or admin sends it themselves. The link works for 14 days. A new link for an invite ("New link") is emailed too, at most
-  once an hour for each invite. A team can make at most 50 invites in any 24 hours,
+  once an hour for each invite. The old link then says it was replaced by a newer one. A teammate also does not need the link: when they connect a computer without a code and sign in with the invited address, the page lists the invite, and "Join <team> with this computer" joins the team and connects the computer in one step. A team can make at most 50 invites in any 24 hours,
   withdrawn ones included. In the open beta, the website makes a limited number of new
   teams each day, counted in UTC (Coordinated Universal Time); a team from an offer is
   not limited. When the day's places are taken, the page offers "Join the waitlist".
