@@ -330,6 +330,13 @@ person chooses to share.
   no team is active: the Chiron menu and Settings count only memories saved before the
   computer joined a team (usually 0), and `chiron status` still counts them all.
   The assistant mentions a new version once and offers to install it (`chiron update`).
+  The Mac app (Chiron.app from the disk image, in /Applications or ~/Applications)
+  updates itself. It checks once a day, and Check for Updates in the Chiron menu checks
+  at once. `chiron update` hands the update to the app. A Mac app from before Chiron
+  0.15.2 can't update itself: the person downloads the newest Chiron once by hand. An
+  app older than the Chiron on the computer leaves the newer one in place and asks the
+  person to update the app. An engine older than the memory store doesn't start and
+  says so. `chiron update` fixes both.
   For 3 days after an update, the assistant is told to call the `get_changelog` tool,
   which lists what changed for it.
   After some updates the app builds its search graph and the window's search index

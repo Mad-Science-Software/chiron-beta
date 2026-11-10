@@ -83,6 +83,12 @@ memories there.
    disk space. "Finish the memory plan" continues the plan later. An importer or a
    sub-agent that reports a refusal because of the folder's team is the same: start no more batches
    and no more sources, set the source to `blocked: <the message>`, and tell the user.
+   If the importer or a sub-agent reports that Chiron is older than the user's memory
+   store, start no more batches and no more sources. Set the source to
+   `blocked: Chiron needs an update`, tell the user, and offer to run
+   `~/.chiron/bin/chiron update`. After the update, "finish the memory plan" continues.
+   If one reports that Chiron isn't running, run `~/.chiron/bin/chiron status` and act
+   on what it says (setup guide, "Is it working?").
 4. The plan already answers the confirmations in steps 1 and 2 below: the size, and the
    sample. If the importer writes more than twice the documents the plan estimated,
    that's outside what the user agreed: set `blocked: <count> documents, plan expected
@@ -234,7 +240,9 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 >    once: do not run it again and do not save any more documents. Report that the disk
 >    is full. If the `ERROR` says Chiron refused the call because of this folder's team
 >    or its `chiron-config.json`, stop at once and report the message. Do not change
->    the cues.
+>    the cues. If the `ERROR` says Chiron is older than the memory store, or that Chiron
+>    isn't running, stop at once: do not run it again, do not change the cues, and do
+>    not run `chiron update`. Report the message.
 >
 > A document with no substance at all gets no cues; skip it. Also skip any document that
 > contains a password, access key, or similar credential: a stored secret can only be

@@ -82,10 +82,18 @@ cannot save.
 
 ### A1. Install the app
 
+In this guide, "the Mac app" is Chiron.app from the disk image, in /Applications or
+~/Applications. The install command below does not put it there.
+
 If `~/.chiron/bin/chiron status` (`chiron.exe` on Windows) already says Chiron is
-running, skip to A2. If it also says the team needs a newer Chiron, or if
-`~/.chiron/bin/chiron teams` is an unknown command, run `~/.chiron/bin/chiron update`
-first.
+running, skip to A2. If it also says the team needs a newer Chiron, run
+`~/.chiron/bin/chiron update` first. If `~/.chiron/bin/chiron teams` is an unknown
+command, run `~/.chiron/bin/chiron update` first too.
+
+If `chiron status` says Chiron is older than your memory store, do not install again.
+Run `~/.chiron/bin/chiron update`, then `~/.chiron/bin/chiron status` again. Do the same
+if it says the Chiron app is older than the Chiron on this computer. On a Mac with the
+Mac app, do not run the install command below: run `~/.chiron/bin/chiron update`.
 
 On a Mac or Linux:
 
@@ -345,7 +353,10 @@ computer is refused; the message names that team. It does not read a folder's `c
 when memory is down, so prompts never break; that's why it isn't the check.)
 
 If the check's `Sync` line says the team needs a newer Chiron than this computer runs,
-run `~/.chiron/bin/chiron update` and run the check again. Memory keeps working
+run `~/.chiron/bin/chiron update` and run the check again. If its `Chiron` line says
+Chiron is older than the memory store, or that the Chiron app is older than the Chiron
+on this computer, follow it: run `~/.chiron/bin/chiron update`, not `chiron install`,
+then run the check again. Memory keeps working
 meanwhile; only sync waits for the update.
 
 ### A4. If `chiron assistants connect` can't do it
@@ -415,7 +426,8 @@ memory tools then appear twice, the plugin's and Desktop's own. In a project fol
 with no `chiron-config.json`, both use the default team. In a pinned folder, the
 plugin's tools use the folder's team and Desktop's own tools use the default team, so
 use the plugin's tools there. The plugin is still what gives the Code tab automatic
-recall. If Chiron isn't running, the tools report that instead of answering.
+recall. If Chiron isn't running, the tools report that instead of answering. If Chiron
+is older than the memory store, they say so, and the assistant offers `chiron update`.
 
 ## Finish
 
@@ -497,7 +509,8 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   should only agree to saving what they're comfortable keeping. A backup now and then is
   worth it (below).
 - **Updates**: when a new version is out, Claude mentions it once in a session and offers
-  to install it. Mad Science can set, for a team, the oldest Chiron its computers may sync
+  to install it. The Mac app (A1) also checks once a day and offers
+  the update itself; Check for Updates in the Chiron menu checks at once. Mad Science can set, for a team, the oldest Chiron its computers may sync
   with, for example before the team's memory grows large. A computer on an older version
   then pauses sync until it updates; `chiron status`, `chiron check` and the Chiron menu
   show the reason. Memory keeps working with what the computer holds, and Claude says so
@@ -549,8 +562,25 @@ the `import-history` skill makes the plan with them and runs it.
 `chiron` is `~/.chiron/bin/chiron` (`chiron.exe` on Windows):
 
 - **Update**: `chiron update`. That one step also updates the Claude Code plugin and the
-  other assistants' settings, for the assistants the user connected. The update keeps
-  the previous version and goes back to it if the new one doesn't start. An update that
+  other assistants' settings, for the assistants the user connected. Without the Mac
+  app (A1), the update keeps the previous version. It goes back to it if the new one
+  doesn't start.
+  With the Mac app, `chiron update` asks the app to update itself, whether memory runs
+  or not. The app downloads the new version, checks its signatures, replaces itself and
+  restarts. The command waits until the new version runs.
+  A Mac app from before Chiron 0.15.2 can't update itself. `chiron update` then says to
+  download the newest Chiron once by hand. After that, `chiron update` works.
+  If Chiron.app is not in /Applications or ~/Applications, `chiron update` does not use
+  the app. Move Chiron to the Applications folder, open it from there, and run the
+  update again. Do the same when the command says the app runs from the disk image, from
+  Downloads, or from a folder this user can't change. If the command says a second
+  Chiron runs from another place, quit that one, then run the update again.
+  Two guards keep an older Chiron away from a memory store that a newer one upgraded.
+  An app older than the Chiron on the computer leaves the newer one in place and says
+  to update the app. An engine older than the memory store doesn't start, and says it
+  is "older than your memory store". The memory tools and `chiron status` say this on
+  every computer; the Mac app's menu and window and the Linux window say it too.
+  `chiron update` fixes both. An update that
   upgrades the memory store first saves a copy of it. That needs free disk space of
   about the size of the store, plus 10%, plus 512 MB. With too little room, Chiron
   does not upgrade: it says how much it needs and how much is free, and memory stays as
@@ -569,7 +599,10 @@ the `import-history` skill makes the plan with them and runs it.
   (`--offer CODE` or `--invite CODE`, with the code from the offer or invite link, as in
   First, step 1). Without a code, the page lists the open invites to the address the user signs in with, and one press joins that team.
 - **Is it working?** `chiron status` (its team lines name the team the window shows and the team agents in the project folder use; run it from the project folder), and `chiron check`.
-  Logs are in `~/.chiron/logs`. If it's stopped, `chiron install` starts it again.
+  Logs are in `~/.chiron/logs`. If it's stopped, `chiron install` starts it again. If
+  `chiron status` says Chiron is older than your memory store, or that the Chiron app is
+  older than the Chiron on this computer, run `~/.chiron/bin/chiron update` instead
+  (Update, above).
 - **Open the window**: `chiron review` opens the Chiron window, or the review page in
   the browser where there is no window (Linux). Open Chiron in the menu bar or tray
   does the same.
