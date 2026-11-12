@@ -38,5 +38,11 @@ The guides, which this plugin doesn't repeat:
 If `~/.chiron/docs` doesn't exist, read them from
 https://github.com/Mad-Science-Software/chiron-beta/tree/main/docs instead.
 
+After a bulk import, tell the user that the private memories of the new source stay on
+this computer until they back up the source in the Chiron window: Settings, then Storage,
+with the window on the import's team. Files saved one by one with the `preserve` memory tool
+and `source` `note:<project>`, as above, count as "Saved in conversation", which the
+backup keeps from the start. The bulk import's `chiron preserve` does not.
+
 Rerunning an import is safe: anything that this team stores already is skipped, and a conversation
 that gained messages gets only the new ones.

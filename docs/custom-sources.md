@@ -43,7 +43,7 @@ source looks the same to the agents.
 | Field | Meaning |
 |---|---|
 | `conversation_id` | Stable, unique id built from the source's own ids: `<source>:<account>:<native id>`, e.g. `slack:T024BE7LD:C024BE91L:1696160000.000200` (workspace id, not its name). The same conversation must get the same id on every run, or it will be stored twice. Must not contain `#`. |
-| `source` | Where it came from, e.g. `slack:acme`. Shown with every memory. |
+| `source` | Where it came from, e.g. `slack:acme`. Shown with every memory. The part before the colon names the source in the Chiron window ("Slack · acme"), where it is a source of its own that the user can back up. |
 | `subject` | Short title built mechanically, e.g. `#launch thread: Pricing page copy is ready for…` (the first ~60 characters of the opening message) or `#general on 2026-09-30`. |
 | `messages` | Every message in the conversation so far, at least one, each `{"at", "from", "text"}` (optionally `"to"` and `"cc"`, each one string of addresses separated by commas, not a list): `at` an RFC 3339 timestamp, best in UTC (`2026-09-30T14:05:00Z`), `from` the sender's real name (resolve user ids), never empty. Messages are sorted by `at`, so their order in the file does not matter. |
 

@@ -95,7 +95,7 @@ the user pick.
   The user can pick them when the team is made: on the offer page, or on the page where
   the computer connects (step A2 of the setup guide). Later, an owner or admin picks
   them on the Libraries sheet of the admin portal. A published library does not
-  count against private or shared storage. If the user picks a library that covers a
+  count against private backup or shared storage. If the user picks a library that covers a
   work in the plan, mark that work `skipped: in a published library`.
 - Reference material carries nothing personal, so the plan usually shares all of it
   (section 3, "Private, or shared with the team"): imported private, then shared by the
@@ -134,10 +134,13 @@ For each source, agree on:
   checkbox, and press "Share N". One press shares every memory of the source. On a large
   source the button shows a spinner for a few seconds. Then the window offers Undo. You
   stage nothing for it. Every import is written private first; nothing reaches the
-  team without the user's choice. While private backup is on
-  in a team, private memories in that team stop at the person's limit there, so a
-  source larger than that needs backup off in that team (Settings, then Storage)
-  before the import, or a smaller scope.
+  team without the user's choice. An import has no size limit on the computer. A new
+  import is not backed up until the user switches its source on in Settings, then
+  Storage, with the window on the import's team. Each Claude Code project, repository,
+  mailbox and converter source (such as `slack:acme`) is a separate source there; Claude
+  Code sessions outside any project are one source, "general". Files saved one by one
+  with the `preserve` memory tool and `source` `note:<project>` count as "Saved in
+  conversation", which the backup keeps from the start.
   If the
   computer is in more than one team, the `Team:` line names the team the import is
   for. An import is private to the team of the import session's project folder, so
@@ -157,6 +160,10 @@ Say these once, so the user knows them before they agree:
   You list those at the end.
 - A memory can be deleted later, but only after a review in the Chiron app. An import
   is quicker than its undo. That is why the plan matters.
+- An import stays on this computer. To recall it on their other computers or in
+  claude.ai and ChatGPT, they back up its source afterwards. The backup holds their
+  private limit in each team (5M tokens on the Team plan), so estimate each source's tokens (characters divided by four). A source
+  larger than the room left stays on this computer only.
 - The import runs after the install, on its own. You report at the end; you do not ask
   along the way. If something blocks a source (an export that has not arrived), you
   mark it blocked, go on, and say so in the report.
@@ -165,7 +172,7 @@ Say these once, so the user knows them before they agree:
 
 Write it to `~/chiron-ingest/plan.md`. It is the agreement and the checklist: you
 update the status of each source as you go, and a later session can continue it. Every
-Scope line carries the estimate in documents. Write each command so it runs as it
+Scope line carries the estimate in documents and in tokens (characters divided by four). Write each command so it runs as it
 stands: the full program path, `~/.chiron/bin/chiron` (`chiron.exe` on Windows); a
 working folder per source under `~/chiron-ingest`, as in the import guide; the export's
 real path, not a placeholder; and `--batches`, the estimate divided by 20, rounded up
@@ -179,32 +186,32 @@ Agreed on <date>. Team: <team name, or "none">. Share with the team: <which kind
 
 ## 1. Claude Code sessions
 - Status: planned
-- Scope: all projects under ~/.claude/projects (about 140 sessions, about 600 documents, 2026-03 to now)
+- Scope: all projects under ~/.claude/projects (about 140 sessions, about 600 documents, about 1.1M tokens, 2026-03 to now)
 - Credit: Full Name
 - Command: ~/.chiron/bin/chiron ingest claude-code --projects "$HOME/.claude/projects" --owner "Full Name" --out "$HOME/chiron-ingest/claude-code" --batches 30
 - Share: nothing
 
 ## 2. Git: acme-api, acme-web
 - Status: planned
-- Scope: commits since 2026-01-01 (about 900 documents)
+- Scope: commits since 2026-01-01 (about 900 documents, about 300K tokens)
 - Command: ~/.chiron/bin/chiron ingest git --repo ~/code/acme-api --repo ~/code/acme-web --since 2026-01-01 --out "$HOME/chiron-ingest/git" --batches 45
 - Share: decisions and how the systems work; nothing that names a client
 
 ## 3. Email: work Gmail
 - Status: waiting for export
-- Scope: labels Sent, Important (about 2,000 threads, about 2,000 documents); export requested 2026-10-21
+- Scope: labels Sent, Important (about 2,000 threads, about 2,000 documents, about 2.3M tokens); export requested 2026-10-21
 - Command: ~/.chiron/bin/chiron ingest mbox --mbox "$HOME/Downloads/Takeout/Mail/All mail Including Spam and Trash.mbox" --mailbox work --include "Sent,Important" --out "$HOME/chiron-ingest/mbox" --batches 100
 - Share: nothing
 
 ## 4. Slack: acme workspace
 - Status: waiting for export
-- Scope: channels #launch and #support, 2026 (about 300 conversations, about 400 documents); export at ~/Downloads/acme-slack-export/
+- Scope: channels #launch and #support, 2026 (about 300 conversations, about 400 documents, about 150K tokens); export at ~/Downloads/acme-slack-export/
 - Command: write a converter (custom-sources.md), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/slack/conversations.jsonl" --out "$HOME/chiron-ingest/slack/out" --batches 20
 - Share: nothing
 
 ## 5. Library: EU AI Act
 - Status: planned
-- Scope: Regulation (EU) 2024/1689, articles and annexes (about 250 documents); download https://eur-lex.europa.eu/eli/reg/2024/1689/oj to ~/chiron-ingest/ai-act/
+- Scope: Regulation (EU) 2024/1689, articles and annexes (about 250 documents, about 350K tokens); download https://eur-lex.europa.eu/eli/reg/2024/1689/oj to ~/chiron-ingest/ai-act/
 - Credit: European Union
 - Command: write a converter (custom-sources.md, "Reference works"), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/ai-act/conversations.jsonl" --out "$HOME/chiron-ingest/ai-act/out" --batches 13
 - Share: all
@@ -234,7 +241,7 @@ what they declined. `Agreed on <date>` still goes in.
 ## 5. Get the user's yes
 
 Read the plan back in plain language: what goes in, in which order, about how much,
-what the team will see, and what it costs in usage and time. One yes approves the
+which sources fit in their private backup, what the team will see, and what it costs in usage and time. One yes approves the
 whole plan. Then write `Agreed on <date>` in the plan's header. A plan without that
 line is a draft: no session runs it. If the user wants time to think, write the header
 as `Draft. Team: …` in place of `Agreed on <date>. Team: …` and go ahead with the

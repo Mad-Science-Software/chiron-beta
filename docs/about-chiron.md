@@ -57,9 +57,31 @@ person chooses to share.
   until the person deletes their account.
   Private backup, a switch in the Chiron
   app (Settings, then Storage), keeps a copy on the team's server for their other
-  devices and the Connected apps; the app asks before it turns on. Someone who leaves a
+  devices and the Connected apps; the app asks before it turns on. The person chooses
+  which sources the backup keeps, under "What the backup keeps" in Settings, Storage:
+  at first only the memories their assistants save in conversation (source `note:`, or
+  any other source that is not an importer's), including files saved one by one with
+  `note:`. A save whose `source` starts with
+  `gmail:`, `mbox:`, `git:`, `claude-code:`, `library:` or `documents:` joins that
+  imported source and is backed up only with it. An imported Claude Code project, repository, mailbox or converter
+  source (such as a Slack export, shown as "Slack · acme") is backed up only after they
+  switch it on there. A converter import is a source of its own: its `source` prefix
+  names it. A person who had backup on before this choice came keeps
+  every source that was backed up then. Only backed-up sources reach their
+  other computers and the Connected apps. Someone who leaves a
   team, or is removed, loses their private backups from the server; what they shared
-  stays with the team.
+  stays with the team. The website chironmemory.com loads Google Analytics
+  only after a visitor accepts it on the cookie banner, and only on the marketing pages,
+  the sign-up page, the page where a computer connects and the billing page after a
+  checkout. It counts page views, scroll depth, which sign-up and contact links the
+  visitor clicks, and the ad or campaign that brought them. It reports a sign-up, a new
+  team (from the page where a computer connects) and a subscription with its price. It
+  sets the cookies `_ga`, `_ga_…`, `_gcl_…` and `_gac_…`, and the browser keeps a note of each
+  subscription it reported, so it is not counted twice. Google sets its own visitor ID
+  and gets the ad click ID; the site never sends names, email addresses, team names or
+  any Chiron account, team, invite or offer ID, and it cleans each address, and the
+  address of the page before it, first. Decline removes the cookies and the notes. The
+  rest of the signed-in site and the Chiron app never load it.
 - **Credentials are blanked.** Before a memory is saved, Chiron replaces credentials in
   its text with `[redacted]`: labeled passwords, PINs, secrets, tokens and API, access,
   secret and private keys, with a colon or an equals sign ("password: …", "PIN: …",
@@ -136,10 +158,9 @@ person chooses to share.
   shared ones they wrote; an assistant cannot move them. A memory that the old team's
   server holds as another person's goes back to the old team, and the strip says so. They arrive private in the new
   team. They leave the old team: its other computers, teammates' computers included,
-  drop them at their next sync. When private backup is on in the new team, a move that
-  would take the person's private storage there past its limit is refused before
-  anything moves. When backup is off there, the moved memories stay on this computer
-  only. A strip in the window shows how far the move got, and then how it ended: how
+  drop them at their next sync. A move has no size limit. In the new team, the
+  private backup uploads the moved memories of the sources it keeps, as far as its
+  limit allows; the others stay on this computer only. A strip in the window shows how far the move got, and then how it ended: how
   many moved and why any stayed. The move goes on after a restart. A moved memory reaches the new team's server only after the old
   team's server lets it go; until then the strip says how many wait for the old team. Assistants use the default team (the first
   team the computer joined, or, after the person leaves it, the first team that
@@ -173,7 +194,7 @@ person chooses to share.
   comes to every computer in the team whole, and the assistant recalls it beside the
   team's own memory. Its memories are read-only: nobody in the team owns them, so
   nobody can share, move, stage or delete one. To remove a library, the team drops it.
-  Libraries are free: they do not count against private or shared storage. The
+  Libraries are free: they do not count against private backup or shared storage. The
   Memories tab of the Chiron window shows library memories with Whose set to Library,
   as view only; a library that has not fully reached the computer shows as "still
   arriving". The admin portal lists the team's libraries on its Libraries sheet.
@@ -261,8 +282,9 @@ person chooses to share.
   waitlist. They can start a team on a day with a free place, or join the waitlist again
   when the day is full.
 - **Team.** Priced per person per month, or yearly at a saving; the current price is on
-  chironmemory.com/pricing. Each person gets 5M tokens of private backup in each team
-  they are in, and the team shares 15M tokens. Recall on every computer (Mac with
+  chironmemory.com/pricing. Private memory on the computer has no limit. Each person
+  gets 5M tokens of private backup in each team they are in, and the team shares 15M
+  tokens. Recall on every computer (Mac with
   macOS 14 or later, Windows, Linux). Each person imports with their own AI assistant.
   The admin portal manages members, seats,
   devices, the sharing policy and billing. Owners change seats any time; with more
@@ -273,9 +295,12 @@ person chooses to share.
   project tools and meeting notes, which bring new items in as they arrive; connectors
   built for the team's own systems; guided onboarding; priority support; and limits
   set for the team.
-- **At the limit.** When private backup is on and the person's 5M in that team is full,
-  new private memories in that team stop saving until they delete private memories in
-  the app, move them to another of their teams, or turn backup off. When the team's 15M
+- **At the limit.** Saving never stops for the private limit: a new private memory
+  always stays on the computer. When the sources the backup keeps hold more than the
+  person's 5M in that team, the newest of their memories stay on the computer only, and
+  the app shows "Backup full" beside the source. The person makes room by switching
+  another source off in Settings, Storage, or by deleting private memories. The app
+  refuses to switch on a source that would not fit. When the team's 15M
   shared pool is full, nothing more can be shared until someone makes memories private,
   deletes them or moves them to another team, or the team talks to Mad Science about Enterprise. A
   token is about four characters; 5M tokens is about 15,000 business emails. Every
@@ -320,7 +345,7 @@ person chooses to share.
   share them.
   Settings has seven sections: Team (the sharing policy, which an owner or admin
   can change; invites, for an owner or admin; add or leave a team), Storage (the
-  private backup switch), AI assistants, Devices, This computer (version, the memory
+  private backup switch, and the sources it keeps), AI assistants, Devices, This computer (version, the memory
   count of the team the window shows, embedding model, last sync, a memory check, what memory takes on
   disk, and the copies of teammates' shared memories), Account (download memories, sign
   out, delete the account) and Help (Contact Mad Science Software, with the support

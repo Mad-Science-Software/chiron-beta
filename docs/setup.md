@@ -8,7 +8,8 @@ say about development.
 Chiron needs a team with an active free trial or subscription. Until this computer joins
 one, memory is off: the assistant can't recall or save. The memory server can't be reached
 from the network. Private memories stay on this computer. They go to the team's Chiron
-server only if the user turns on private backup in the Chiron app. Without backup,
+server only if the user turns on private backup in the Chiron app, and only from the
+sources the user chooses to back up. Without backup,
 Chiron sends only a count of the private memories that are not backed up, with no
 content. Mad Science staff can see that count; team owners and admins cannot. A problem
 report, which the user sends from Settings, then Help, carries their description, their
@@ -136,7 +137,7 @@ instead, with the same limit. Chiron also
 stages for deletion, in the memory's own team, a memory that the team's server could not take with its
 credentials blanked, so it refused to share it. Settings has seven sections: Team (the
 sharing policy, which an owner or admin can change; invites, for an owner or admin; add
-or leave a team), Storage (the private backup switch), AI assistants, Devices, This computer
+or leave a team), Storage (the private backup switch, and the sources it keeps), AI assistants, Devices, This computer
 (version, the memory count of the team the window shows, embedding model, last sync, a memory check,
 what memory takes on disk, and the copies of teammates' shared memories), Account
 (download your memories, sign out, delete your account) and Help (Contact Mad Science
@@ -194,7 +195,8 @@ sent to and to name their team (at most 80 characters, on one line). With an inv
 code, it asks them to sign in or create their account with the invited address. Without
 a code, the user signs in and picks a team, joins a team that invited their address, or,
 with no team yet, names a new one on the page (at most 80 characters, on one line). The
-page names the account the user signed in with and offers "Switch account". If the browser opened an offer link before and the offer is still
+page names the account the user signed in with and offers "Switch account". The page can also show a cookie banner. Either choice works;
+the computer connects the same way. If the browser opened an offer link before and the offer is still
 open, a user with no team sees that offer first. The user starts the team with the
 offer, then picks it and approves the code.
 
@@ -467,7 +469,7 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   the window shows.
 - **Privacy**: private memories stay on this computer. To keep a copy on the team's
   Chiron server, they turn on private backup in the Chiron app (Settings, then Storage;
-  the app asks them to confirm), for each team. Without backup, Chiron sends only a
+  the app asks them to confirm), for each team, and choose the sources it keeps. Without backup, Chiron sends only a
   count of the private memories that are not backed up, with no content. Mad Science
   staff can see that count; team owners and admins cannot. A problem report (Settings,
   then Help) carries their description, their reply address, the app's state and,
@@ -475,10 +477,14 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   removed. Only Mad Science staff read it; team owners and admins cannot. A report from
   a computer in a team names that computer, account and team. Mad Science keeps a
   report for 90 days, or until the user deletes their account. With backup on, their
-  other computers and that team's Connected apps (claude.ai, ChatGPT) can see them
-  too. The team sees only what they choose to share. While backup is on in a
-  team, private memories in that team stop at their limit there, so a large import
-  needs backup off in that team first. Chiron blanks passwords, keys and card
+  other computers and that team's Connected apps (claude.ai, ChatGPT) can see the
+  sources the backup keeps: at first, what their assistants save in conversation with a
+  `note:` source. A save whose source starts with an importer's prefix (`gmail:`, `git:`,
+  `claude-code:` and the like) joins that imported source instead. The
+  team sees only what they choose to share. A new import is not backed up until they
+  switch its source on in Settings, then Storage. The backup keeps at most their private
+  limit in that team; past it, the newest memories stay on this computer only, and the
+  app shows "Backup full". Chiron blanks passwords, keys and card
   numbers in their common forms before it saves; Claude still does not save a
   credential.
 - **Copies of shared sources**: the team's shared memory comes to this computer whole.
@@ -494,7 +500,8 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   `chiron status` show what memory takes and which sources are on the server only.
 - **Published libraries**: the team can hold up to two libraries of reference material
   from Mad Science. Each comes to this computer whole, and Claude recalls it beside the
-  team's memory. Its memories are read-only, and they do not count against storage. The
+  team's memory. Its memories are read-only, and they do not count against private backup or shared
+  storage. The
   Memories tab shows their memories with Whose set to Library, as view only; a library
   that has not fully reached this computer shows as "still arriving". Owners and admins
   pick them on the Libraries sheet of the admin portal.
@@ -515,7 +522,7 @@ for when they ask more; after the install it is also `~/.chiron/docs/about-chiro
   then pauses sync until it updates; `chiron status`, `chiron check` and the Chiron menu
   show the reason. Memory keeps working with what the computer holds, and Claude says so
   once and offers the update. What the user saves, shares or makes private meanwhile reaches
-  the team and their private backup after the update, and turning private backup on also waits for it.
+  the team and their private backup after the update, and turning private backup on, or changing the sources it keeps, also waits for it.
   For 3 days after an update, Claude is told to call the `get_changelog` tool once,
   which lists what changed for it.
   After the update that brings the search graph, recall stays correct but is slower while

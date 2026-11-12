@@ -6,7 +6,11 @@ involved: the cues are written by sub-agents in the user's own Claude session.
 
 Every imported memory is private to the user, in the team of the import session's
 project folder (see "Which team" below). It stays on this computer unless they
-turn on private backup in the Chiron app (Settings, then Storage). The team sees it
+turn on private backup in the Chiron app and back up its source there (Settings, then
+Storage, with the window on the import's team). Each Claude Code project, repository,
+mailbox and converter source (such as `slack:acme`) is a separate source; Claude Code
+sessions outside any project are one source, "general". A memory the user
+shares goes to the team's server whether its source is backed up or not. The team sees it
 only after the user shares it in the Chiron app: you stage it and they approve it in
 the Suggestions tab, or, for a source the plan shares whole (`Share: all`, such as a
 library), they share the source in the Memories tab (point 5 below).
@@ -131,7 +135,11 @@ memories there.
    tool refused because the team's server refused them before (`credential_text`,
    `not_author`), and why, without staging them again; and, when anything is
    `sharing pending`, that a new session with "finish the memory plan" stages it for
-   them to approve in the Suggestions tab.
+   them to approve in the Suggestions tab; and, for each imported source, that it stays
+   on this computer until they back it up in Settings, then Storage, with the window on
+   the plan's team. A source larger than the
+   room left in their private backup cannot be switched on; it stays on this computer
+   only, unless they switch another source off first.
 
 Keep the plan file when done: "bring memory up to date" runs it again, and only new
 documents get imported.
@@ -262,7 +270,9 @@ Rerun the same importer command. It should report every document as already stor
 write none; any it writes are documents that failed or were skipped, so start a sub-agent
 for those or tell the user why they were left out.
 
-Tell the user what was imported. If sub-agents skipped documents for containing
+Tell the user what was imported. Tell them that the private memories of the new source
+stay on this computer until they back up the source in the Chiron window: Settings, then
+Storage, with the window on the import's team. If sub-agents skipped documents for containing
 credentials, tell the user which ones (by subject), and suggest they change those
 passwords if they're still in use. Then delete the working folder (`rm -rf "$OUT"`). The
 rerun already removed the documents that were stored, so what's left is anything skipped
