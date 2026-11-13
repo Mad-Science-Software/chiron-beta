@@ -32,11 +32,15 @@ The guides, which this plugin doesn't repeat:
 
 - **The plan**: `~/.chiron/docs/memory-plan.md`
 - **Claude Code sessions, git, email from a Takeout export**: `~/.chiron/docs/ingestion.md`
-- **Any other source** (Slack, a chat export, notes, email through the Gmail connector,
-  a reference work such as a regulation or a textbook): `~/.chiron/docs/custom-sources.md`
+- **Any other source** (Slack, a chat export, meeting notes, notes or documents, a CRM
+  export, email through the Gmail connector, a reference work such as a regulation or a
+  textbook): `~/.chiron/docs/custom-sources.md`
 
-If `~/.chiron/docs` doesn't exist, read them from
-https://github.com/Mad-Science-Software/chiron-beta/tree/main/docs instead.
+If `~/.chiron/docs` or its cue guide (`cue-guide.md`) is missing, run
+`~/.chiron/bin/chiron assistants refresh` (`chiron.exe` on Windows): it writes the guides
+again and connects no new assistant. Only if Chiron isn't installed, read the guides,
+the cue guide too, from
+https://github.com/Mad-Science-Software/chiron-beta/tree/main/docs.
 
 After a bulk import, tell the user that the private memories of the new source stay on
 this computer until they back up the source in the Chiron window: Settings, then Storage,

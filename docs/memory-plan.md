@@ -39,7 +39,7 @@ Chiron imports these sources itself:
 | Claude Code sessions | each conversation, in segments | `~/.claude/projects` on this computer | nothing: it is already here |
 | Git repositories | each commit: its message and the files it changed | the folders where they keep code | nothing |
 | Email | each email thread, with the people in it | a Google Takeout `.mbox` export of Gmail, another `.mbox` file, or the Gmail connector in the user's Claude (that account only; "Email through the Claude Gmail connector" in [`custom-sources.md`](custom-sources.md)) | the user requests the export; Google takes hours to days to make it. Nothing when Claude has the Gmail connector |
-| Anything else (Slack, Teams, Notion, a notes folder, a CRM export…) | each conversation or page | an export the user downloads, or a folder on this computer | the user downloads the export (nothing for a folder already here); after the install you write a converter ([`custom-sources.md`](custom-sources.md)); the plan is its scope agreement |
+| Anything else (Slack, Teams, Notion, meeting notes, a notes folder, a folder of documents, a CRM export…) | each conversation, meeting, page, file or record | an export the user downloads, or a folder on this computer | the user downloads the export (nothing for a folder already here); after the install you write a converter ([`custom-sources.md`](custom-sources.md)); the plan is its scope agreement |
 
 Look at what is on this computer, read-only, and tell the user what you find. Ask
 before you open a folder they did not name:
@@ -70,8 +70,8 @@ the install:
   `.mbox` format. Google sends a download link by email when it is ready. Not needed
   when the user's Claude has the Gmail connector for that account.
 - **Slack**: Workspace settings, Import/Export Data (admins only; public channels).
-- **Other tools**: the export is in the tool's settings. Do not use a live connection
-  or an API token.
+- **Other tools**: the export is in the tool's settings. Use an export. If the tool has
+  only an API, follow "Ground rules" in [`custom-sources.md`](custom-sources.md).
 
 ### Reference material the user does not have yet
 
@@ -113,11 +113,12 @@ For each source, agree on:
 - **In or out.** Less is better. The user can import more later; a rerun of the plan
   adds only what is new.
 - **Scope.** Which repositories, and a date range for their commits (`--since`). Which
-  Gmail labels (`--include`, default `Category Personal,Sent,Important`). Which
-  channels. Sessions and a Takeout export have no date filter: their scope is the whole
+  Gmail labels (`--include`, default `Category Personal,Sent,Important`). For a
+  converter source: which channels, folders, meetings or records, and which dates. Sessions and a Takeout export have no date filter: their scope is the whole
   source, or for Gmail its labels. Email through the Gmail connector takes a date
   (`after:`) and the same categories. Name what stays out: a personal repository, a
-  mailbox, direct messages.
+  mailbox, direct messages, one-to-one meetings, sensitive folders such as HR, and
+  personal contact details (see "Ground rules" in [`custom-sources.md`](custom-sources.md)).
 - **Who is credited.** The user's full name on their own messages. Other people keep
   the names the source gives them.
 - **Private, or shared with the team.** Every import is private to the user. If the team
@@ -175,8 +176,8 @@ update the status of each source as you go, and a later session can continue it.
 Scope line carries the estimate in documents and in tokens (characters divided by four). Write each command so it runs as it
 stands: the full program path, `~/.chiron/bin/chiron` (`chiron.exe` on Windows); a
 working folder per source under `~/chiron-ingest`, as in the import guide; the export's
-real path, not a placeholder; and `--batches`, the estimate divided by 20, rounded up
-(`--batches 30` for 600 documents). The import guide runs each command from the project
+real path, not a placeholder. The importer makes one batch list per 20 documents, so
+the command needs no `--batches`. The import guide runs each command from the project
 folder of the plan's team. Use this shape:
 
 ```markdown
@@ -188,39 +189,39 @@ Agreed on <date>. Team: <team name, or "none">. Share with the team: <which kind
 - Status: planned
 - Scope: all projects under ~/.claude/projects (about 140 sessions, about 600 documents, about 1.1M tokens, 2026-03 to now)
 - Credit: Full Name
-- Command: ~/.chiron/bin/chiron ingest claude-code --projects "$HOME/.claude/projects" --owner "Full Name" --out "$HOME/chiron-ingest/claude-code" --batches 30
+- Command: ~/.chiron/bin/chiron ingest claude-code --projects "$HOME/.claude/projects" --owner "Full Name" --out "$HOME/chiron-ingest/claude-code"
 - Share: nothing
 
 ## 2. Git: acme-api, acme-web
 - Status: planned
 - Scope: commits since 2026-01-01 (about 900 documents, about 300K tokens)
-- Command: ~/.chiron/bin/chiron ingest git --repo ~/code/acme-api --repo ~/code/acme-web --since 2026-01-01 --out "$HOME/chiron-ingest/git" --batches 45
+- Command: ~/.chiron/bin/chiron ingest git --repo ~/code/acme-api --repo ~/code/acme-web --since 2026-01-01 --out "$HOME/chiron-ingest/git"
 - Share: decisions and how the systems work; nothing that names a client
 
 ## 3. Email: work Gmail
 - Status: waiting for export
 - Scope: labels Sent, Important (about 2,000 threads, about 2,000 documents, about 2.3M tokens); export requested 2026-10-21
-- Command: ~/.chiron/bin/chiron ingest mbox --mbox "$HOME/Downloads/Takeout/Mail/All mail Including Spam and Trash.mbox" --mailbox work --include "Sent,Important" --out "$HOME/chiron-ingest/mbox" --batches 100
+- Command: ~/.chiron/bin/chiron ingest mbox --mbox "$HOME/Downloads/Takeout/Mail/All mail Including Spam and Trash.mbox" --mailbox work --include "Sent,Important" --out "$HOME/chiron-ingest/mbox"
 - Share: nothing
 
 ## 4. Slack: acme workspace
 - Status: waiting for export
 - Scope: channels #launch and #support, 2026 (about 300 conversations, about 400 documents, about 150K tokens); export at ~/Downloads/acme-slack-export/
-- Command: write a converter (custom-sources.md), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/slack/conversations.jsonl" --out "$HOME/chiron-ingest/slack/out" --batches 20
+- Command: write a converter (custom-sources.md), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/slack/conversations.jsonl" --out "$HOME/chiron-ingest/slack/out"
 - Share: nothing
 
 ## 5. Library: EU AI Act
 - Status: planned
 - Scope: Regulation (EU) 2024/1689, articles and annexes (about 250 documents, about 350K tokens); download https://eur-lex.europa.eu/eli/reg/2024/1689/oj to ~/chiron-ingest/ai-act/
 - Credit: European Union
-- Command: write a converter (custom-sources.md, "Reference works"), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/ai-act/conversations.jsonl" --out "$HOME/chiron-ingest/ai-act/out" --batches 13
+- Command: write a converter (custom-sources.md, "Reference works"), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/ai-act/conversations.jsonl" --out "$HOME/chiron-ingest/ai-act/out"
 - Share: all
 
 ## 6. Library: state solar law
 - Status: planned
 - Scope: the solar statutes and rulings of the three states the team works in (about 4,000 documents, about 3M tokens); downloads listed in ~/chiron-ingest/solar-law/sources.md
 - Credit: as printed on each work
-- Command: write a converter (custom-sources.md, "Reference works"), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/solar-law/conversations.jsonl" --out "$HOME/chiron-ingest/solar-law/out" --batches 200
+- Command: write a converter (custom-sources.md, "Reference works"), then ~/.chiron/bin/chiron ingest documents --in "$HOME/chiron-ingest/solar-law/conversations.jsonl" --out "$HOME/chiron-ingest/solar-law/out"
 - Share: all
 
 ## Left out

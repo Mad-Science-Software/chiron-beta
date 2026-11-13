@@ -599,7 +599,9 @@ the `import-history` skill makes the plan with them and runs it.
   `chiron install` meanwhile.
 - **Assistants**: `chiron assistants` shows which are connected and when each last used
   memory; `chiron assistants connect <id>` and `chiron assistants disconnect <id>` change
-  that.
+  that. `chiron assistants refresh` writes the import guides in `~/.chiron/docs` again,
+  the cue guide too, and updates the connected assistants' settings. It connects no new
+  assistant.
 - **Teams**: `chiron teams` lists the teams this computer is in, with their IDs, and the
   team that agents in the session's project folder use. `chiron teams pin "Team name"`
   makes agents in the project folder use that team. `chiron connect` joins another team

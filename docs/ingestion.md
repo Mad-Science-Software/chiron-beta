@@ -194,10 +194,13 @@ tell the user to free space before you start.
 With the Gmail connector in Claude and no export, follow "Email through the Claude Gmail
 connector" in [`docs/custom-sources.md`](custom-sources.md) instead.
 
-**Any other source** (Slack, Teams, Notion, a notes folder, a CRM export…): follow
-[`docs/custom-sources.md`](custom-sources.md) to write a converter, then come back for step 2.
+**Any other source** (Slack, Teams, Notion, meeting notes, a notes folder, a folder of
+documents, a CRM export…): follow [`docs/custom-sources.md`](custom-sources.md) to write a
+converter, then come back for step 2.
 
-Each importer prints how many documents and characters it wrote. Tell the user, and confirm
+Each importer prints how many documents and characters it wrote, in batch lists of about
+20 documents each, and ends with a line that says how many are not stored yet. Tell the
+user, and confirm
 before going on if it's large (more than a few hundred documents). With a memory plan,
 the plan's estimate stands in for this confirmation ("Run the memory plan", point 4).
 
@@ -207,13 +210,26 @@ the plan's estimate stands in for this confirmation ("Run the memory plan", poin
 them) and ask whether the style and level of detail are right before running the rest.
 With a memory plan, judge the sample yourself against the cue guide instead of asking.
 
-Size batches at about 20 documents each: pass `--batches` as the document count divided
-by 20 when you run the importer. Sub-agents can use a smaller, cheaper model (e.g. Sonnet);
-past runs did well with it.
+The importer makes one batch list per 20 documents, balanced by size. With a memory plan,
+run the plan's command as it stands. Use the batch lists to find the documents: each document gets a
+`.cues.json` file next to it, so `documents/*.json` also matches the cue files.
+Sub-agents can use a smaller, cheaper model (e.g. Sonnet); past runs did well with it.
+If you can't start sub-agents, write the cues yourself, one batch at a time, with the cue
+guide and the steps of the prompt below.
 
-Then start one sub-agent per remaining batch, all in parallel, each with this prompt
-(fill in the batch path, and for `<FOLDER>` this session's project folder). The cue guide the prompt names is written by
-`chiron assistants connect`, so it is there after the install.
+Then start one sub-agent per remaining batch, at most 10 at a time: start the next batch
+as one finishes. Each gets this prompt. Fill in the batch path, for `<FOLDER>` this
+session's project folder, and for `<CUE GUIDE>` the cue guide's path or address:
+
+- `~/.chiron/docs/cue-guide.md`. Chiron writes it when it connects the assistants, so it
+  is there after the install. If it is missing, run `~/.chiron/bin/chiron assistants
+  refresh` (`chiron.exe` on Windows): it writes the guides again and connects no new
+  assistant.
+- Without Chiron's docs folder: the same cue guide at
+  https://github.com/Mad-Science-Software/chiron-beta/blob/main/docs/cue-guide.md (from the
+  release after 0.15.3 on).
+
+Don't write cue rules of your own in its place.
 
 > You are turning documents into memories in Chiron, the user's local memory server.
 > Your batch list is `<OUT>/batch-<N>.txt`: one document JSON path per line.
@@ -223,7 +239,7 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 > only write the `.cues.json` files described below; if you need any other scratch file,
 > name it after your batch number.
 >
-> First read the cue guide, `~/.chiron/docs/cue-guide.md`. Its rules are the standard
+> First read the cue guide, `<CUE GUIDE>`. Its rules are the standard
 > for every cue you write.
 >
 > For each document in the list:
@@ -237,7 +253,9 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 >    next to the document, named like it with `.cues.json` instead of `.json`. Authors are
 >    the people (or AI models) the point is attributed to, by name, taken from the `from`
 >    lines (or `participants` for a commit, crediting everyone listed), spelled exactly as
->    written there. `observed_at` is the timestamp of the message
+>    written there. A `from` line can be a label, not a person, such as
+>    `Meeting notes (summary)` or `Speaker 3`: credit it as written, and never guess a
+>    person behind it. `observed_at` is the timestamp of the message
 >    where the point was made, not today. Never invent a name, reason or detail that isn't
 >    in the document. Record what was said even if you think it's wrong; don't correct it.
 > 3. Save it: `cd "<FOLDER>" && ~/.chiron/bin/chiron preserve <document.json> <cues.json>`
@@ -266,9 +284,14 @@ Then start one sub-agent per remaining batch, all in parallel, each with this pr
 
 ## 3. Finish
 
-Rerun the same importer command. It should report every document as already stored and
-write none; any it writes are documents that failed or were skipped, so start a sub-agent
-for those or tell the user why they were left out.
+After every batch is saved, rerun the same importer command. Its last line must be
+"Not stored yet: none". Otherwise it says how many documents are not stored yet and where
+they are listed. A document that failed gets a new sub-agent. A document that a sub-agent
+skipped on purpose (no substance, or a credential) stays in this count on every rerun:
+list it for the user and don't start a sub-agent for it again. After a run of
+`chiron ingest git` or `chiron ingest documents` with `--limit`, the line says how many
+documents are not stored yet and how many of them the run wrote. The rest are what
+`--limit` left out.
 
 Tell the user what was imported. Tell them that the private memories of the new source
 stay on this computer until they back up the source in the Chiron window: Settings, then
